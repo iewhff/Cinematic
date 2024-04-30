@@ -25,5 +25,5 @@ Route::get('/filmes', [FilmeController::class, 'index']);
 
 Route::post('/pesquisa', [PesquisaController::class, 'pesquisa'])->name('pesquisa');
 
-Route::get('/bilhete/comprarBilhete', [ComprarBilheteController::class, 'comprarBilhete']);
-Route::post('/bilhete/comprarBilhete', [ComprarBilheteController::class, 'guardar']);
+Route::get('/comprarBilhete', [ComprarBilheteController::class, 'comprarBilhete'])->name('comprarBilhete');
+Route::post('/comprarBilhete', [ComprarBilheteController::class, 'guardar']);

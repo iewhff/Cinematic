@@ -19,7 +19,7 @@
 
         <p><strong>Atualizado em:</strong> {{ $resultado->updated_at }}</p>
 
-        <form class="form-inline my-2 my-lg-0" action="{{ route('bilhete/comprarBilhete') }}" method="POST">
+        <form class="form-inline my-2 my-lg-0" action="{{ route('comprarBilhete') }}" method="GET">
             @csrf
             <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" name="id"
                 value={{ $resultado->id }}>Comprar Bilhete
