@@ -41,8 +41,8 @@
 
                     <form class="form-inline my-2 my-lg-0" action="{{ route('pesquisa') }}" method="POST">
                         @csrf
-                        <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" name="titulo"
-                            value={{ $um_filme->titulo }}>Detalhes
+                        <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" name="id"
+                            value={{ $um_filme->id }}>Detalhes
                         </button>
                     </form>
 

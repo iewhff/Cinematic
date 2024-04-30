@@ -14,10 +14,10 @@ class ComprarBilheteController extends Controller
     {
 
         $query = $request->input('id');
-        $resultados = Filme::where('id', 'like', '%' . $query . '%')->get();
+        $resultados = Filme::where('id', $query)->get();
 
         $title = 'Comprar Bilhete';
-        return view('bilhete.comprarBilhete', compact('title'));
+        return view('bilhete.comprarBilhete', compact('title', 'resultados'));
     }
 
     public function criarBilhete(Request $request)

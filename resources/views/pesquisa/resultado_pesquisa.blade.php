@@ -2,6 +2,8 @@
 
 @section('content')
     @foreach ($resultados as $resultado)
+        <a href="{{ URL::previous() }}" class="btn btn-primary">Voltar</a>
+
         <p><strong>Título:</strong> {{ $resultado->titulo }}</p>
 
         <p><strong>Gênero:</strong> {{ $resultado->genero_code }}</p>
@@ -19,11 +21,10 @@
 
         <p><strong>Atualizado em:</strong> {{ $resultado->updated_at }}</p>
 
-        <form class="form-inline my-2 my-lg-0" action="{{ route('bilhete/comprarBilhete') }}" method="GET">
+        <form class="form-inline my-2 my-lg-0" action="{{ route('comprarBilhete') }}" method="GET">
             @csrf
-            <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" name="id"
-                value={{ $resultado->id }}>Comprar Bilhete
-            </button>
+            <input type="hidden" name="id" value={{ $resultado->id }}>
+            <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Comprar Bilhete</button>
         </form>
     @endforeach
 @endsection

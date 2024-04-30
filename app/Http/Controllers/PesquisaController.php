@@ -9,8 +9,8 @@ class PesquisaController extends Controller
 {
     public function pesquisa(Request $request)
     {
-        $query = $request->input('titulo');
-        $resultados = Filme::where('titulo', 'like', '%' . $query . '%')->get();
+        $query = $request->input('id');
+        $resultados = Filme::where('id', $query)->get();
 
         if ($resultados->count() > 0) {
             $filme = $resultados->first();
