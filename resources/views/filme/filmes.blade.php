@@ -7,6 +7,30 @@
 
     {{ $filmes->links() }}
 
+    {{-- Dropdown de Gêneros --}}
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6">
+                <form class="d-flex flex-row align-items-center" action="{{ route('filmes') }}" method="GET">
+                    <button type="submit" class="btn btn-primary mr-2">Filtrar</button>
+                    <div class="form-group mb-0">
+                        <select class="form-control" name="code">
+                            <option value="">Selecione um gênero</option>
+                            @foreach ($opcoes as $opcao)
+                                <option value="{{ $opcao->code }}">{{ $opcao->nome }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6 text-center">
+                <a class="botao" href="/filmes">Todos os Filmes</a>
+            </div>
+        </div>
+    </div>
+
+
+
 
     {{-- Tabela de filmes --}}
     <table>
@@ -39,7 +63,7 @@
                 </td>
                 <td>
 
-                    <form class="form-inline my-2 my-lg-0" action="{{ route('pesquisa') }}" method="POST">
+                    <form class="form-inline my-2 my-lg-0" action="{{ route('detalhes') }}" method="GET">
                         @csrf
                         <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" name="id"
                             value={{ $um_filme->id }}>Detalhes

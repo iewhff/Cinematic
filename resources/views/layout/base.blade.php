@@ -96,19 +96,42 @@
         .btn-primary {
             margin-top: 15px;
             margin-bottom: 15px;
+            --bs-btn-hover-color: #000000;
             --bs-btn-bg: #000000;
             --bs-btn-border-color: #000000;
-            --bs-btn-hover-bg: #ffffff;
-            --bs-btn-hover-border-color: #0a58ca;
+            --bs-btn-hover-bg: #ffcc00eb;
+            --bs-btn-hover-border-color: #000000;
             --bs-btn-focus-shadow-rgb: 49, 132, 253;
-            --bs-btn-active-color: #fff;
-            --bs-btn-active-bg: #0a58ca;
-            --bs-btn-active-border-color: #0a53be;
+            --bs-btn-active-color: #ffcc00eb;
+            --bs-btn-active-bg: #000000;
+            --bs-btn-active-border-color: #000000;
             --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-            --bs-btn-disabled-color: #fff;
-            --bs-btn-disabled-bg: #0d6efd;
-            --bs-btn-disabled-border-color: #0d6efd;
+            --bs-btn-disabled-color: #ffcc00eb;
+            --bs-btn-disabled-bg: #000000;
+            --bs-btn-disabled-border-color: #000000;
         }
+
+        .botao {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #000000;
+            /* Cor de fundo do botão */
+            color: #fff;
+            /* Cor do texto do botão */
+            text-decoration: none;
+            /* Remove sublinhado */
+            border-radius: 5px;
+            /* Borda arredondada */
+            transition: background-color 0.3s;
+            /* Transição suave da cor de fundo */
+        }
+
+        .botao:hover {
+            color: #000000;
+            background-color: #ffcc00eb;
+            /* Cor de fundo do botão ao passar o mouse */
+        }
+
 
         /* Media query para telas menores que 768px */
         @media screen and (max-width: 768px) {
@@ -199,6 +222,9 @@ $currentUrl = url()->current(); @endphp
     <div class="container">
         @yield('content')
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>

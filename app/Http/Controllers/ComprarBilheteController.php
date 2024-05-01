@@ -7,6 +7,8 @@ use App\Models\Recibo;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Models\Filme;
+use App\Models\Configuracao;
+use Carbon\Carbon;
 
 class ComprarBilheteController extends Controller
 {
@@ -23,48 +25,72 @@ class ComprarBilheteController extends Controller
     public function criarBilhete(Request $request)
     {
         $validated = $request->validate([
-            'cliente_id' => 'required|exists:clientes,id',
-            'data' => 'required|date|equal:today',
-            'preco_total_sem_iva' => 'required',
-            'iva' => 'required|numeric|between:0,100',
             'nif' => 'required|numeric|digits:9',
             'nome_cliente' => 'required|string|max:55',
             'tipo_pagamento' => 'required|string|max:55',
             'ref_pagamento' => 'required|string|max:55',
             //Tentar adicionar depois o campo de upload de ficheiros
             //'recibo_pdf_url' => 'required',
-            'created_at' => 'required|date|equal:today',
         ], [ // Custom Error Messages
-            'nif.required' => 'NIF é obrigatório.',
+            'id' => 'NIF é obrigatório.',
             'nome_cliente.required' => 'Nome é obrigatório.',
             'tipo_pagamento.required' => 'Tipo de pagamento é obrigatório.',
             'ref_pagamento.required' => 'Referencia de pagamento é obrigatório.',
         ]);
-        Recibo::create($request->toArray());
+
+        // Definir valores automaticamente
+        $id = Recibo::max('id') + 1;
+        $dataHoraAtual = Carbon::now()->format('Y-m-d H:i:s');
+        $clienteId = auth()->id(); // Laravel helper para id do utilizador autenticado
+
+        // Adicionar ao array validado
+        $dadosCompletos = array_merge($validated, [
+            'id' => $id,
+            'data' => $dataHoraAtual,
+            'created_at' => $dataHoraAtual,
+            'cliente_id' => $clienteId,
+        ]);
+
+        Recibo::create($dadosCompletos);
         return "sucesso";
     }
 
     public function criarRecibo(Request $request)
     {
+        $configuracao = Configuracao::all();
+
         $validated = $request->validate([
-            'cliente_id' => 'required|exists:clientes,id',
-            'data' => 'required|date|equal:today',
-            'preco_total_sem_iva' => 'required',
-            'iva' => 'required|numeric|between:0,100',
             'nif' => 'required|numeric|digits:9',
             'nome_cliente' => 'required|string|max:55',
             'tipo_pagamento' => 'required|string|max:55',
             'ref_pagamento' => 'required|string|max:55',
             //Tentar adicionar depois o campo de upload de ficheiros
             //'recibo_pdf_url' => 'required',
-            'created_at' => 'required|date|equal:today',
         ], [ // Custom Error Messages
             'nif.required' => 'NIF é obrigatório.',
             'nome_cliente.required' => 'Nome é obrigatório.',
             'tipo_pagamento.required' => 'Tipo de pagamento é obrigatório.',
             'ref_pagamento.required' => 'Referencia de pagamento é obrigatório.',
         ]);
-        Recibo::create($request->toArray());
+
+        // Definir valores automaticamente
+        $id = Recibo::max('id') + 1;
+        $dataHoraAtual = Carbon::now()->format('Y-m-d H:i:s');
+        $clienteId = auth()->id(); // Laravel helper para id do utilizador autenticado
+        $preco_total_sem_iva = $configuracao->preco_total_sem_iva;
+        $iva = $configuracao->percentagem_iva;
+
+        // Adicionar ao array validado
+        $dadosCompletos = array_merge($validated, [
+            'id' => $id,
+            'data' => $dataHoraAtual,
+            'created_at' => $dataHoraAtual,
+            'cliente_id' => $clienteId,
+            'preco_total_sem_iva' => $preco_total_sem_iva,
+            'percentagem_iva' => $iva,
+        ]);
+
+        Recibo::create($dadosCompletos);
         return "sucesso";
     }
 }

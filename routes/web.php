@@ -21,7 +21,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/filmes', [FilmeController::class, 'index']);
+Route::get('/filmes', [FilmeController::class, 'index'])->name('filmes');
+Route::get('/detalhes', [FilmeController::class, 'detalhes'])->name('detalhes');
 
 Route::post('/pesquisa', [PesquisaController::class, 'pesquisa'])->name('pesquisa');
 
