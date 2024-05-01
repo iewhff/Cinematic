@@ -46,6 +46,8 @@ class ComprarBilheteController extends Controller
         // Adicionar ao array validado
         $dadosCompletos = array_merge($validated, [
             'id' => $id,
+            'recibo_id' => $request->input('recibo_id'),
+            'sessao_id' => $request->input('sessao_id'),
             'data' => $dataHoraAtual,
             'created_at' => $dataHoraAtual,
             'cliente_id' => $clienteId,

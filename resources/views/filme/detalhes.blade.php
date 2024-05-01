@@ -3,6 +3,7 @@
 
 @section('content')
     <br>
+    <a href="{{ URL::previous() }}" class="btn btn-primary">Voltar</a>
     <div class="row">
         <div class="col-md-8">
             <p><strong>Título:</strong> {{ $filme->titulo }}</p>

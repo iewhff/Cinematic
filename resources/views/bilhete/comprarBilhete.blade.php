@@ -1,43 +1,47 @@
 @extends('layout.base')
 
 @section('content')
-    @foreach ($resultados as $resultado)
-        <form action="/comprarBilhete" method="post">
-            @csrf
+    <form class="mt-4" action="/comprarBilhete" method="post">
+        @csrf
+        <div class="form-group">
+            <label for="nome">Nome:</label>
+            <input class="form-control" id="nome" name="nome" value="{{ old('nome') }}">
+            @error('nome_cliente')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="nif">NIF:</label>
+            <input class="form-control" id="nif" name="nif" value="{{ old('nif') }}">
+            @error('nif')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="ref_pagamento">Referência de pagamento:</label>
+            <input class="form-control" id="ref_pagamento" name="ref_pagamento" value="{{ old('ref_pagamento') }}">
+            @error('ref_pagamento')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="tipo_pagamento">Tipo de pagamento:</label>
             <div>
-                <label for="nome">Nome:</label>
-                <input id="nome" name="nome" value="{{ old('nome') }}">
-                @error('nome_cliente')
-                    <span>{{ $message }}</span>
-                @enderror
+                <input type="radio" id="visa" name="tipo_pagamento" value="visa">
+                <label for="visa">VISA</label>
             </div>
             <div>
-                <label for="nif">NIF:</label>
-                <input id="nif" name="nif" value="{{ old('nif') }}">
-                @error('nif')
-                    <span>{{ $message }}</span>
-                @enderror
+                <input type="radio" id="paypal" name="tipo_pagamento" value="pyapal">
+                <label for="paypal">PayPal</label>
             </div>
             <div>
-                <label for="ref_pagamento">Referencia de pagamento:</label>
-                <input id="ref_pagamento" name="ref_pagamento" value="{{ old('ref_pagamento') }}">
-                @error('ref_pagamento')
-                    <span>{{ $message }}</span>
-                @enderror
+                <input type="radio" id="mbway" name="tipo_pagamento" value="mbway">
+                <label for="mbway">MBWay</label>
             </div>
-            <div>
-                <label for="tipo_pagamento">Tipo de pagamento:</label>
-                <br>
-                <input type="radio" name="opcao" value="valor2"> VISA
-                <br>
-                <input type="radio" name="opcao" value="valor3"> PayPal
-                <br>
-                <input type="radio" name="opcao" value="valor3"> MBWay
-                @error('tipo_pagamento')
-                    <span>{{ $message }}</span>
-                @enderror
-            </div>
-            <input type="submit">
-        </form>
-    @endforeach
+            @error('tipo_pagamento')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+    </form>
 @endsection

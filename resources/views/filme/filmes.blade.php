@@ -7,9 +7,9 @@
 
     {{ $filmes->links() }}
 
-    {{-- Dropdown de Gêneros --}}
+    {{-- Dropdown de Gêneros, podia tar melhor de aspecto --}}
     <div class="container">
-        <div class="row justify-content-center mt-5">
+        <div class="row justify-content-end mt-5 ">
             <div class="col-md-6">
                 <form class="d-flex flex-row align-items-center" action="{{ route('filmes') }}" method="GET">
                     <button type="submit" class="btn btn-primary mr-2">Filtrar</button>
@@ -17,17 +17,20 @@
                         <select class="form-control" name="code">
                             <option value="">Selecione um gênero</option>
                             @foreach ($opcoes as $opcao)
-                                <option value="{{ $opcao->code }}">{{ $opcao->nome }}</option>
+                                <option value="{{ $opcao->code }}" {{ $opcao->code == request('code') ? 'selected' : '' }}>
+                                    {{ $opcao->nome }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
                 </form>
             </div>
-            <div class="col-md-6 text-center">
+            <div class="col-md-6 text-end">
                 <a class="botao" href="/filmes">Todos os Filmes</a>
             </div>
         </div>
     </div>
+
 
 
 
