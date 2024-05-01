@@ -1,11 +1,30 @@
 @extends('layout.base')
 
 @section('content')
+    <a href="{{ URL::previous() }}" class="btn btn-primary">Voltar</a>
+    @foreach ($resultados as $resultado)
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-8">
+                        <p><strong>Título:</strong> {{ $resultado->titulo }}</p>
+                        <p><strong>Gênero:</strong> {{ $resultado->genero_code }}</p>
+                        <p><strong>Ano:</strong> {{ $resultado->ano }}</p>
+                    </div>
+                    <div class="col-md-4 text-md-end">
+                        <img src="{{ asset('caminho/para/cartazes/' . $resultado->cartaz_url) }}"
+                            alt="{{ $resultado->titulo }}" width="200">
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
     <form class="mt-4" action="/comprarBilhete" method="post">
         @csrf
         <div class="form-group">
-            <label for="nome">Nome:</label>
-            <input class="form-control" id="nome" name="nome" value="{{ old('nome') }}">
+            <label for="nome_cliente">Nome:</label>
+            <input class="form-control" id="nome_cliente" name="nome_cliente" value="{{ old('nome_cliente') }}">
             @error('nome_cliente')
                 <span class="text-danger">{{ $message }}</span>
             @enderror
@@ -31,7 +50,7 @@
                 <label for="visa">VISA</label>
             </div>
             <div>
-                <input type="radio" id="paypal" name="tipo_pagamento" value="pyapal">
+                <input type="radio" id="paypal" name="tipo_pagamento" value="paypal">
                 <label for="paypal">PayPal</label>
             </div>
             <div>
@@ -42,6 +61,8 @@
                 <span class="text-danger">{{ $message }}</span>
             @enderror
         </div>
-        <button type="submit" class="btn btn-primary">Enviar</button>
+        <p><strong>Preço:</strong> {{ $preco_bilhete }}</p>
+
+        <button type="submit" class="btn btn-primary">Comprar</button>
     </form>
 @endsection
