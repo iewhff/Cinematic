@@ -6,151 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title')</title>
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
     <style>
-        body {
-            background-color: #dbdbdbeb;
-            /* Cor de fundo para a página */
-            color: #000;
-            /* Cor do texto para a página */
-        }
-
-        h1 {
-            color: #000;
-            margin-left: 100px;
-
-        }
-
-        p {
-            /* Adicionar estilo */
-        }
-
-
-        .bg-custom-orange {
-            background-color: #ffcc00eb;
-            /* Código hexadecimal para laranja */
-        }
-
-        .navbar-brand {
-            font-family: "Helvetica Neue", sans-serif;
-            /* Exemplo de fonte moderna */
-            color: #000;
-            /* Cor preta */
-            margin-left: 60px;
-            /* Adiciona uma margem à esquerda de 20 pixels */
-            font-size: 40px;
-            /* Tamanho da fonte */
-            font-weight: bold
-        }
-
-        .navbar-collapse input[type="search"]::placeholder {
-            color: #000000;
-            /* Texto do placeholder em branco */
-        }
-
-        /*Tamanho da barra de pesquisa*/
-        .form-inline {
-            width: 80%;
-            /* Defina o comprimento desejado para o formulário */
-        }
-
-        .form-control mr-sm-2 {
-            background-color: #d0a600eb;
-            /* Fundo preto */
-            border-radius: 9px;
-            /* Raio de borda para tornar o formulário arredondado */
-            display: flex;
-            align-items: center;
-            margin-right: 15px;
-            /* Adiciona um espaço à direita */
-        }
-
-
-        .navbar-collapse form {
-            display: flex;
-            align-items: center;
-            margin-left: 70%;
-            margin-right: 10%
-        }
-
-        .navbar-collapse input[type="search"] {
-            background-color: #d0a600eb;
-            color: #000000;
-            border: none;
-            padding: 0.5rem;
-        }
-
-        .navbar-collapse button[type="submit"] {
-            margin-left: 10px;
-            /* Margem à esquerda para separar o botão do campo de pesquisa */
-        }
-
-        .nav-link {
-            font-family: "Helvetica Neue", sans-serif;
-            /* Exemplo de fonte moderna */
-            color: #ffffff;
-        }
-
-        .btn-primary {
-            margin-top: 15px;
-            margin-bottom: 15px;
-            --bs-btn-hover-color: #000000;
-            --bs-btn-bg: #000000;
-            --bs-btn-border-color: #000000;
-            --bs-btn-hover-bg: #ffcc00eb;
-            --bs-btn-hover-border-color: #000000;
-            --bs-btn-focus-shadow-rgb: 49, 132, 253;
-            --bs-btn-active-color: #ffcc00eb;
-            --bs-btn-active-bg: #000000;
-            --bs-btn-active-border-color: #000000;
-            --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-            --bs-btn-disabled-color: #ffcc00eb;
-            --bs-btn-disabled-bg: #000000;
-            --bs-btn-disabled-border-color: #000000;
-        }
-
-        .botao {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #000000;
-            /* Cor de fundo do botão */
-            color: #fff;
-            /* Cor do texto do botão */
-            text-decoration: none;
-            /* Remove sublinhado */
-            border-radius: 5px;
-            /* Borda arredondada */
-            transition: background-color 0.3s;
-            /* Transição suave da cor de fundo */
-        }
-
-        .botao:hover {
-            color: #000000;
-            background-color: #ffcc00eb;
-            /* Cor de fundo do botão ao passar o mouse */
-        }
-
-
-        /* Media query para telas menores que 768px */
-        @media screen and (max-width: 768px) {
-            .form-inline {
-                width: 0px;
-                /* Defina o comprimento desejado para o formulário */
-            }
-        }
-
-        /* Media query para telas menores que 576px */
-        @media screen and (max-width: 578px) {
-            .form-inline {
-                width: 0px;
-                /* Defina o comprimento desejado para o formulário */
-            }
-        }
     </style>
 
-    @vite([ 'resources/js/app.js'])
+    @vite(['resources/js/app.js'])
 
 </head>
 
@@ -220,59 +83,59 @@ $currentUrl = url()->current(); @endphp
                         </a>
                 </li>
                 @if (Auth::check())
-                @if (Auth::user()->tipo == 'A')
-                <li class="nav-item">
-                    
-                        <a class="nav-link" href="#">Gerir utilizadores</a> 
-                        
-                </li>
-                @endif
+                    @if (Auth::user()->tipo == 'A')
+                        <li class="nav-item">
+
+                            <a class="nav-link" href="#">Gerir utilizadores</a>
+
+                        </li>
+                    @endif
                 @endif
             </ul>
 
             <ul class="navbar-nav ms-auto">
-                       
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
 
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Sign In') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
+                @guest
+                    @if (Route::has('login'))
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                        </li>
+                    @endif
 
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                @if (Auth::check())
+                    @if (Route::has('register'))
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('register') }}">{{ __('Sign In') }}</a>
+                        </li>
+                    @endif
+                @else
+                    <li class="nav-item dropdown">
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            {{ Auth::user()->name }}
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            @if (Auth::check())
                                 @if (Auth::user()->tipo != 'F')
-                                <a class="dropdown-item" href=""
-                                       onclick="event.preventDefault();">
-                                                    
+                                    <a class="dropdown-item" href="" onclick="event.preventDefault();">
+
                                         {{ __('Perfil de Utilizador') }}
                                     </a>
                                 @endif
-                                @endif
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
+                            @endif
+                            <a class="dropdown-item" href="{{ route('logout') }}"
+                                onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
+                                {{ __('Logout') }}
+                            </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                        </div>
+                    </li>
+                @endguest
+            </ul>
         </div>
     </nav><br>
     <div class="container">
