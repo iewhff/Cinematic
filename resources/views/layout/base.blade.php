@@ -195,7 +195,7 @@ $currentUrl = url()->current(); @endphp
                 <li class="nav-item">
                     <a class="nav-link" href="/historico" @php
 $currentUrl = url()->current(); @endphp
-                        @if ($currentUrl == url('/historico')) <a class="nav-link" href="#" style="color: orange;">Filmes</a>
+                        @if ($currentUrl == url('/historico')) <a class="nav-link" href="#" style="color: orange;">Histórico</a>
                     @else
                         <a class="nav-link" href="#">Histórico</a> @endif
                         </a>
@@ -203,7 +203,7 @@ $currentUrl = url()->current(); @endphp
                 <li class="nav-item">
                     <a class="nav-link" href="/historico" @php
 $currentUrl = url()->current(); @endphp
-                        @if ($currentUrl == url('/historico')) <a class="nav-link" href="#" style="color: orange;">Filmes</a>
+                        @if ($currentUrl == url('/historico')) <a class="nav-link" href="#" style="color: orange;">Controlo de Acesso à Sessão</a>
                     @else
                         <a class="nav-link" href="#">Controlo de Acesso à Sessão</a> @endif
                         </a>
@@ -211,7 +211,7 @@ $currentUrl = url()->current(); @endphp
                 <li class="nav-item">
                     <a class="nav-link" href="/estatistica" @php
 $currentUrl = url()->current(); @endphp
-                        @if ($currentUrl == url('/estatistica')) <a class="nav-link" href="#" style="color: orange;">Filmes</a>
+                        @if ($currentUrl == url('/estatistica')) <a class="nav-link" href="#" style="color: orange;">Estatística</a>
                     @else
                         <a class="nav-link" href="#">Estatística</a> @endif
                         </a>

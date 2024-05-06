@@ -57,10 +57,11 @@
                 <input type="radio" id="mbway" name="tipo_pagamento" value="mbway">
                 <label for="mbway">MBWay</label>
             </div>
-            @error('tipo_pagamento')
-                <span class="text-danger">{{ $message }}</span>
-            @enderror
         </div>
+        @error('tipo_pagamento')
+            <span class="text-danger">{{ $message }}</span>
+        @enderror
+
         <p><strong>Preço:</strong> {{ $preco_bilhete }}</p>
 
         <button type="submit" class="btn btn-primary">Comprar</button>

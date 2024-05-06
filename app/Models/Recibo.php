@@ -19,6 +19,8 @@ class Recibo extends Model
         'iva',
         'preco_total_com_iva',
         'nome_cliente',
+        'tipo_pagamento',
         'ref_pagamento',
+
     ];
 }

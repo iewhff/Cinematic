@@ -13,7 +13,7 @@ class EstatisticaController extends Controller
 
         $title = 'Filmes';
 
-        return view('filme.filmes', compact('filmes', 'title', 'imagens'));
+        return view('estatistica.estatistica', compact('recibos', 'title'));
 
         //return view('disciplina.index', ['ds' => $disciplinas]); // Passando a variável $disciplinas para a view
         //tambem poderia ser assim: return view('disciplina.index', compact('disciplinas'));

@@ -5,6 +5,7 @@ use App\Http\Controllers\BilheteController;
 use App\Http\Controllers\ComprarBilheteController;
 use App\Http\Controllers\FilmeController;
 use App\Http\Controllers\PesquisaController;
+use App\Http\Controllers\EstatisticaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,3 +30,5 @@ Route::post('/pesquisa', [PesquisaController::class, 'pesquisa'])->name('pesquis
 
 Route::get('/comprarBilhete', [ComprarBilheteController::class, 'comprarBilhete'])->name('comprarBilhete');
 Route::post('/comprarBilhete', [ComprarBilheteController::class, 'criarReciboBilhete']);
+
+Route::get('/estatistica', [EstatisticaController::class, 'index'])->name('estatistica');

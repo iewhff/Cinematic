@@ -44,7 +44,6 @@ class ComprarBilheteController extends Controller
             //Tentar adicionar depois o campo de upload de ficheiros
             //'recibo_pdf_url' => 'required',
         ], [ // Custom Error Messages
-            'nif.required' => 'NIF é obrigatório.',
             'nome_cliente.required' => 'Nome é obrigatório.',
             'tipo_pagamento.required' => 'Tipo de pagamento é obrigatório.',
             'ref_pagamento.required' => 'Referencia de pagamento é obrigatório.',
