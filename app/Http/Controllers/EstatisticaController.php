@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Recibo;
 use App\Models\Bilhete;
+use App\Models\Lugar;
+use App\Models\Filme;
+use App\Models\Sessao;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
@@ -62,8 +65,7 @@ class EstatisticaController extends Controller
             ->limit(10)
             ->get();
 
-
-        $title = 'Filmes';
+        $title = 'Estatistica';
 
         return view('estatistica.estatistica', compact('top10Lugares', 'generoCodeComMaisBilhetes', 'totalBilhetesGeneroComMaisBilhetes', 'totalBilhetesFilmeComMaisBilhetes', 'tituloFilmeComMaisBilhetes', 'mesMaisRegistrosString', 'totalRegistrosMesMaisRegistros', 'nomeClienteComMaisRecibos', 'comprasClienteComMaisRecibos', 'title'));
 

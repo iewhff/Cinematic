@@ -2,6 +2,8 @@
 @extends('css.tabela')
 @extends('css.paginate')
 
+
+@section('title', $title)
 @section('content')
     <div class="container ">
         <div class="row">

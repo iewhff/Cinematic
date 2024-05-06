@@ -74,14 +74,19 @@ $currentUrl = url()->current(); @endphp
                         <a class="nav-link" href="#">Controlo de Acesso à Sessão</a> @endif
                         </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/estatistica" @php
+                @if (Auth::check())
+                    @if (Auth::user()->tipo == 'A')
+                        <li class="nav-item">
+                            <a class="nav-link" href="/estatistica" @php
 $currentUrl = url()->current(); @endphp
-                        @if ($currentUrl == url('/estatistica')) <a class="nav-link" href="#" style="color: orange;">Estatística</a>
-                    @else
-                        <a class="nav-link" href="#">Estatística</a> @endif
-                        </a>
-                </li>
+                                @if ($currentUrl == url('/estatistica')) <a class="nav-link" href="#" style="color: orange;">Estatística</a>
+                        @else
+                            <a class="nav-link" href="#">Estatística</a> @endif
+                                </a>
+                        </li>
+                    @endif
+                @endif
+
                 @if (Auth::check())
                     @if (Auth::user()->tipo == 'A')
                         <li class="nav-item">

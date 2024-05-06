@@ -38,7 +38,8 @@ Route::post('/pesquisa', [PesquisaController::class, 'pesquisa'])->name('pesquis
 Route::get('/comprarBilhete', [ComprarBilheteController::class, 'comprarBilhete'])->name('comprarBilhete');
 Route::post('/comprarBilhete', [ComprarBilheteController::class, 'criarReciboBilhete']);
 
-Route::get('/estatistica', [EstatisticaController::class, 'index'])->name('estatistica');
+//foi criado middleware AdminMiddleware para associar o utilizador do tipo a a administrador para a roita estar bloqueada a outros utilizadores
+Route::middleware(['auth', 'admin'])->get('/estatistica', [EstatisticaController::class, 'index'])->name('estatistica');
 Route::get('/perfil', function () {
     return view('User.teste');
 })->name('perfil');

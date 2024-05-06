@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Sessao extends Model
 {
     use HasFactory;
+    protected $table = 'sessoes';
+    public function bilhetes()
+    {
+        //para usar na estatistica
+        return $this->hasMany(Bilhete::class);
+    }
 }
