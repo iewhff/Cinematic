@@ -1,5 +1,4 @@
 @extends('layout.base')
-@extends('css.paginate')
 
 @section('content')
     <br>

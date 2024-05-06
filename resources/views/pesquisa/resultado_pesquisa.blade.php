@@ -1,5 +1,4 @@
 @extends('layout.base')
-@extends('css.paginate')
 
 @section('content')
     <a href="{{ URL::previous() }}" class="btn btn-primary">Voltar</a>

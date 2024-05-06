@@ -1,6 +1,4 @@
 @extends('layout.base')
-@extends('css.tabela')
-@extends('css.paginate')
 
 
 @section('title', $title)

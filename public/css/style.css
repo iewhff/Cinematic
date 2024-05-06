@@ -1,127 +1,256 @@
 
 
 body {
-    background-color: #dbdbdbeb;
-    /* Cor de fundo para a página */
-    color: #000;
-    /* Cor do texto para a página */
+background-color: #dbdbdbeb;
+/* Cor de fundo para a página */
+color: #000;
+/* Cor do texto para a página */
 }
 
 h1 {
-    color: #000;
-    margin-left: 100px;
+color: #000;
+margin-left: 100px;
 
-}
-
-p {
-    /* Adicionar estilo */
 }
 
 
 .bg-custom-orange {
-    background-color: #ffcc00eb;
-    /* Código hexadecimal para laranja */
+background-color: #ffcc00eb;
+/* Código hexadecimal para laranja */
 }
 
 .navbar-brand {
-    font-family: "Helvetica Neue", sans-serif;
-    /* Exemplo de fonte moderna */
-    color: #000;
-    /* Cor preta */
-    margin-left: 60px;
-    /* Adiciona uma margem à esquerda de 20 pixels */
-    font-size: 40px;
-    /* Tamanho da fonte */
-    font-weight: bold
+font-family: "Helvetica Neue", sans-serif;
+/* Exemplo de fonte moderna */
+color: #000;
+/* Cor preta */
+margin-left: 60px;
+/* Adiciona uma margem à esquerda de 20 pixels */
+font-size: 40px;
+/* Tamanho da fonte */
+font-weight: bold
 }
 
 .navbar-collapse input[type="search"]::placeholder {
-    color: #000000;
-    /* Texto do placeholder em branco */
+color: #000000;
+/* Texto do placeholder em branco */
 }
 
 /*Tamanho da barra de pesquisa*/
 .form-inline {
-    width: 80%;
-    /* Defina o comprimento desejado para o formulário */
+width: 80%;
+/* Defina o comprimento desejado para o formulário */
 }
 
 .form-control mr-sm-2 {
-    background-color: #d0a600eb;
-    /* Fundo preto */
-    border-radius: 9px;
-    /* Raio de borda para tornar o formulário arredondado */
-    display: flex;
-    align-items: center;
-    margin-right: 15px;
-    /* Adiciona um espaço à direita */
+background-color: #d0a600eb;
+/* Fundo preto */
+border-radius: 9px;
+/* Raio de borda para tornar o formulário arredondado */
+display: flex;
+align-items: center;
+margin-right: 15px;
+/* Adiciona um espaço à direita */
 }
 
 
 .navbar-collapse form {
-    display: flex;
-    align-items: center;
-    margin-left: 70%;
-    margin-right: 10%
+display: flex;
+align-items: center;
+margin-left: 70%;
+margin-right: 10%
 }
 
 .navbar-collapse input[type="search"] {
-    background-color: #d0a600eb;
-    color: #000000;
-    border: none;
-    padding: 0.5rem;
+background-color: #d0a600eb;
+color: #000000;
+border: none;
+padding: 0.5rem;
 }
 
 .navbar-collapse button[type="submit"] {
-    margin-left: 10px;
-    /* Margem à esquerda para separar o botão do campo de pesquisa */
+margin-left: 10px;
+/* Margem à esquerda para separar o botão do campo de pesquisa */
 }
 
 .nav-link {
-    font-family: "Helvetica Neue", sans-serif;
-    /* Exemplo de fonte moderna */
-    color: #ffffff;
+font-family: "Helvetica Neue", sans-serif;
+/* Exemplo de fonte moderna */
+color: #ffffff;
 }
 
 .btn-primary {
-    margin-top: 15px;
-    margin-bottom: 15px;
-    --bs-btn-hover-color: #000000;
-    --bs-btn-bg: #000000;
-    --bs-btn-border-color: #000000;
-    --bs-btn-hover-bg: #ffcc00eb;
-    --bs-btn-hover-border-color: #000000;
-    --bs-btn-focus-shadow-rgb: 49, 132, 253;
-    --bs-btn-active-color: #ffcc00eb;
-    --bs-btn-active-bg: #000000;
-    --bs-btn-active-border-color: #000000;
-    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-    --bs-btn-disabled-color: #ffcc00eb;
-    --bs-btn-disabled-bg: #000000;
-    --bs-btn-disabled-border-color: #000000;
+margin-top: 15px;
+margin-bottom: 15px;
+--bs-btn-hover-color: #000000;
+--bs-btn-bg: #000000;
+--bs-btn-border-color: #000000;
+--bs-btn-hover-bg: #ffcc00eb;
+--bs-btn-hover-border-color: #000000;
+--bs-btn-focus-shadow-rgb: 49, 132, 253;
+--bs-btn-active-color: #ffcc00eb;
+--bs-btn-active-bg: #000000;
+--bs-btn-active-border-color: #000000;
+--bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+--bs-btn-disabled-color: #ffcc00eb;
+--bs-btn-disabled-bg: #000000;
+--bs-btn-disabled-border-color: #000000;
 }
 
 .botao {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #000000;
-    /* Cor de fundo do botão */
-    color: #fff;
-    /* Cor do texto do botão */
-    text-decoration: none;
-    /* Remove sublinhado */
-    border-radius: 5px;
-    /* Borda arredondada */
-    transition: background-color 0.3s;
-    /* Transição suave da cor de fundo */
+display: inline-block;
+padding: 10px 20px;
+background-color: #000000;
+/* Cor de fundo do botão */
+color: #fff;
+/* Cor do texto do botão */
+text-decoration: none;
+/* Remove sublinhado */
+border-radius: 5px;
+/* Borda arredondada */
+transition: background-color 0.3s;
+/* Transição suave da cor de fundo */
 }
 
 .botao:hover {
-    color: #000000;
-    background-color: #ffcc00eb;
-    /* Cor de fundo do botão ao passar o mouse */
+color: #000000;
+background-color: #ffcc00eb;
+/* Cor de fundo do botão ao passar o mouse */
 }
 
+/* Estilo para a barra de navegação */
+
+/* Estilo para os itens da páginação */
+ul.pagination li {
+display: inline;
+/* Exibe os itens em linha */
+margin: 15 3px;
+/* Margem entre os itens */
+}
+
+/* Estilo para os links dos itens da páginação */
+ul.pagination li a {
+padding: 5px 10px;
+/* Espaçamento interno */
+text-decoration: none;
+color: #ffffff;
+/* Cor do texto */
+background-color: #ffcc00eb;
+/* Cor de fundo */
+border: 1px solid #000000;
+/* Borda */
+border-radius: 3px;
+/* Borda arredondada */
+transition: background-color 0.3s ease;
+/* Transição suave da cor de fundo */
+}
+
+/* Estilo para o link ativo */
+ul.pagination li.active a {
+background-color: #000000;
+/* Cor de fundo para o link ativo */
+color: #ffffff;
+/* Cor do texto para o link ativo */
+border-color: #000000;
+/* Cor da borda para o link ativo */
+}
+
+/* Estilo para a lista de paginação */
+ul.pagination {
+display: flex;
+justify-content: center;
+/* Centraliza os itens */
+list-style-type: none;
+/* Remove os marcadores de lista */
+padding: 0;
+/* Remove o preenchimento padrão */
+}
+
+
+
+.page-item.active .page-link {
+color: #fff !important;
+background: rgb(0, 0, 0) !important;
+}
+
+/*pagina selecionada*/
+.active>.page-link,
+.page-link.active {
+    border-color: rgb(0, 0, 0) !important;
+}
+
+/* Media query para telas menores que 768px */
+@media screen and (max-width: 768px) {
+
+    /* Estilo para os itens da páginação */
+    ul.pagination li {
+    margin: 0px;
+    /* Ajuste a margem entre os itens conforme necessário */
+}
+}
+
+
+ /* Estilos para a tabela */
+ table {
+    margin: 20px auto;
+    /* Margem de 20px nas laterais e centraliza horizontalmente */
+    border-collapse: collapse;
+    /* Mescla as bordas da tabela */
+    border-radius: 10px;
+    /* Borda arredondada */
+    overflow: hidden;
+    /* Oculta qualquer conteúdo que ultrapasse os limites da tabela */
+}
+
+td {
+    padding: 10px;
+    /* Espaçamento interno */
+    border-bottom: 1px solid #ddd;
+    /* Borda inferior para as células */
+}
+
+tr:last-child td {
+    border-bottom: none;
+    /* Remove a borda inferior da última linha */
+}
+
+/* Estilos para as células do cabeçalho */
+th {
+    background-color: #f2f2f2;
+    color: #333;
+    font-weight: bold;
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Estilos para as células dos dados */
+td {
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+}
+
+/* Estilos para as células dos dados nas linhas ímpares */
+tr:nth-child(odd) td {
+    background-color: #f9f9f9;
+}
+
+/* Estilos para as células dos dados nas linhas pares */
+tr:nth-child(even) td {
+    background-color: #fff;
+}
+
+/* Estilos para a imagem do cartaz */
+td img {
+    max-width: 100px;
+    height: auto;
+}
+
+/* Estilos para realçar a linha ao passar o cursor */
+tr:hover {
+    background-color: #ffcc00eb !important;
+    /* Cor de fundo ao passar o cursor */
+}
 
 /* Media query para telas menores que 768px */
 @media screen and (max-width: 768px) {
