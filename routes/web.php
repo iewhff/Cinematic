@@ -38,8 +38,10 @@ Route::post('/pesquisa', [PesquisaController::class, 'pesquisa'])->name('pesquis
 
 Route::get('/comprarBilhete', [ComprarBilheteController::class, 'comprarBilhete'])->name('comprarBilhete');
 Route::post('/comprarBilhete', [ComprarBilheteController::class, 'criarReciboBilhete']);
+Route::post('/criarRecibosBilhetes', [ComprarBilheteController::class, 'criarRecibosBilhetes']);
 
 Route::get('/carrinhoCompras', [CarrinhoComprasController::class, 'carrinhoCompras'])->name('carrinhoCompras');
+Route::post('/removerCarrinho', [CarrinhoComprasController::class, 'removerCarrinho'])->name('removerCarrinho');
 Route::post('/carrinhoCompras', [CarrinhoComprasController::class, 'adicionarCarrinho']);
 
 //foi criado middleware AdminMiddleware para associar o utilizador do tipo A a administrador para a rota estar bloqueada a outros utilizadores

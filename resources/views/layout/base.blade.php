@@ -101,14 +101,20 @@ $currentUrl = url()->current(); @endphp
             <ul class="navbar-nav ms-auto">
                 @if (Auth::check())
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('carrinhoCompras') }}"
+                        <a class="nav-link" href="{{ route('carrinhoCompras') }}">
+                            <span>Carrinho de compras</span>
                             @php
-$currentUrl = url()->current(); @endphp
-                            @if ($currentUrl == url('/carrinhoCompras')) <a class="nav-link" href="#" style="color: orange;">Carrinho de compras</a>
-                    @else
-                        <a class="nav-link" href="#">Carrinho de compras</a> @endif
-                            </a>
+                                $carrinhoCount = count(session('carrinho', []));
+                            @endphp
+                            @if ($carrinhoCount > 0)
+                                <span class="badge badge-pill badge-primary">
+                                    <span class="badge-circle">{{ $carrinhoCount }}</span>
+                                </span>
+                            @endif
+                        </a>
                     </li>
+
+
                 @endif
                 @guest
                     @if (Route::has('login'))

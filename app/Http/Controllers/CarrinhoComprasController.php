@@ -13,7 +13,7 @@ class CarrinhoComprasController extends Controller
     public function carrinhoCompras()
     {
         $title = 'Carrinho Compras';
-
+        $totalFilmes = 0;
         $filmes = [];
         $dataAtual = Carbon::now()->toDateString(); // Obtém a data atual
         $lugaresDisponiveisTotal = [];
@@ -22,6 +22,7 @@ class CarrinhoComprasController extends Controller
         foreach ($carrinho as $key => $item) {
             $filme = Filme::find($item['id']);
             if ($filme) {
+                $totalFilmes++;
                 // Obtenha os lugares disponíveis para o filme atual
                 $lugaresDisponiveisTotal = DB::table('sessoes')
                     ->join('lugares', 'sessoes.sala_id', '=', 'lugares.sala_id')
@@ -38,7 +39,7 @@ class CarrinhoComprasController extends Controller
                 // Adicione o filme e os lugares disponíveis ao vetor $filmes
                 $filmes[] = [
                     'filme' => $filme,
-                    'lugares_disponiveis' => $lugaresDisponiveisTotal
+                    'lugaresDisponiveisTotal' => $lugaresDisponiveisTotal
                 ];
             }
         }
@@ -48,15 +49,10 @@ class CarrinhoComprasController extends Controller
         $configuracao = $resultados[0];
         $preco_bilhete = $configuracao->preco_bilhete_sem_iva * 0.1 * $configuracao->percentagem_iva;
         $preco_bilhete = number_format($preco_bilhete, 2, '.', '');
-
-        dump($filmes);
-        dump($lugaresDisponiveisTotal);
+        $precoTotal = $totalFilmes * $preco_bilhete;
 
 
-
-
-
-        return view('carrinhoCompras.carrinhoCompras', compact('title', 'carrinho', 'filmes'));
+        return view('carrinhoCompras.carrinhoCompras', compact('title', 'carrinho', 'filmes', 'precoTotal', 'preco_bilhete'));
     }
 
     public function adicionarCarrinho(Request $request)
@@ -100,9 +96,6 @@ class CarrinhoComprasController extends Controller
                 }
 
 
-                dump(session('carrinho'));
-
-
                 // Se o filme foi encontrado, retorna a view com os detalhes do filme
                 return view('filme.detalhes', ['existeSessao' => $existeSessao, 'filme' => $filme]);
             } else {
@@ -113,5 +106,27 @@ class CarrinhoComprasController extends Controller
             // Se o parâmetro 'id' não foi fornecido, redireciona de volta com uma mensagem de erro
             return redirect()->back()->with('error', 'ID do filme não fornecido.');
         }
+    }
+
+    public function removerCarrinho(Request $request)
+    {
+
+        $id = $request->input('idRemover');
+        // Inicializar o carrinho como um array se ainda não estiver definido
+        $carrinho = session()->get('carrinho', []);
+
+        // Verificar se o item existe no carrinho pelo ID
+        foreach ($carrinho as $index => $item) {
+            if ($item['id'] == $id) {
+                // Remover o item do array 'carrinho' usando o método pull
+                $request->session()->forget('carrinho.' . $index);
+                break; // O item foi removido, então podemos sair do loop
+            }
+        }
+
+
+        // Se o item não existe no carrinho, adiciona o novo ite
+
+        return $this->carrinhoCompras();
     }
 }

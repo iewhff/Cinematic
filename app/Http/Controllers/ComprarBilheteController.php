@@ -54,64 +54,171 @@ class ComprarBilheteController extends Controller
     public function criarReciboBilhete(Request $request)
     {
         if (Auth::user()->tipo == 'C') {
-            //Criar Recibo---------------------------------------
-            $resultados = DB::select('SELECT * FROM configuracao');
 
-            $configuracao = $resultados[0];
+            $sessao_id = substr($request->input('lugaresDisponiveisTotal'), 0, strrpos($request->input('lugaresDisponiveisTotal'), '-'));
+            $lugar_id = substr($request->input('lugaresDisponiveisTotal'), strpos($request->input('lugaresDisponiveisTotal'), '-') + 1);
 
-            $validatedRecibo = $request->validate([
-                'nif' => 'numeric|digits:9',
-                'nome_cliente' => 'required|string|max:55',
-                'tipo_pagamento' => 'required|string|max:55',
-                'ref_pagamento' => 'required|string|max:55',
-                //Tentar adicionar depois o campo de upload de ficheiros
-                //'recibo_pdf_url' => 'required',
-            ], [ // Custom Error Messages
-                'nome_cliente.required' => 'Nome é obrigatório.',
-                'tipo_pagamento.required' => 'Tipo de pagamento é obrigatório.',
-                'ref_pagamento.required' => 'Referencia de pagamento é obrigatório.',
-            ]);
+            // Consulta para verificar se existe um registro com os IDs especificados
+            $existeRegistro = Bilhete::where('sessao_id', $sessao_id)
+                ->where('lugar_id', $lugar_id)
+                ->exists();
 
-            // Definir valores automaticamente
-            $id_recibo = Recibo::max('id') + 1;
-            $dataHoraAtual = Carbon::now()->format('Y-m-d H:i:s');
-            $preco_total_sem_iva = $configuracao->preco_bilhete_sem_iva;
-            $iva = 0.1 * $configuracao->percentagem_iva;
-            $preco_total_com_iva = $configuracao->preco_bilhete_sem_iva * 0.1 * $configuracao->percentagem_iva;
-            $clienteId = Cliente::max('id');
+            if (!$existeRegistro) {
 
-            // Adicionar ao array validado
-            $dadosCompletosRecibo = array_merge($validatedRecibo, [
-                'id' => $id_recibo,
-                'cliente_id' => $clienteId,
-                'data' => $dataHoraAtual,
-                'preco_total_sem_iva' => $preco_total_sem_iva,
-                'iva' => $iva,
-                'preco_total_com_iva' => $preco_total_com_iva,
-                'created_at' => $dataHoraAtual,
-            ]);
+                //Criar Recibo---------------------------------------
+                $resultados = DB::select('SELECT * FROM configuracao');
 
-            // Criar bilhete ---------------------------------------
-            // Definir valores automaticamente
-            $id_bilhete = Bilhete::max('id') + 1;
-            $dataHoraAtual = Carbon::now()->format('Y-m-d H:i:s');
+                $configuracao = $resultados[0];
 
-            // Adicionar ao array validado
-            $dadosCompletosBilhete = [
-                'id' => $id_bilhete,
-                'recibo_id' => $id_recibo,
-                'cliente_id' => $clienteId,
-                'sessao_id' => substr($request->input('lugaresDisponiveisTotal'), 0, strrpos($request->input('lugaresDisponiveisTotal'), '-')), // Obter o id da sessão apartir de $request->input('lugaresDisponiveisTotal'), que tem dois valores, o id da sessao e o id do lugar
-                'lugar_id' => substr($request->input('lugaresDisponiveisTotal'), strpos($request->input('lugaresDisponiveisTotal'), '-') + 1),
-                'preco_sem_iva' => $preco_total_sem_iva,
-                'estado' => 'não usado',
-                'created_at' => $dataHoraAtual
-            ];
+                $validatedRecibo = $request->validate([
+                    'nif' => 'numeric|digits:9',
+                    'nome_cliente' => 'required|string|max:55',
+                    'tipo_pagamento' => 'required|string|max:55',
+                    'ref_pagamento' => 'required|string|max:55',
+                    //Tentar adicionar depois o campo de upload de ficheiros
+                    //'recibo_pdf_url' => 'required',
+                ], [ // Custom Error Messages
+                    'nome_cliente.required' => 'Nome é obrigatório.',
+                    'tipo_pagamento.required' => 'Tipo de pagamento é obrigatório.',
+                    'ref_pagamento.required' => 'Referencia de pagamento é obrigatório.',
+                ]);
 
-            Recibo::create($dadosCompletosRecibo);
-            Bilhete::create($dadosCompletosBilhete);
+                // Definir valores automaticamente
+                $id_recibo = Recibo::max('id') + 1;
+                $dataHoraAtual = Carbon::now()->format('Y-m-d H:i:s');
+                $preco_total_sem_iva = $configuracao->preco_bilhete_sem_iva;
+                $iva = 0.1 * $configuracao->percentagem_iva;
+                $preco_total_com_iva = $configuracao->preco_bilhete_sem_iva * 0.1 * $configuracao->percentagem_iva;
+                $clienteId = Cliente::max('id');
+
+                // Adicionar ao array validado
+                $dadosCompletosRecibo = array_merge($validatedRecibo, [
+                    'id' => $id_recibo,
+                    'cliente_id' => $clienteId,
+                    'data' => $dataHoraAtual,
+                    'preco_total_sem_iva' => $preco_total_sem_iva,
+                    'iva' => $iva,
+                    'preco_total_com_iva' => $preco_total_com_iva,
+                    'created_at' => $dataHoraAtual,
+                ]);
+
+                // Criar bilhete ---------------------------------------
+                // Definir valores automaticamente
+                $id_bilhete = Bilhete::max('id') + 1;
+                $dataHoraAtual = Carbon::now()->format('Y-m-d H:i:s');
+
+                // Adicionar ao array validado
+                $dadosCompletosBilhete = [
+                    'id' => $id_bilhete,
+                    'recibo_id' => $id_recibo,
+                    'cliente_id' => $clienteId,
+                    'sessao_id' => substr($request->input('lugaresDisponiveisTotal'), 0, strrpos($request->input('lugaresDisponiveisTotal'), '-')), // Obter o id da sessão apartir de $request->input('lugaresDisponiveisTotal'), que tem dois valores, o id da sessao e o id do lugar
+                    'lugar_id' => substr($request->input('lugaresDisponiveisTotal'), strpos($request->input('lugaresDisponiveisTotal'), '-') + 1),
+                    'preco_sem_iva' => $preco_total_sem_iva,
+                    'estado' => 'não usado',
+                    'created_at' => $dataHoraAtual
+                ];
+
+                Recibo::create($dadosCompletosRecibo);
+                Bilhete::create($dadosCompletosBilhete);
 
 
+
+                return "sucesso";
+            } else {
+                $h1 = 'Pedimos Desculpa';
+                $title = 'Pedimos Desculpa';
+                $msgErro = 'O lugar já foi comprado.';
+                return view('acessoNegado.acessoNegado', compact('h1', 'title', 'msgErro'));
+            }
+        } else {
+            $h1 = 'Pedimos Desculpa';
+            $title = 'Acesso Negado';
+            $msgErro = 'Apenas Cliente podem comprar bilhetes.';
+            return view('acessoNegado.acessoNegado', compact('h1', 'title', 'msgErro'));
+        }
+    }
+
+    public function criarRecibosBilhetes(Request $request)
+    {
+        if (Auth::user()->tipo == 'C') {
+            if (is_array($request->lugaresDisponiveisTotal)) {
+                foreach ($request->lugaresDisponiveisTotal as $lugaresDisponiveisTotal) {
+                    // Verifique se $lugaresDisponiveisTotal é uma string válida
+                    var_dump($lugaresDisponiveisTotal);
+
+                    //Criar Recibo---------------------------------------
+                    $resultados = DB::select('SELECT * FROM configuracao');
+                    $configuracao = $resultados[0];
+
+                    $validatedRecibo = $request->validate([
+                        'nif' => 'numeric|digits:9',
+                        'nome_cliente' => 'required|string|max:55',
+                        'tipo_pagamento' => 'required|string|max:55',
+                        'ref_pagamento' => 'required|string|max:55',
+                        //Tentar adicionar depois o campo de upload de ficheiros
+                        //'recibo_pdf_url' => 'required',
+                    ], [ // Custom Error Messages
+                        'nome_cliente.required' => 'Nome é obrigatório.',
+                        'tipo_pagamento.required' => 'Tipo de pagamento é obrigatório.',
+                        'ref_pagamento.required' => 'Referencia de pagamento é obrigatório.',
+                    ]);
+
+                    // Definir valores automaticamente
+                    $id_recibo = Recibo::max('id') + 1;
+                    $dataHoraAtual = Carbon::now()->format('Y-m-d H:i:s');
+                    $preco_total_sem_iva = $configuracao->preco_bilhete_sem_iva;
+                    $iva = 0.1 * $configuracao->percentagem_iva;
+                    $preco_total_com_iva = $configuracao->preco_bilhete_sem_iva * 0.1 * $configuracao->percentagem_iva;
+                    $clienteId = Cliente::max('id');
+
+                    // Adicionar ao array validado
+                    $dadosCompletosRecibo = array_merge($validatedRecibo, [
+                        'id' => $id_recibo,
+                        'cliente_id' => $clienteId,
+                        'data' => $dataHoraAtual,
+                        'preco_total_sem_iva' => $preco_total_sem_iva,
+                        'iva' => $iva,
+                        'preco_total_com_iva' => $preco_total_com_iva,
+                        'created_at' => $dataHoraAtual,
+                    ]);
+
+                    // Criar recibo
+                    Recibo::create($dadosCompletosRecibo);
+
+                    // Criar bilhete ---------------------------------------
+                    // Obter IDs da sessão e do lugar separados por hífen
+                    $ids = explode('-', $lugaresDisponiveisTotal);
+                    if (count($ids) == 2) { // Certifique-se de que temos dois IDs separados
+                        $sessao_id = $ids[0];
+                        $lugar_id = $ids[1];
+
+                        // Definir valores automaticamente
+                        $id_bilhete = Bilhete::max('id') + 1;
+                        $dataHoraAtual = Carbon::now()->format('Y-m-d H:i:s');
+
+                        // Adicionar ao array validado
+                        $dadosCompletosBilhete = [
+                            'id' => $id_bilhete,
+                            'recibo_id' => $id_recibo,
+                            'cliente_id' => $clienteId,
+                            'sessao_id' => $sessao_id,
+                            'lugar_id' => $lugar_id,
+                            'preco_sem_iva' => $preco_total_sem_iva,
+                            'estado' => 'não usado',
+                            'created_at' => $dataHoraAtual
+                        ];
+
+                        // Criar bilhete
+                        Bilhete::create($dadosCompletosBilhete);
+                    } else {
+                        $h1 = 'Pedimos Desculpa';
+                        $title = 'Pedimos Desculpa';
+                        $msgErro = 'Houver um erro.';
+                        return view('acessoNegado.acessoNegado', compact('h1', 'title', 'msgErro'));
+                    }
+                }
+            }
 
             return "sucesso";
         } else {

@@ -23,27 +23,31 @@
             <div class="col-12 row">
                 <h6 class="col-3">Filme mais vendido:</h6>
                 <h6 class="col-9">{{ $tituloFilmeComMaisBilhetes }} : {{ $totalBilhetesFilmeComMaisBilhetes }} bilhetes
-                    comprados.
+                    vendidos.
                 </h6>
                 <hr>
             </div>
             <div class="col-12 row">
                 <h6 class="col-3">Genero mais vendido:</h6>
                 <h6 class="col-9">{{ $generoCodeComMaisBilhetes }} : {{ $totalBilhetesGeneroComMaisBilhetes }} bilhetes
-                    comprados.
+                    vendidos.
                 </h6>
                 <hr>
             </div>
             <div class="col-12 row">
-                <h6 class="col-3">Percentagem ocupacao global :</h6>
-                <h6 class="col-9">{{ $percentagemOcupacaoGlobal }}
-                </h6>
+                <h6 class="col-3">Percentagem ocupação global :</h6>
+                @isset($percentagemOcupacaoGlobal)
+                    <h6 class="col-9">{{ $percentagemOcupacaoGlobal }}%</h6>
+                @endisset
                 <hr>
             </div>
+
             <div class="col-12 row">
                 <h6 class="col-3">Percentagem ocupacao ultimo mes :</h6>
-                <h6 class="col-9">{{ $percentagemOcupacaoUltimoMes }}
+                <h6 class="col-9">{{ $percentagemOcupacaoUltimoMes }}%
                 </h6>
+                <p> O numero aparece com muitas casas decimais para melhor precisão nos casos em que o zero e muito pequeno.
+                </p>
                 <hr>
             </div>
             <div class="col-12 row">

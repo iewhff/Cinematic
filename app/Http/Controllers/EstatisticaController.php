@@ -45,7 +45,9 @@ class EstatisticaController extends Controller
             ->first();
 
         $tituloFilmeComMaisBilhetes = $filmeComMaisBilhetes->titulo;
-        $totalBilhetesFilmeComMaisBilhetes = $filmeComMaisBilhetes->total_bilhetes;
+        $totalBilhetesFilmeComMaisBilhetes = number_format($filmeComMaisBilhetes->total_bilhetes, 0, ',', '.');
+
+
 
         $generoComMaisBilhetes = Bilhete::join('sessoes', 'bilhetes.sessao_id', '=', 'sessoes.id')
             ->join('filmes', 'sessoes.filme_id', '=', 'filmes.id')
@@ -54,8 +56,10 @@ class EstatisticaController extends Controller
             ->orderByDesc('total_bilhetes')
             ->first();
 
+
         $generoCodeComMaisBilhetes = $generoComMaisBilhetes->genero_code;
-        $totalBilhetesGeneroComMaisBilhetes = $generoComMaisBilhetes->total_bilhetes;
+        $totalBilhetesGeneroComMaisBilhetes = number_format($generoComMaisBilhetes->total_bilhetes, 0, ',', '.');
+
 
         $top10Lugares = Bilhete::join('lugares', 'bilhetes.lugar_id', '=', 'lugares.id')
             ->join('salas', 'lugares.sala_id', '=', 'salas.id')
@@ -73,7 +77,7 @@ class EstatisticaController extends Controller
             $nrTotalLugares += Sessao::where('sala_id', $salaId)->count() * Lugar::where('sala_id', $salaId)->count();
         }
         $totalBilhetes = Bilhete::count();
-        $percentagemOcupacaoGlobal = ($totalBilhetes / $nrTotalLugares) * 100;
+        $percentagemOcupacaoGlobal = number_format(($totalBilhetes / $nrTotalLugares) * 100, 2);
 
         // Data do primeiro dia do último mês
         $primeiroDiaUltimoMes = Carbon::now()->subMonth()->startOfMonth()->toDateString();
@@ -93,6 +97,7 @@ class EstatisticaController extends Controller
         })->count();
 
         $percentagemOcupacaoUltimoMes = ($totalBilhetesUltimoMes / $nrTotalLugaresUltimoMes) * 100;
+
 
 
 
