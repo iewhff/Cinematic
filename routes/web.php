@@ -11,6 +11,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CarrinhoComprasController;
+use App\Http\Controllers\HistoricoController;
 
 
 /*
@@ -43,6 +44,13 @@ Route::post('/criarRecibosBilhetes', [ComprarBilheteController::class, 'criarRec
 Route::get('/carrinhoCompras', [CarrinhoComprasController::class, 'carrinhoCompras'])->name('carrinhoCompras');
 Route::post('/removerCarrinho', [CarrinhoComprasController::class, 'removerCarrinho'])->name('removerCarrinho');
 Route::post('/carrinhoCompras', [CarrinhoComprasController::class, 'adicionarCarrinho']);
+
+Route::get('/historico', [HistoricoController::class, 'historico'])->name('historico');
+Route::get('/bilhetes/{id}', [BilheteController::class, 'mostrar'])->name('bilhetes.mostrar');
+Route::get('/download-pdf/{id}', [BilheteController::class, 'gerarPDF'])->name('download-pdf');
+
+
+
 
 //foi criado middleware AdminMiddleware para associar o utilizador do tipo A a administrador para a rota estar bloqueada a outros utilizadores
 Route::middleware(['auth', 'admin'])->get('/estatistica', [EstatisticaController::class, 'index'])->name('estatistica');

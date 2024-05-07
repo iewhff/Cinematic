@@ -18,4 +18,9 @@ class Bilhete extends Model
         'preco_sem_iva',
 
     ];
+
+    public function sessao()
+    {
+        return $this->belongsTo(Sessao::class);
+    }
 }

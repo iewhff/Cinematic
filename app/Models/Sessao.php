@@ -14,4 +14,14 @@ class Sessao extends Model
         //para usar na estatistica
         return $this->hasMany(Bilhete::class);
     }
+
+    public function sala()
+    {
+        return $this->belongsTo(Sala::class);
+    }
+
+    public function filme()
+    {
+        return $this->belongsTo(Filme::class);
+    }
 }

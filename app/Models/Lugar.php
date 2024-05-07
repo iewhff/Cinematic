@@ -10,4 +10,9 @@ class Lugar extends Model
     use HasFactory;
 
     protected $table = 'lugares';
+
+    public function sala()
+    {
+        return $this->belongsTo(Sala::class);
+    }
 }

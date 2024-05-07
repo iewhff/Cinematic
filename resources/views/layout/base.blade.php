@@ -58,18 +58,22 @@ $currentUrl = url()->current(); @endphp
                         <a class="nav-link" href="#">Filmes</a> @endif
                         </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/historico" @php
+                @if (Auth::check())
+                    @if (Auth::user()->tipo != 'F')
+                        <li class="nav-item">
+                            <a class="nav-link" href="/historico" @php
 $currentUrl = url()->current(); @endphp
-                        @if ($currentUrl == url('/historico')) <a class="nav-link" href="#" style="color: orange;">Histórico</a>
+                                @if ($currentUrl == url('/historico')) <a class="nav-link" href="#" style="color: orange;">Histórico</a>
                     @else
                         <a class="nav-link" href="#">Histórico</a> @endif
-                        </a>
-                </li>
+                                </a>
+                        </li>
+                    @endif
+                @endif
                 <li class="nav-item">
                     <a class="nav-link" href="/historico" @php
 $currentUrl = url()->current(); @endphp
-                        @if ($currentUrl == url('/historico')) <a class="nav-link" href="#" style="color: orange;">Controlo de Acesso à Sessão</a>
+                        @if ($currentUrl == url('/AcessoSessao')) <a class="nav-link" href="#" style="color: orange;">Controlo de Acesso à Sessão</a>
                     @else
                         <a class="nav-link" href="#">Controlo de Acesso à Sessão</a> @endif
                         </a>
