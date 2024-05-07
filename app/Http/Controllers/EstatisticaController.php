@@ -65,9 +65,40 @@ class EstatisticaController extends Controller
             ->limit(10)
             ->get();
 
+
+        $salasIds = Lugar::select('sala_id')->distinct()->pluck('sala_id');
+
+        $nrTotalLugares = 0;
+        foreach ($salasIds as $salaId) {
+            $nrTotalLugares += Sessao::where('sala_id', $salaId)->count() * Lugar::where('sala_id', $salaId)->count();
+        }
+        $totalBilhetes = Bilhete::count();
+        $percentagemOcupacaoGlobal = ($totalBilhetes / $nrTotalLugares) * 100;
+
+        // Data do primeiro dia do último mês
+        $primeiroDiaUltimoMes = Carbon::now()->subMonth()->startOfMonth()->toDateString();
+
+        // Data do último dia do último mês
+        $ultimoDiaUltimoMes = Carbon::now()->subMonth()->endOfMonth()->toDateString();
+
+
+        $nrTotalLugaresUltimoMes = 0;
+        foreach ($salasIds as $salaId) {
+            $nrTotalLugaresUltimoMes += Sessao::where('sala_id', $salaId)->count() * Lugar::where('sala_id', $salaId)->count() * Sessao::whereBetween('data', [$primeiroDiaUltimoMes, $ultimoDiaUltimoMes])->count();
+        }
+
+        // Obtém o número de bilhetes vendidos dentro do último mês
+        $totalBilhetesUltimoMes = Bilhete::whereIn('sessao_id', function ($query) use ($primeiroDiaUltimoMes, $ultimoDiaUltimoMes) {
+            $query->select('id')->from('sessoes')->whereBetween('data', [$primeiroDiaUltimoMes, $ultimoDiaUltimoMes]);
+        })->count();
+
+        $percentagemOcupacaoUltimoMes = ($totalBilhetesUltimoMes / $nrTotalLugaresUltimoMes) * 100;
+
+
+
         $title = 'Estatistica';
 
-        return view('estatistica.estatistica', compact('top10Lugares', 'generoCodeComMaisBilhetes', 'totalBilhetesGeneroComMaisBilhetes', 'totalBilhetesFilmeComMaisBilhetes', 'tituloFilmeComMaisBilhetes', 'mesMaisRegistrosString', 'totalRegistrosMesMaisRegistros', 'nomeClienteComMaisRecibos', 'comprasClienteComMaisRecibos', 'title'));
+        return view('estatistica.estatistica', compact('percentagemOcupacaoUltimoMes', 'percentagemOcupacaoGlobal', 'top10Lugares', 'generoCodeComMaisBilhetes', 'totalBilhetesGeneroComMaisBilhetes', 'totalBilhetesFilmeComMaisBilhetes', 'tituloFilmeComMaisBilhetes', 'mesMaisRegistrosString', 'totalRegistrosMesMaisRegistros', 'nomeClienteComMaisRecibos', 'comprasClienteComMaisRecibos', 'title'));
 
         //return view('disciplina.index', ['ds' => $disciplinas]); // Passando a variável $disciplinas para a view
         //tambem poderia ser assim: return view('disciplina.index', compact('disciplinas'));

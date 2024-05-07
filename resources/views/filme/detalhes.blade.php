@@ -16,12 +16,14 @@
             <p><strong>Criado em:</strong> {{ $filme->created_at }}</p>
             <p><strong>Atualizado em:</strong> {{ $filme->updated_at }}</p>
         </div>
-        <div class="col-md-4 text-center">
-            <form class="form-inline my-2 my-lg-0" action="{{ route('comprarBilhete') }}" method="GET">
-                @csrf
-                <input type="hidden" name="id" value="{{ $filme->id }}">
-                <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Comprar Bilhete</button>
-            </form>
-        </div>
+        @if ($existeSessao)
+            <div class="col-md-4 text-center">
+                <form class="form-inline my-2 my-lg-0" action="{{ route('comprarBilhete') }}" method="GET">
+                    @csrf
+                    <input type="hidden" name="id" value="{{ $filme->id }}">
+                    <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Comprar Bilhete</button>
+                </form>
+            </div>
+        @endif
     </div>
 @endsection

@@ -10,6 +10,7 @@ use App\Http\Controllers\EstatisticaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CarrinhoComprasController;
 
 
 /*
@@ -38,8 +39,11 @@ Route::post('/pesquisa', [PesquisaController::class, 'pesquisa'])->name('pesquis
 Route::get('/comprarBilhete', [ComprarBilheteController::class, 'comprarBilhete'])->name('comprarBilhete');
 Route::post('/comprarBilhete', [ComprarBilheteController::class, 'criarReciboBilhete']);
 
-//foi criado middleware AdminMiddleware para associar o utilizador do tipo a a administrador para a roita estar bloqueada a outros utilizadores
+Route::get('/carrinhoCompras', [CarrinhoComprasController::class, 'carrinhoCompras'])->name('carrinhoCompras');
+
+//foi criado middleware AdminMiddleware para associar o utilizador do tipo A a administrador para a rota estar bloqueada a outros utilizadores
 Route::middleware(['auth', 'admin'])->get('/estatistica', [EstatisticaController::class, 'index'])->name('estatistica');
+
 Route::get('/perfil', function () {
     return view('User.teste');
 })->name('perfil');

@@ -22,6 +22,21 @@
 
     <form class="mt-4" action="/comprarBilhete" method="post">
         @csrf
+
+        <select name="lugaresDisponiveisTotal">
+            @foreach ($lugaresDisponiveisTotal as $resultado)
+                <option value="{{ $resultado->sessao_id }}-{{ $resultado->lugar_id }}">
+
+                    {{ $resultado->data }} - {{ $resultado->horario_inicio }} - Sala {{ $resultado->sala_id }} - Fila
+
+                    {{ $resultado->fila }} - Posição {{ $resultado->posicao }}
+
+                </option>
+            @endforeach
+
+        </select>
+
+
         <div class="form-group">
             <label for="nome_cliente">Nome:</label>
             <input class="form-control" id="nome_cliente" name="nome_cliente" value="{{ old('nome_cliente') }}">
@@ -63,6 +78,41 @@
         @enderror
 
         <p><strong>Preço:</strong> {{ $preco_bilhete }}</p>
+
+        <div id="visaInputs" style="display: none;">
+            <label for="visa_numero">Número do cartão VISA (16 dígitos):</label>
+            <input type="text" id="visa_numero" name="visa_numero">
+            <label for="visa_cvc">Código CVC (3 dígitos):</label>
+            <input type="text" id="visa_cvc" name="visa_cvc">
+        </div>
+
+        <div id="paypalInputs" style="display: none;">
+            <label for="paypal_email">Email do PayPal:</label>
+            <input type="email" id="paypal_email" name="paypal_email">
+        </div>
+
+        <div id="mbwayInputs" style="display: none;">
+            <label for="mbway_numero">Número do telemóvel (MBWay):</label>
+            <input type="text" id="mbway_numero" name="mbway_numero">
+        </div>
+
+
+        <script>
+            document.querySelectorAll('input[name="tipo_pagamento"]').forEach(function(radio) {
+                radio.addEventListener('change', function() {
+                    document.getElementById('visaInputs').style.display = 'none';
+                    document.getElementById('paypalInputs').style.display = 'none';
+                    document.getElementById('mbwayInputs').style.display = 'none';
+                    if (this.value === 'visa') {
+                        document.getElementById('visaInputs').style.display = 'block';
+                    } else if (this.value === 'paypal') {
+                        document.getElementById('paypalInputs').style.display = 'block';
+                    } else if (this.value === 'mbway') {
+                        document.getElementById('mbwayInputs').style.display = 'block';
+                    }
+                });
+            });
+        </script>
 
         <button type="submit" class="btn btn-primary">Comprar</button>
     </form>

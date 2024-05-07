@@ -35,6 +35,18 @@
                 <hr>
             </div>
             <div class="col-12 row">
+                <h6 class="col-3">Percentagem ocupacao global :</h6>
+                <h6 class="col-9">{{ $percentagemOcupacaoGlobal }}
+                </h6>
+                <hr>
+            </div>
+            <div class="col-12 row">
+                <h6 class="col-3">Percentagem ocupacao ultimo mes :</h6>
+                <h6 class="col-9">{{ $percentagemOcupacaoUltimoMes }}
+                </h6>
+                <hr>
+            </div>
+            <div class="col-12 row">
                 <h6 class="col-12">Lugares mais vendidos:</h6>
                 <table class="table">
                     <thead>

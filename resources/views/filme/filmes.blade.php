@@ -1,5 +1,5 @@
 @extends('layout.base')
-
+@section('title', $title)
 @section('content')
     {{-- Centraliza os links de paginação --}}
 

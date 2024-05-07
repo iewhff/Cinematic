@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use App\Models\Filme;
 use App\Models\Genero;
 use Illuminate\Pagination\Paginator;
+use Carbon\Carbon;
+use App\Models\Sessao;
 
 
 class FilmeController extends Controller
@@ -22,11 +24,11 @@ class FilmeController extends Controller
             Paginator::useBootstrap();
 
             $query = $request->input('code');
-
+            $title = 'Filmes';
             // Consulta os filmes com base no 'genero_id'
             $filmes = Filme::where('genero_code', $query)->paginate(15);
 
-            return view('filme.filmes', compact('filmes', 'opcoes'));
+            return view('filme.filmes', compact('filmes', 'title', 'opcoes'));
         } else {
             $opcoes = Genero::all(); // Recupera todas as opções do banco de dados
             Paginator::useBootstrap();
@@ -72,8 +74,17 @@ class FilmeController extends Controller
 
             // Verifica se o filme foi encontrado
             if ($filme) {
+
+                // Obter a data atual
+                $dataAtual = Carbon::now()->toDateString();
+
+                // Verificar se existem registros na tabela sessoes com data igual a hoje ou posterior e com o filme_id especificado
+                $existeSessao = Sessao::where('filme_id', $id)
+                    ->whereDate('data', '>=', $dataAtual)
+                    ->exists();
+
                 // Se o filme foi encontrado, retorna a view com os detalhes do filme
-                return view('filme.detalhes', ['filme' => $filme]);
+                return view('filme.detalhes', ['existeSessao' => $existeSessao, 'filme' => $filme]);
             } else {
                 // Se o filme não foi encontrado, redireciona de volta com uma mensagem de erro
                 return redirect()->back()->with('error', 'Nenhum filme encontrado com esse ID.');
