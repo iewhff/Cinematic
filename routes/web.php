@@ -40,6 +40,7 @@ Route::get('/comprarBilhete', [ComprarBilheteController::class, 'comprarBilhete'
 Route::post('/comprarBilhete', [ComprarBilheteController::class, 'criarReciboBilhete']);
 
 Route::get('/carrinhoCompras', [CarrinhoComprasController::class, 'carrinhoCompras'])->name('carrinhoCompras');
+Route::post('/carrinhoCompras', [CarrinhoComprasController::class, 'adicionarCarrinho']);
 
 //foi criado middleware AdminMiddleware para associar o utilizador do tipo A a administrador para a rota estar bloqueada a outros utilizadores
 Route::middleware(['auth', 'admin'])->get('/estatistica', [EstatisticaController::class, 'index'])->name('estatistica');

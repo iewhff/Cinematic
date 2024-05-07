@@ -83,6 +83,7 @@ class FilmeController extends Controller
                     ->whereDate('data', '>=', $dataAtual)
                     ->exists();
 
+
                 // Se o filme foi encontrado, retorna a view com os detalhes do filme
                 return view('filme.detalhes', ['existeSessao' => $existeSessao, 'filme' => $filme]);
             } else {
