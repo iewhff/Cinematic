@@ -27,6 +27,45 @@
             from { transform: rotate(0deg); }
             to { transform: rotate(-360deg); }
         }
+        .line, .dot {
+    position: absolute;
+    background: black;
+    transition: transform 1s ease, opacity 1s ease;
+    animation: colorChange 2s infinite; /* Animação de mudança de cor */
+}
+
+@keyframes colorChange {
+    0% { background-color: rgb(255, 0, 0); }
+    5% { background-color: yellow; }
+    10% { background-color: rgb(183, 255, 0); }
+    15% { background-color: rgb(30, 255, 0); }
+    20% { background-color: rgb(0, 251, 255); }    0% { background-color: red; }
+    25% { background-color: rgb(0, 51, 255); }
+    30% { background-color: rgb(102, 0, 255); }
+    35% { background-color: rgb(255, 0, 242); }
+    40% { background-color: rgb(255, 0, 47); }
+}
+
+.line, .dot {
+    position: absolute;
+    background: black;
+    transition: transform 1s ease, opacity 1s ease;
+    animation: colorChange 2s infinite; /* Animação de mudança de cor */
+}
+
+.line {
+    width: 5px; /* Ajuste para maior visibilidade da inclinação */
+    height: 2px; /* Traço horizontal */
+}
+
+.dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+}
+
+
+
         .search-input {
             width: 200px;
         }
@@ -294,6 +333,72 @@ $currentUrl = url()->current(); @endphp
             animateImages();
             addImagesContinuously();
         });
+
+        //Ponteiro rato///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        document.addEventListener('click', (event) => {
+    createLinesAndDots(event.clientX, event.clientY);
+});
+
+function createLinesAndDots(x, y) {
+    const container = document.querySelector('body');
+
+    // Cria os traços
+    for (let i = 0; i < 5; i++) {
+        const line = document.createElement('div');
+        line.classList.add('line');
+        line.style.left = `${x}px`;
+        line.style.top = `${y}px`;
+        container.appendChild(line);
+
+        // Direção e distância aleatória para os traços
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = getRandomSize(50, 100);
+        const translateX = Math.cos(angle) * distance;
+        const translateY = Math.sin(angle) * distance;
+
+        // Animação dos traços
+        setTimeout(() => {
+            line.style.transform = `translate(${translateX}px, ${translateY}px)`;
+            line.style.transform += ` rotate(${angle}rad)`;
+            line.style.opacity = 0;
+        }, 0);
+
+        // Remove o traço após a animação
+        setTimeout(() => {
+            line.remove();
+        }, 1000);
+    }
+
+    // Cria os pontos
+    for (let i = 0; i < 12; i++) {
+        const dot = document.createElement('div');
+        dot.classList.add('dot');
+        dot.style.left = `${x}px`;
+        dot.style.top = `${y}px`;
+        container.appendChild(dot);
+
+        // Direção e distância aleatória para os pontos
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = getRandomSize(20, 50);
+        const translateX = Math.cos(angle) * distance;
+        const translateY = Math.sin(angle) * distance;
+
+        // Animação dos pontos
+        setTimeout(() => {
+            dot.style.transform = `translate(${translateX}px, ${translateY}px)`;
+            dot.style.opacity = 0;
+        }, 0);
+
+        // Remove o ponto após a animação
+        setTimeout(() => {
+            dot.remove();
+        }, 1000);
+    }
+}
+
+
+
 
         // Inicializar as funções
         createAndPositionImages();
