@@ -13,7 +13,6 @@
     <style>
         body {
             margin: 0;
-            overflow: hidden;
             position: relative;
         }
         img.falling {
@@ -28,6 +27,24 @@
             from { transform: rotate(0deg); }
             to { transform: rotate(-360deg); }
         }
+        .search-input {
+            width: 200px;
+        }
+
+        @media (max-width: 1000.5px) {
+            .search-input {
+                width: 100%;
+                margin-bottom: 10px;
+                margin-right: 100px; /* Add some spacing below the search input */
+            }
+        }
+
+        @media (max-width: 576px) {
+            .search-input {
+                width: 100%;
+            }
+        }
+
     </style>
 
     @vite(['resources/js/app.js'])
@@ -37,19 +54,14 @@
 </head>
 
 <body>
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-custom-orange">
         <a class="navbar-brand" href="#">Cinematic</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-collapse" id="navbarSupportedContent">
             <form class="form-inline my-2 my-lg-0" action="{{ route('pesquisa') }}" method="POST">
                 @csrf
                 <input class="form-control mr-sm-2" type="search" name="titulo" placeholder="Pesquisar"
                     aria-label="Search">
-                <!-- Seu botão de pesquisa -->
                 <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-search" viewBox="0 0 16 16">
@@ -59,7 +71,6 @@
                 </button>
             </form>
         </div>
-
     </nav>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -243,7 +254,7 @@ $currentUrl = url()->current(); @endphp
                 image.style.top = top + 'px';
 
                 // Reiniciar a posição da imagem se sair da tela
-                if (top > window.innerHeight) {
+                if (top >= window.innerHeight-75) {
                     image.remove(); // Remove a imagem que saiu da tela
                 }
             });

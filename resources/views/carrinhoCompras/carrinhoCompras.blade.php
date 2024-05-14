@@ -48,7 +48,7 @@
         @endforeach
     </div>
     @if (count($filmes) > 0)
-        <p><strong>Preço:</strong> {{ $precoTotal }}</p>
+        <p><strong>Preço:</strong> {{ $precoTotal }} €</p>
 
         <form class="mt-4" action="comprarBilhete" method="GET">
             @csrf
@@ -57,8 +57,8 @@
                 echo $value['filme']->id . ',';
             }
         @endphp">
-
             <button type="submit" class="btn btn-primary">Finalizar Compra</button>
+        </form>
     @endif
-    </form>
+
 @endsection
