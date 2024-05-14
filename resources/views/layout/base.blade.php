@@ -254,7 +254,7 @@ $currentUrl = url()->current(); @endphp
                 image.style.top = top + 'px';
 
                 // Reiniciar a posição da imagem se sair da tela
-                if (top >= window.innerHeight-75) {
+                if (top >= window.innerHeight-80) {
                     image.remove(); // Remove a imagem que saiu da tela
                 }
             });
