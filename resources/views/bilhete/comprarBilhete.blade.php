@@ -2,7 +2,8 @@
 
 @section('content')
 <a href="{{ URL::previous() }}" class="btn btn-primary">Voltar</a>
-<form class="mt-4" action="/comprarBilhete" method="post">
+<p>Se escolher outros lugares, tenha em atenção em não ter os mesmos lugares repetidos. Os lugares repetidos não serão comprados, o que resultara numa compra com menos bilhetes do que os selecionados.</p>
+<form class="mt-4" action="/comprarBilhete" method="POST">
     @php
         $nrLugar = -1;
     @endphp
@@ -28,11 +29,17 @@
 
 
         <select name="lugar{{ $nrLugar}}">
-            @foreach ($resultado['lugaresDisponiveisTotal'] as $lugar)
+            @for ($i = $nrLugar; $i < $resultado['lugaresDisponiveisTotal']->count(); $i++)
+                <option value="{{ $resultado['lugaresDisponiveisTotal'][$i]->sessao_id }}-{{ $resultado['lugaresDisponiveisTotal'][$i]->lugar_id }}">
+                    {{ $resultado['lugaresDisponiveisTotal'][$i]->data }} - {{ $resultado['lugaresDisponiveisTotal'][$i]->horario_inicio }} - Sala {{ $resultado['lugaresDisponiveisTotal'][$i]->sala_id }} - Fila {{ $resultado['lugaresDisponiveisTotal'][$i]->fila }} - Posição {{ $resultado['lugaresDisponiveisTotal'][$i]->posicao }}
+                </option>
+
+            @endfor
+            {{-- @foreach ($resultado['lugaresDisponiveisTotal'] as $lugar)
                 <option value="{{ $lugar->sessao_id }}-{{ $lugar->lugar_id }}">
                     {{ $lugar->data }} - {{ $lugar->horario_inicio }} - Sala {{ $lugar->sala_id }} - Fila {{ $lugar->fila }} - Posição {{ $lugar->posicao }}
                 </option>
-            @endforeach
+            @endforeach --}}
         </select>
         @endforeach
         @csrf
@@ -108,6 +115,8 @@
             <span class="text-danger">{{ $message }}</span>
             @enderror
         </div>
+
+        <input type="hidden" name="nrBilhetes" value="{{ count($resultados) }}">
 
 
         <script>

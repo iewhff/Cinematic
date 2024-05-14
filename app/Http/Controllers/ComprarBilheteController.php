@@ -15,6 +15,8 @@ use App\Models\Sessao;
 use Faker\Core\Number;
 use Illuminate\Support\Facades\Auth;
 
+use function Laravel\Prompts\form;
+
 class ComprarBilheteController extends Controller
 {
         public function comprarBilhete(Request $request)
@@ -88,106 +90,104 @@ class ComprarBilheteController extends Controller
             }
         }
 
-    public function criarReciboBilhete(Request $request)
-    {
-        if (Auth::user()->tipo == 'C') {
+        public function criarReciboBilhete(Request $request)
+        {
+            if (Auth::user()->tipo != 'C') {
+                // Acesso negado para clientes não autorizados
+                $h1 = 'Pedimos Desculpa';
+                $title = 'Acesso Negado';
+                $msgErro = 'Apenas Clientes podem comprar bilhetes.';
+                return view('acessoNegado.acessoNegado', compact('h1', 'title', 'msgErro'));
+            }
 
-        $accepted=false;
+            $accepted = false;
 
-        if($request->input('mbway_numero')){
-        if(null !== $request->input('mbway_numero')){
-
+            // Validação dos diferentes tipos de pagamento
+            if ($request->input('mbway_numero')) {
                 $request->validate([
                     'mbway_numero' => 'required|numeric|digits:9',
                 ], [ // Custom Error Messages
                     'mbway_numero.required' => 'Numero de telefone é obrigatório.',
                 ]);
+                $accepted = true;
+            } elseif ($request->input('visa_numero') && $request->input('visa_cvc')) {
+                $request->validate([
+                    'visa_numero' => 'required|numeric|digits:16',
+                    'visa_cvc' => 'required|numeric|digits:3',
+                ], [ // Custom Error Messages
+                    'visa_numero.required' => 'Numero do visa é obrigatório.',
+                    'visa_cvc.required' => 'CVC do visa é obrigatório.',
+                ]);
+                $accepted = true;
+            } elseif ($request->input('paypal_email')) {
+                $request->validate([
+                    'paypal_email' => 'required|email|max:250',
+                ], [ // Custom Error Messages
+                    'paypal_email.required' => 'Email é obrigatório.',
+                ]);
+                $accepted = true;
+            }
 
-                $accepted=true;
-
-            }else{
-                // Acesso negado porque dados de compra invalidos
+            if (!$accepted) {
                 $h1 = 'Pedimos Desculpa';
-                $title = 'Cartao nao valido';
-                $msgErro = 'Cartao nao valido.';
+                $title = 'Dados de Pagamento Inválidos';
+                $msgErro = 'Por favor, forneça dados de pagamento válidos.';
                 return view('acessoNegado.acessoNegado', compact('h1', 'title', 'msgErro'));
             }
-        }
 
-        if($request->input('visa_numero') && $request->input('visa_cvc')){
-        if(null !== $request->input('visa_numero') && null !== $request->input('visa_cvc')){
-            $request->validate([
-                'visa_numero' => 'required|numeric|digits:16',
-                'visa_cvc' => 'required|numeric|digits:3',
+            // Validação do recibo
+            $validatedRecibo = $request->validate([
+                'nif' => 'nullable|numeric|digits:9',
+                'nome_cliente' => 'required|string|max:55',
+                'tipo_pagamento' => 'required|string|max:55',
+                'ref_pagamento' => 'required|string|max:55',
             ], [ // Custom Error Messages
-                'visa_numero.required' => 'Numero do visa é obrigatório.',
-                'visa_cvc.required' => 'CVC do visa é obrigatório.',
+                'nome_cliente.required' => 'Nome é obrigatório.',
+                'tipo_pagamento.required' => 'Tipo de pagamento é obrigatório.',
+                'ref_pagamento.required' => 'Referência de pagamento é obrigatório.',
             ]);
-            $accepted=true;
-        }else{
-            // Acesso negado porque dados de compra invalidos
-            $h1 = 'Pedimos Desculpa';
-            $title = 'Cartao nao valido';
-            $msgErro = 'Cartao nao valido.';
-            return view('acessoNegado.acessoNegado', compact('h1', 'title', 'msgErro'));
-        }
-    }
-    if($request->input('paypal_email')){
-    if(null !== $request->input('paypal_email')){
-            $request->validate([
-                'paypal_email' => 'required|email|digits:250',
-            ], [ // Custom Error Messages
-                'paypal_email.required' => 'Email é obrigatório.',
-            ]);
-            $accepted=true;
-        }else{
-                // Acesso negado porque dados de compra invalidos
-                $h1 = 'Pedimos Desculpa';
-                $title = 'Cartao nao valido';
-                $msgErro = 'Cartao nao valido.';
-                return view('acessoNegado.acessoNegado', compact('h1', 'title', 'msgErro'));
+
+            $nrBilhetes = $request->input('nrBilhetes');
+            $sessao_id = [];
+            $lugar_id = [];
+
+            for ($i = 0; $i < $nrBilhetes; $i++) {
+                // Extrair sessao_id e lugar_id, porque está no formato 11514-153 (sessao_id-lugar_id) no POST['lugar'.$i]
+                $sessao = substr($request->input('lugar' . $i), 0, strpos($request->input('lugar' . $i), '-'));
+                $lugar = substr($request->input('lugar' . $i), strpos($request->input('lugar' . $i), '-') + 1);
+
+                // Verificar se o lugar_id já está no array
+                if (!in_array($lugar, $lugar_id)) {
+                    $sessao_id[] = $sessao;
+                    $lugar_id[] = $lugar;
+                }
             }
-    }
 
-        $validatedRecibo = $request->validate([
-            'nif' => 'numeric|digits:9',
-            'nome_cliente' => 'required|string|max:55',
-            'tipo_pagamento' => 'required|string|max:55',
-            'ref_pagamento' => 'required|string|max:55',
-            //Tentar adicionar depois o campo de upload de ficheiros
-            //'recibo_pdf_url' => 'required',
-        ], [ // Custom Error Messages
-            'nome_cliente.required' => 'Nome é obrigatório.',
-            'tipo_pagamento.required' => 'Tipo de pagamento é obrigatório.',
-            'ref_pagamento.required' => 'Referencia de pagamento é obrigatório.',
-        ]);
-
-        if(!$accepted){
-            $h1 = 'Pedimos Desculpa';
-                $title = 'Cartao nao valido';
-                $msgErro = 'Cartao nao valido.';
-                return view('acessoNegado.acessoNegado', compact('h1', 'title', 'msgErro'));
-        }
-
-            // Extrair sessao_id e lugar_id dos lugaresDisponiveisTotal
-            $sessao_id = substr($request->input('lugaresDisponiveisTotal'), 0, strrpos($request->input('lugaresDisponiveisTotal'), '-'));
-            $lugar_id = substr($request->input('lugaresDisponiveisTotal'), strpos($request->input('lugaresDisponiveisTotal'), '-') + 1);
+            $resultados = DB::select('SELECT * FROM configuracao');
+            $configuracao = $resultados[0];
+            $preco_bilheteComIva = $configuracao->preco_bilhete_sem_iva * (1 + $configuracao->percentagem_iva / 100);
+            $precoTotal = number_format(count($sessao_id) * $preco_bilheteComIva, 2, '.', '');
+            $precoTotalSemIva = number_format(count($sessao_id) * $configuracao->preco_bilhete_sem_iva, 2, '.', '');
 
             // Verificar se já existe um bilhete para essa sessão e lugar
-            $existeRegistro = Bilhete::where('sessao_id', $sessao_id)
-                ->where('lugar_id', $lugar_id)
-                ->exists();
+            $existeRegistro = false;
+            for($i=0; $i<count($sessao_id); $i++){
+                $existeRegistro = Bilhete::where('sessao_id', $sessao_id[$i])
+                    ->where('lugar_id', $lugar_id[$i])
+                    ->exists();
+
+                if ($existeRegistro) {
+                    $existeRegistro = true;
+                    break;
+                }
+            }
 
             if (!$existeRegistro) {
                 // Criar recibo
-                $configuracao = DB::table('configuracao')->first();
                 $clienteId = Auth::user()->id;
-                // Iniciar a transação
                 DB::beginTransaction();
 
                 try {
-
-
                     $recibo = Recibo::create([
                         'nif' => $request->input('nif'),
                         'nome_cliente' => $request->input('nome_cliente'),
@@ -195,54 +195,45 @@ class ComprarBilheteController extends Controller
                         'ref_pagamento' => $request->input('ref_pagamento'),
                         'cliente_id' => $clienteId,
                         'data' => Carbon::now(),
-                        'preco_total_sem_iva' => $configuracao->preco_bilhete_sem_iva,
-                        'iva' => 0.1 * $configuracao->percentagem_iva,
-                        'preco_total_com_iva' => $configuracao->preco_bilhete_sem_iva * (1 + 0.1 * $configuracao->percentagem_iva),
+                        'preco_total_sem_iva' => $precoTotalSemIva,
+                        'iva' => $configuracao->percentagem_iva,
+                        'preco_total_com_iva' => $precoTotal,
                     ]);
 
-                    // Criar bilhete
-                    Bilhete::create([
-                        'recibo_id' => $recibo->id,
-                        'cliente_id' => $clienteId,
-                        'sessao_id' => $sessao_id,
-                        'lugar_id' => $lugar_id,
-                        'preco_sem_iva' => $configuracao->preco_bilhete_sem_iva,
-                        'estado' => 'não usado',
-                        'created_at' => Carbon::now(),
-                    ]);
 
-                    // Commit da transação
+                    for($i=0; $i<count($sessao_id); $i++){
+                        // Criar bilhete
+                        Bilhete::create([
+                            'recibo_id' => $recibo->id,
+                            'cliente_id' => $clienteId,
+                            'sessao_id' => $sessao_id[$i],
+                            'lugar_id' => $lugar_id[$i],
+                            'preco_sem_iva' => $configuracao->preco_bilhete_sem_iva,
+                            'estado' => 'não usado',
+                            'created_at' => Carbon::now(),
+                        ]);
+                    }
+
                     DB::commit();
-
-                    // Retornar resposta de sucesso
                     $h1 = 'Bilhete Comprado com Sucesso';
                     $title = 'Bilhete Comprado com Sucesso';
                     $msgErro = 'Obrigado por ter comprado conosco, volte sempre.';
                     return view('acessoNegado.acessoNegado', compact('h1', 'title', 'msgErro'));
+
                 } catch (\Exception $e) {
-                    // Rollback da transação em caso de erro
                     DB::rollBack();
                     $h1 = 'Pedimos Desculpa';
-                    $title = 'Pedimos Desculpa';
-                    $msgErro = 'Impossivel comprar.';
+                    $title = 'Erro na Compra';
+                    $msgErro = 'Ocorreu um erro durante a compra. Por favor, tente novamente.';
                     return view('acessoNegado.acessoNegado', compact('h1', 'title', 'msgErro'));
                 }
             } else {
-                // Lugar já foi comprado
                 $h1 = 'Pedimos Desculpa';
-                $title = 'Pedimos Desculpa';
-                $msgErro = 'O lugar já foi comprado. Quando voltar atras precione F5 para atualizar a página.';
+                $title = 'Lugar Já Comprado';
+                $msgErro = 'O lugar já foi comprado. Quando voltar atrás pressione F5 para atualizar a página.';
                 return view('acessoNegado.acessoNegado', compact('h1', 'title', 'msgErro'));
             }
-        } else {
-            // Acesso negado para clientes não autorizados
-            $h1 = 'Pedimos Desculpa';
-            $title = 'Acesso Negado';
-            $msgErro = 'Apenas Clientes podem comprar bilhetes.';
-            return view('acessoNegado.acessoNegado', compact('h1', 'title', 'msgErro'));
         }
-    }
-
 
     // public function criarRecibosBilhetes(Request $request)
     // {
