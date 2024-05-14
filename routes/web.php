@@ -44,10 +44,11 @@ Route::post('/criarRecibosBilhetes', [ComprarBilheteController::class, 'criarRec
 Route::get('/carrinhoCompras', [CarrinhoComprasController::class, 'carrinhoCompras'])->name('carrinhoCompras');
 Route::post('/removerCarrinho', [CarrinhoComprasController::class, 'removerCarrinho'])->name('removerCarrinho');
 Route::post('/carrinhoCompras', [CarrinhoComprasController::class, 'adicionarCarrinho']);
+Route::get('/carrinhoCompras/{id}', [CarrinhoComprasController::class, 'carrinhoCompras']);
 
 Route::get('/historico', [HistoricoController::class, 'historico'])->name('historico');
-Route::get('/bilhetes/{id}', [BilheteController::class, 'mostrar'])->name('bilhetes.mostrar');
-Route::get('/download-pdf/{id}', [BilheteController::class, 'gerarPDF'])->name('download-pdf');
+Route::get('/downloadBilhetePdf/{id}', [BilheteController::class, 'downloadBilhetePdf'])->name('downloadBilhetePdf');
+Route::get('/downloadReciboPdf/{id}', [BilheteController::class, 'downloadReciboPdf'])->name('downloadReciboPdf');
 
 
 

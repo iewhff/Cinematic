@@ -103,9 +103,22 @@ $currentUrl = url()->current(); @endphp
             </ul>
 
             <ul class="navbar-nav ms-auto">
+
+                <li class="nav-item">
+                            <a class="nav-link" href="/estatistica" @php
+$currentUrl = url()->current(); @endphp
+                                @if ($currentUrl == url('/estatistica')) <a class="nav-link" href="#" style="color: orange;">Estatística</a>
+                        @else
+                            <a class="nav-link" href="#">Estatística</a> @endif
+                                </a>
+                        </li>
+
+
+
+
                 @if (Auth::check())
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('carrinhoCompras') }}">
+                        <a class="nav-link" href="{{ route('carrinhoCompras') }}" @if ($currentUrl == url('/carrinhoCompras')) style="color: orange;"> @endif
                             <span>Carrinho de compras</span>
                             @php
                                 $carrinhoCount = count(session('carrinho', []));

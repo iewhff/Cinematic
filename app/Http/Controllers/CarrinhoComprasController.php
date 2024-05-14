@@ -7,13 +7,20 @@ use App\Models\Sessao;
 use App\Models\Filme;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Models\Lugar;
 
 class CarrinhoComprasController extends Controller
 {
-    public function carrinhoCompras()
+    public function carrinhoCompras(Request $request)
     {
+
+        if($request->input('id')){
+            $this->adicionarCarrinho($request);
+        }
+
         $title = 'Carrinho Compras';
         $totalFilmes = 0;
+        $totalBilhetes = 0;
         $filmes = [];
         $dataAtual = Carbon::now()->toDateString(); // Obtém a data atual
         $lugaresDisponiveisTotal = [];
@@ -57,32 +64,31 @@ class CarrinhoComprasController extends Controller
 
     public function adicionarCarrinho(Request $request)
     {
-        // Obtém o valor do parâmetro 'id' da requisição
-        $id = $request->input('id');
+        $id = $request->input('id');  // Suponho que $id seja o filme_id ou algum identificador do item a ser adicionado
+        $nmrLugares = $request->input('quantity', 1);  // Número de lugares selecionados pelo usuário, com valor padrão de 1
 
-        // Verifica se o parâmetro 'id' foi fornecido
-        if ($id) {
-            // Consulta o filme com base no 'id'
-            $filme = Filme::find($id);
+        // Obter todas as sessões do filme especificado
+        $sessoes = Sessao::where('filme_id', $id)->get();
 
-            // Verifica se o filme foi encontrado
-            if ($filme) {
+        // Obter todos os sala_id das sessões
+        $salaIds = $sessoes->pluck('sala_id');
 
-                // Obter a data atual
-                $dataAtual = Carbon::now()->toDateString();
+        // Obter todos os lugares que têm um sala_id correspondente
+        $lugares = Lugar::whereIn('sala_id', $salaIds)
+                        ->select('fila', 'posicao')
+                        ->get();
 
-                // Verificar se existem registros na tabela sessoes com data igual a hoje ou posterior e com o filme_id especificado
-                $existeSessao = Sessao::where('filme_id', $id)
-                    ->whereDate('data', '>=', $dataAtual)
-                    ->exists();
+        // Inicializar o carrinho como um array se ainda não estiver definido
+        $carrinho = session()->get('carrinho', []);
 
-                // Inicializar o carrinho como um array se ainda não estiver definido
-                $carrinho = session()->get('carrinho', []);
-
-                // Verificar se o item já existe no carrinho pelo ID
+        for ($i = 0; $i < $nmrLugares; $i++) {
+            if (isset($lugares[$i])) {
+                $lugar = $lugares[$i];
                 $naoExisteNoCarrinho = true;
+
+                // Verificar se o item já existe no carrinho pelo ID e lugar
                 foreach ($carrinho as $item) {
-                    if ($item['id'] == $id) {
+                    if (isset($item['lugar']) && $item['id'] == $id && $item['lugar']['fila'] == $lugar->fila && $item['lugar']['posicao'] == $lugar->posicao) {
                         $naoExisteNoCarrinho = false;
                         break;
                     }
@@ -91,22 +97,19 @@ class CarrinhoComprasController extends Controller
                 // Se o item não existe no carrinho, adiciona o novo item
                 if ($naoExisteNoCarrinho) {
                     // Adiciona o novo item ao carrinho
-                    $novoBilhete = ['id' => $id];
-                    session()->push('carrinho', $novoBilhete);
+                    $novoBilhete = ['id' => $id, 'lugar' => ['fila' => $lugar->fila, 'posicao' => $lugar->posicao]];
+                    $carrinho[] = $novoBilhete;  // Usar a sintaxe de array para adicionar ao carrinho
                 }
-
-
-                // Se o filme foi encontrado, retorna a view com os detalhes do filme
-                return view('filme.detalhes', ['existeSessao' => $existeSessao, 'filme' => $filme]);
-            } else {
-                // Se o filme não foi encontrado, redireciona de volta com uma mensagem de erro
-                return redirect()->back()->with('error', 'Nenhum filme encontrado com esse ID.');
             }
-        } else {
-            // Se o parâmetro 'id' não foi fornecido, redireciona de volta com uma mensagem de erro
-            return redirect()->back()->with('error', 'ID do filme não fornecido.');
         }
+
+        // Atualizar o carrinho na sessão
+        session()->put('carrinho', $carrinho);
+
+        return redirect()->back()->with('success', 'Itens adicionados ao carrinho com sucesso!');
     }
+
+
 
     public function removerCarrinho(Request $request)
     {
@@ -127,6 +130,7 @@ class CarrinhoComprasController extends Controller
 
         // Se o item não existe no carrinho, adiciona o novo ite
 
-        return $this->carrinhoCompras();
+        return redirect()->route('carrinhoCompras');
+        // antes : return $this->carrinhoCompras(); isto NAO evitava o reenvio do formulario
     }
 }

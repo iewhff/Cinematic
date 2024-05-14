@@ -18,7 +18,7 @@
         <div class="col-md-4 text-end mt-2"> <!-- Adicione a classe mt-2 aqui -->
             @if ($existeSessao)
                 <div class="col-md-12 text-center">
-                    <form class="form-inline my-2 my-lg-0" action="{{ route('comprarBilhete') }}" method="GET">
+                    <form class="form-inline my-2 my-lg-0" action="{{ route('carrinhoCompras') }}" method="GET">
                         @csrf
                         <input type="hidden" name="id" value="{{ $filme->id }}">
                         <button class="botao btn btn-outline-dark my-2 my-sm-0" type="submit">Comprar Bilhete</button>
@@ -28,9 +28,17 @@
                     <form action="{{ route('carrinhoCompras') }}" method="POST">
                         @csrf
                         <input type="hidden" name="id" value="{{ $filme->id }}">
-                        <button type="submit" class="botao btn btn-outline-dark my-2 my-sm-0">Adicionar ao Carrinho de
-                            Compras</button>
+                        <button type="submit" class="botao btn btn-outline-dark my-2 my-sm-0">Adicionar ao Carrinho de Compras</button>
+                        <div class="form-group">
+                            <label for="quantity">Quantidade:</label>
+                            <select name="quantity" id="quantity" class="form-control">
+                                @for ($i = 1; $i <= 12; $i++)
+                                    <option value="{{ $i }}">{{ $i }}</option>
+                                @endfor
+                            </select>
+                        </div>
                     </form>
+
                 </div>
             @endif
         </div>

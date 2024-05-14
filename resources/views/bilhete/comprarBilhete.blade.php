@@ -1,40 +1,41 @@
 @extends('layout.base')
 
 @section('content')
-    <a href="{{ URL::previous() }}" class="btn btn-primary">Voltar</a>
+<a href="{{ URL::previous() }}" class="btn btn-primary">Voltar</a>
+<form class="mt-4" action="/comprarBilhete" method="post">
+    @php
+        $nrLugar = -1;
+    @endphp
     @foreach ($resultados as $resultado)
+    @php
+        $nrLugar++;
+    @endphp
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-8">
-                        <p><strong>Título:</strong> {{ $resultado->titulo }}</p>
-                        <p><strong>Gênero:</strong> {{ $resultado->genero_code }}</p>
-                        <p><strong>Ano:</strong> {{ $resultado->ano }}</p>
+                        <p><strong>Título:</strong> {{ $resultado['filme']->titulo }}</p>
+                        <p><strong>Gênero:</strong> {{ $resultado['filme']->genero_code }}</p>
+                        <p><strong>Ano:</strong> {{ $resultado['filme']->ano }}</p>
                     </div>
                     <div class="col-md-4 text-md-end">
-                        <img src="{{ asset('caminho/para/cartazes/' . $resultado->cartaz_url) }}"
-                            alt="{{ $resultado->titulo }}" width="200">
+                        <img src="{{ asset('caminho/para/cartazes/' . $resultado['filme']->cartaz_url) }}"
+                            alt="{{ $resultado['filme']->titulo }}" width="200">
                     </div>
                 </div>
             </div>
         </div>
-    @endforeach
 
-    <form class="mt-4" action="/comprarBilhete" method="post">
-        @csrf
 
-        <select name="lugaresDisponiveisTotal">
-            @foreach ($lugaresDisponiveisTotal as $resultado)
-                <option value="{{ $resultado->sessao_id }}-{{ $resultado->lugar_id }}">
-
-                    {{ $resultado->data }} - {{ $resultado->horario_inicio }} - Sala {{ $resultado->sala_id }} - Fila
-
-                    {{ $resultado->fila }} - Posição {{ $resultado->posicao }}
-
+        <select name="lugar{{ $nrLugar}}">
+            @foreach ($resultado['lugaresDisponiveisTotal'] as $lugar)
+                <option value="{{ $lugar->sessao_id }}-{{ $lugar->lugar_id }}">
+                    {{ $lugar->data }} - {{ $lugar->horario_inicio }} - Sala {{ $lugar->sala_id }} - Fila {{ $lugar->fila }} - Posição {{ $lugar->posicao }}
                 </option>
             @endforeach
-
         </select>
+        @endforeach
+        @csrf
 
 
         <div class="form-group">
@@ -82,18 +83,30 @@
         <div id="visaInputs" style="display: none;">
             <label for="visa_numero">Número do cartão VISA (16 dígitos):</label>
             <input type="text" id="visa_numero" name="visa_numero">
+            @error('visa_numero')
+            <span class="text-danger">{{ $message }}</span>
+            @enderror
             <label for="visa_cvc">Código CVC (3 dígitos):</label>
             <input type="text" id="visa_cvc" name="visa_cvc">
+            @error('visa_cvc')
+            <span class="text-danger">{{ $message }}</span>
+            @enderror
         </div>
 
         <div id="paypalInputs" style="display: none;">
             <label for="paypal_email">Email do PayPal:</label>
             <input type="email" id="paypal_email" name="paypal_email">
+            @error('paypal_email')
+            <span class="text-danger">{{ $message }}</span>
+            @enderror
         </div>
 
         <div id="mbwayInputs" style="display: none;">
             <label for="mbway_numero">Número do telemóvel (MBWay):</label>
             <input type="text" id="mbway_numero" name="mbway_numero">
+            @error('mbway_numero')
+            <span class="text-danger">{{ $message }}</span>
+            @enderror
         </div>
 
 

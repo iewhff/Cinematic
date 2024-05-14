@@ -34,7 +34,10 @@
                         <h5 class="card-title">Sessão não disponível</h5>
                     @endif
 
-                    <a href="{{ route('download-pdf', ['id' => $item->id]) }}" class="btn btn-primary">Download Bilhete</a>
+                    <a href="{{ route('downloadBilhetePdf', ['id' => $item->id]) }}" class="btn btn-primary">Download
+                        Bilhete</a>
+                    <a href="{{ route('downloadReciboPdf', ['id' => $item->id]) }}" class="btn btn-primary">Download
+                        Recibo</a>
 
                 </div>
             </div>
