@@ -8,7 +8,26 @@
         $i = -1;
     @endphp
     <div>
-        <h4>Bilhetes no carrinho de compras:</h4>
+        <a href="/filmes" class="btn btn-primary">Voltar</a>
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+            @if (count($filmes) > 0)
+            <h4>Bilhetes no carrinho de compras:</h4></div>
+            <div>
+                <form action="{{ route('removerTudoCarrinho') }}" method="POST" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn btn-danger">Remover Tudo!</button>
+                </form>
+            </div>
+            @endif
+            @if (count($filmes) == 0)
+            <h4>Sem bilhetes no carrinho de compras!</h4></div>
+            @endif
+
+
+            </div>
+
+
         @foreach ($filmes as $item)
         @php
         $lugaresId='';
@@ -28,15 +47,18 @@
             <hr>
         @endforeach
     </div>
-    <p><strong>Preço:</strong> {{ $precoTotal }}</p>
-    <form class="mt-4" action="comprarBilhete" method="GET">
-        @csrf
-        <input type="text" name="filmesID" value="@php
-        foreach ($filmes as $key => $value) {
-            echo $value['filme']->id . ',';
-        }
-    @endphp">
+    @if (count($filmes) > 0)
+        <p><strong>Preço:</strong> {{ $precoTotal }}</p>
 
-        <button type="submit" class="btn btn-primary">Comprar</button>
+        <form class="mt-4" action="comprarBilhete" method="GET">
+            @csrf
+            <input type="hidden" name="filmesID" value="@php
+            foreach ($filmes as $key => $value) {
+                echo $value['filme']->id . ',';
+            }
+        @endphp">
+
+            <button type="submit" class="btn btn-primary">Finalizar Compra</button>
+    @endif
     </form>
 @endsection

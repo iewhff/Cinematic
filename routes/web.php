@@ -43,6 +43,7 @@ Route::post('/criarRecibosBilhetes', [ComprarBilheteController::class, 'criarRec
 
 Route::get('/carrinhoCompras', [CarrinhoComprasController::class, 'carrinhoCompras'])->name('carrinhoCompras');
 Route::post('/removerCarrinho', [CarrinhoComprasController::class, 'removerCarrinho'])->name('removerCarrinho');
+Route::post('/removerTudoCarrinho', [CarrinhoComprasController::class, 'removerTudoCarrinho'])->name('removerTudoCarrinho');
 Route::post('/carrinhoCompras', [CarrinhoComprasController::class, 'adicionarCarrinho']);
 Route::get('/carrinhoCompras/{id}', [CarrinhoComprasController::class, 'carrinhoCompras']);
 

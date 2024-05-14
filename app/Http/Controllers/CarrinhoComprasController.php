@@ -133,4 +133,12 @@ class CarrinhoComprasController extends Controller
         return redirect()->route('carrinhoCompras');
         // antes : return $this->carrinhoCompras(); isto NAO evitava o reenvio do formulario
     }
+
+    public function removerTudoCarrinho()
+    {
+        session()->forget('carrinho');
+
+        return redirect()->route('carrinhoCompras');
+        // antes : return $this->carrinhoCompras(); isto NAO evitava o reenvio do formulario
+    }
 }

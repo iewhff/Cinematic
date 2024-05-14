@@ -1,7 +1,7 @@
 @extends('layout.base')
 
 @section('content')
-<a href="{{ URL::previous() }}" class="btn btn-primary">Voltar</a>
+<a href="/carrinhoCompras" class="btn btn-primary">Voltar</a>
 <p>Se escolher outros lugares, tenha em atenção em não ter os mesmos lugares repetidos. Os lugares repetidos não serão comprados, o que resultara numa compra com menos bilhetes do que os selecionados.</p>
 <form class="mt-4" action="/comprarBilhete" method="POST">
     @php

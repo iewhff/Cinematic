@@ -6,6 +6,7 @@
 
     @if (isset($bilhetes) && $bilhetes->count() > 0)
 
+
         @foreach ($bilhetes as $item)
             <div class="card">
                 <div class="card-body">
@@ -36,7 +37,7 @@
 
                     <a href="{{ route('downloadBilhetePdf', ['id' => $item->id]) }}" class="btn btn-primary">Download
                         Bilhete</a>
-                    <a href="{{ route('downloadReciboPdf', ['id' => $item->id]) }}" class="btn btn-primary">Download
+                    <a href="{{ route('downloadReciboPdf', ['id' => $item->recibo_id]) }}" class="btn btn-primary">Download
                         Recibo</a>
 
                 </div>

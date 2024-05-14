@@ -20,6 +20,7 @@ class HistoricoController extends Controller
             $bilhetes = Bilhete::where('cliente_id', Auth::user()->id)
                 ->with(['sessao.sala.lugares', 'sessao.filme'])
                 ->get();
+                // dd($bilhetes);
 
             /*
 ja ha relacao com estes a partir do bilhete
