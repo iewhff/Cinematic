@@ -11,9 +11,28 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
     <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+        img.falling {
+            position: absolute;
+            z-index: -1; /* Posição z mais atrás possível */
+        }
+        @keyframes rotateClockwise {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes rotateCounterClockwise {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(-360deg); }
+        }
     </style>
 
     @vite(['resources/js/app.js'])
+
+
 
 </head>
 
@@ -164,11 +183,115 @@ $currentUrl = url()->current(); @endphp
         </div>
     </nav><br>
     <div class="container">
+
         @yield('content')
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // ao mudar de foco as animacoes param, para consumir menos recursos e para nao aparecerem demasiadas pipocas quando voltar ao foco
+        let animationsActive = true;
+        let animationFrameId;
+        let intervalId;
+
+        // Função para gerar um número aleatório entre dois valores
+        function getRandomSize(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        // Função para criar e posicionar as imagens aleatoriamente
+        function createAndPositionImages() {
+            const container = document.querySelector('body');
+
+            // Loop para criar várias imagens
+            for (let i = 0; i < 100; i++) {
+                createImage(container);
+            }
+        }
+
+        // Função para criar uma imagem individual
+        function createImage(container) {
+            const randomImg = Math.trunc(getRandomSize(1, 4));
+            const image = document.createElement('img');
+            image.src = `/imgs/popcorns/pipoca${randomImg}.png`;
+            image.classList.add('falling');
+            image.style.width = getRandomSize(1, 2) + 'cm'; // Tamanho aleatório entre 1 e 2 cm
+            image.style.left = getRandomSize(0, window.innerWidth - 100) + 'px'; // Posição horizontal aleatória
+            image.style.top = -getRandomSize(50, 200) + 'px'; // Posição vertical inicial fora do topo da tela
+
+            // Adiciona rotação aleatória
+            const rotateDirection = Math.random() < 0.5 ? 'rotateClockwise' : 'rotateCounterClockwise';
+            const rotateDuration = getRandomSize(10, 20); // Duração aleatória entre 10 e 20 segundos
+            image.style.animation = `${rotateDirection} ${rotateDuration}s linear infinite`;
+
+            container.appendChild(image);
+        }
+
+        // Função para fazer as imagens caírem no ecrã
+        function animateImages() {
+            if (!animationsActive) return;
+
+            const images = document.querySelectorAll('img.falling');
+
+            images.forEach(image => {
+                let top = parseFloat(image.style.top);
+                top += 2; // Velocidade da queda
+
+                // Atualizar a posição vertical da imagem
+                image.style.top = top + 'px';
+
+                // Reiniciar a posição da imagem se sair da tela
+                if (top > window.innerHeight) {
+                    image.remove(); // Remove a imagem que saiu da tela
+                }
+            });
+
+            animationFrameId = requestAnimationFrame(animateImages);
+        }
+
+        // Função para adicionar novas imagens continuamente
+        function addImagesContinuously() {
+            intervalId = setInterval(() => {
+                if (!animationsActive) return;
+                createImage(document.querySelector('body'));
+            }, 1000); // Adiciona uma nova imagem a cada segundo
+        }
+
+        // Função para parar e reiniciar as animações
+        function toggleAnimations() {
+            animationsActive = !animationsActive;
+            if (animationsActive) {
+                animateImages();
+                addImagesContinuously();
+            } else {
+                cancelAnimationFrame(animationFrameId);
+                clearInterval(intervalId);
+            }
+        }
+
+        // Event listeners para pausar e retomar animações ao mudar de janela
+        window.addEventListener('blur', () => {
+            animationsActive = false;
+            cancelAnimationFrame(animationFrameId);
+            clearInterval(intervalId);
+        });
+
+        window.addEventListener('focus', () => {
+            animationsActive = true;
+            animateImages();
+            addImagesContinuously();
+        });
+
+        // Inicializar as funções
+        createAndPositionImages();
+        animateImages();
+        addImagesContinuously();
+        addImagesContinuously();
+        addImagesContinuously();
+        addImagesContinuously();
+    </script>
 </body>
 
 </html>
