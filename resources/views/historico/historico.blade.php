@@ -8,6 +8,7 @@
 
 
         @foreach ($bilhetes as $item)
+        <div class="container historico" >
             <div class="card">
                 <div class="card-body">
                     {{-- Verificar se a sessão está presente --}}
@@ -35,13 +36,12 @@
                         <h5 class="card-title">Sessão não disponível</h5>
                     @endif
 
-                    <a href="{{ route('downloadBilhetePdf', ['id' => $item->id]) }}" class="btn btn-primary">Download
-                        Bilhete</a>
-                    <a href="{{ route('downloadReciboPdf', ['id' => $item->recibo_id]) }}" class="btn btn-primary">Download
-                        Recibo</a>
-
+                    <a href="{{ route('downloadBilhetePdf', ['id' => $item->id]) }}" class="btn btn-primary">Download Bilhete</a>
+                    <a href="{{ route('downloadReciboPdf', ['id' => $item->recibo_id]) }}" class="btn btn-primary">Download Recibo</a>
                 </div>
             </div>
+        </div>
+
         @endforeach
     @else
         <p>Não há bilhetes disponíveis.</p>

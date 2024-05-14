@@ -16,6 +16,7 @@ use Faker\Core\Number;
 use Illuminate\Support\Facades\Auth;
 
 use function Laravel\Prompts\form;
+use Illuminate\Support\Facades\Http;
 
 class ComprarBilheteController extends Controller
 {
@@ -214,7 +215,12 @@ class ComprarBilheteController extends Controller
                         ]);
                     }
 
+
+
                     DB::commit();
+                    // remover tudo do carrinho
+                    session()->forget('carrinho');
+
                     $h1 = 'Bilhete Comprado com Sucesso';
                     $title = 'Bilhete Comprado com Sucesso';
                     $msgErro = 'Obrigado por ter comprado conosco, volte sempre.';

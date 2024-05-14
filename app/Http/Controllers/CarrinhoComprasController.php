@@ -54,7 +54,7 @@ class CarrinhoComprasController extends Controller
 
         $resultados = DB::select('SELECT * FROM configuracao');
         $configuracao = $resultados[0];
-        $preco_bilhete = $configuracao->preco_bilhete_sem_iva * 0.1 * $configuracao->percentagem_iva;
+        $preco_bilhete = $configuracao->preco_bilhete_sem_iva * (1 + $configuracao->percentagem_iva / 100);
         $preco_bilhete = number_format($preco_bilhete, 2, '.', '');
         $precoTotal = $totalFilmes * $preco_bilhete;
 
