@@ -7,7 +7,7 @@
 
     {{-- Dropdown de Gêneros, podia tar melhor de aspecto --}}
     <div class="container">
-        <div class="row justify-content-end mt-5 ">
+        <div class="row justify-content-end">
             <div class="col-md-6">
                 <form class="d-flex flex-row align-items-center" action="{{ route('filmes') }}" method="GET">
                     <button type="submit" class="btn btn-primary mr-2">Filtrar</button>
@@ -32,7 +32,7 @@
 
 
 
-
+    <div class="container">
     {{-- Tabela de filmes --}}
     <table>
         <tr>
@@ -79,4 +79,6 @@
     {{-- Centraliza novamente os links de paginação --}}
 
     {{ $filmes->links() }}
+
+</div>
 @endsection

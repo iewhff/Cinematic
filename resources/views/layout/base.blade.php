@@ -232,7 +232,7 @@ $currentUrl = url()->current(); @endphp
             </ul>
         </div>
     </nav><br>
-    <div class="container" style="background-color: rgba(128, 128, 128, 0.5); margin: 0 20%; border-radius: 15px;">
+    <div class="container base">
         @yield('content')
     </div>
 

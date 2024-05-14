@@ -257,21 +257,10 @@ tr:hover {
     background-color: #ffcc00eb !important;
     /* Cor de fundo ao passar o cursor */
 }
-
-/* Media query para telas menores que 768px */
-@media screen and (max-width: 768px) {
-    .form-inline {
-        width: 0px;
-        /* Defina o comprimento desejado para o formulário */
-    }
-}
-
-/* Media query para telas menores que 576px */
-@media screen and (max-width: 578px) {
-    .form-inline {
-        width: 0px;
-        /* Defina o comprimento desejado para o formulário */
-    }
+.base {
+    background-color: rgba(128, 128, 128, 0.5);
+    margin: 0 20%;
+    border-radius: 15px;
 }
 
 .historico {
@@ -286,4 +275,74 @@ tr:hover {
     /* Remove sublinhado */
     transition: background-color 0.3s;
     /* Transição suave da cor de fundo */
+}
+
+/* Media query para telas menores que 768px */
+@media screen and (max-width: 1750px) {
+    .form-inline {
+        width: 0px;
+        /* Defina o comprimento desejado para o formulário */
+    }
+}
+
+/* Media query para telas menores que 768px */
+@media screen and (max-width: 768px) {
+    .form-inline {
+        width: 0px;
+        /* Defina o comprimento desejado para o formulário */
+    }
+
+    .base {
+        background-color: rgba(128, 128, 128, 0.5);
+        margin: 0 auto; /* Define as margens laterais automáticas para centralizar o elemento horizontalmente */
+        max-width: 90%; /* Define uma largura máxima para o elemento */
+        border-radius: 15px;
+        padding: 20px; /* Adiciona um preenchimento interno para o conteúdo */
+    }
+
+    .btn-primary {
+        margin-top: 15px;
+        margin-bottom: 15px;
+        margin-right: 15px;
+        --bs-btn-hover-color: #000000;
+        --bs-btn-bg: #000000;
+        --bs-btn-border-color: #000000;
+        --bs-btn-hover-bg: #ffcc00eb;
+        --bs-btn-hover-border-color: #000000;
+        --bs-btn-focus-shadow-rgb: 49, 132, 253;
+        --bs-btn-active-color: #ffcc00eb;
+        --bs-btn-active-bg: #000000;
+        --bs-btn-active-border-color: #000000;
+        --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+        --bs-btn-disabled-color: #ffcc00eb;
+        --bs-btn-disabled-bg: #000000;
+        --bs-btn-disabled-border-color: #000000;
+        font-size: 12px; /* Tamanho da fonte menor */
+        padding: 5px 10px; /* Menor preenchimento interno */
+        width: auto; /* Largura automática para ajustar ao conteúdo */
+        height: auto; /* Altura automática para ajustar ao conteúdo */
+    }
+}
+
+/* Media query para telas menores que 576px */
+@media screen and (max-width: 578px) {
+    .form-inline {
+        width: 0px;
+        /* Defina o comprimento desejado para o formulário */
+    }
+}
+/* Media query para telas menores que 576px */
+@media screen and (max-width: 550px) {
+    .form-inline {
+        width: 0px;
+        /* Defina o comprimento desejado para o formulário */
+    }
+
+    .base {
+        background-color: rgba(128, 128, 128, 0.5);
+        margin: 0 auto; /* Define as margens laterais automáticas para centralizar o elemento horizontalmente */
+        max-width: 90%; /* Define uma largura máxima para o elemento */
+        border-radius: 15px;
+        padding: 20px; /* Adiciona um preenchimento interno para o conteúdo */
+    }
 }
