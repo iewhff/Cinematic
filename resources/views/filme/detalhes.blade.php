@@ -1,5 +1,5 @@
 @extends('layout.base')
-
+@section('title', $title)
 @section('content')
     <br>
     <a href="/filmes" class="btn btn-primary">Voltar</a>

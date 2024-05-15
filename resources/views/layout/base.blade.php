@@ -139,14 +139,18 @@ $currentUrl = url()->current(); @endphp
                         </li>
                     @endif
                 @endif
-                <li class="nav-item">
-                    <a class="nav-link" href="/historico" @php
+                @if (Auth::check())
+                @if (Auth::user()->tipo == 'F')
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#" @php
 $currentUrl = url()->current(); @endphp
-                        @if ($currentUrl == url('/AcessoSessao')) <a class="nav-link" href="#" style="color: orange;">Controlo de Acesso à Sessão</a>
+                            @if ($currentUrl == url('/#')) <a class="nav-link" href="#" style="color: orange;">Controlo de Acesso à Sessão</a>
                     @else
                         <a class="nav-link" href="#">Controlo de Acesso à Sessão</a> @endif
-                        </a>
-                </li>
+                            </a>
+                    </li>
+                @endif
+            @endif
                 @if (Auth::check())
                     @if (Auth::user()->tipo == 'A')
                         <li class="nav-item">
@@ -161,14 +165,30 @@ $currentUrl = url()->current(); @endphp
                 @endif
 
                 @if (Auth::check())
-                    @if (Auth::user()->tipo == 'A')
-                        <li class="nav-item">
-
-                            <a class="nav-link" href="#">Gerir utilizadores</a>
-
-                        </li>
-                    @endif
+                @if (Auth::user()->tipo == 'A')
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#" @php
+$currentUrl = url()->current(); @endphp
+                            @if ($currentUrl == url('/#')) <a class="nav-link" href="#" style="color: orange;">Gerir utilizadores</a>
+                    @else
+                        <a class="nav-link" href="#">Gerir utilizadores</a> @endif
+                            </a>
+                    </li>
                 @endif
+            @endif
+
+            @if (Auth::check())
+            @if (Auth::user()->tipo == 'A')
+                <li class="nav-item">
+                    <a class="nav-link" href="/editarFilmes" @php
+$currentUrl = url()->current(); @endphp
+                        @if ($currentUrl == url('/editarFilmes')) <a class="nav-link" href="/editarFilmes" style="color: orange;">Editar Filmes</a>
+                @else
+                    <a class="nav-link" href="#">Editar Filmes</a> @endif
+                        </a>
+                </li>
+            @endif
+        @endif
             </ul>
 
             <ul class="navbar-nav ms-auto">

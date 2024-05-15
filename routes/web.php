@@ -11,6 +11,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CarrinhoComprasController;
+use App\Http\Controllers\EditarFilmesController;
 use App\Http\Controllers\HistoricoController;
 
 
@@ -33,6 +34,9 @@ Route::get('/', function () {
 
 Route::get('/filmes', [FilmeController::class, 'index'])->name('filmes');
 Route::get('/detalhes', [FilmeController::class, 'detalhes'])->name('detalhes');
+
+Route::middleware(['auth', 'admin'])->get('/editarFilmes', [EditarFilmesController::class, 'index'])->name('editarFilmes');
+Route::middleware(['auth', 'admin'])->get('/editar', [EditarFilmesController::class, 'editar'])->name('editar');
 
 Route::get('/pesquisa', [PesquisaController::class, 'pesquisa'])->name('pesquisa');
 Route::post('/pesquisa', [PesquisaController::class, 'pesquisa'])->name('pesquisa');
