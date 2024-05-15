@@ -9,7 +9,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
+
     <style>
         body {
             margin: 0;
@@ -86,8 +86,9 @@
 
     </style>
 
-    @vite(['resources/js/app.js'])
+@vite(['resources/js/app.js'])
 
+<link rel="stylesheet" href="css/style.css">
 
 
 </head>
@@ -252,16 +253,16 @@ $currentUrl = url()->current(); @endphp
             </ul>
         </div>
     </nav><br>
+    <button id="toggle-dark-mode" class="btn btn-primary" style="margin-left: 15px;">Modo Noturno</button>
     <div class="container base">
         @yield('content')
     </div>
-            <!-- Rodapé -->
-            <footer class="mt-auto base">
-                <div class="container text-center">
-                    <p>Feito por Artur Negru, João Bastos e João Ramos.</p>
-                    <p>A cringy Cinema.</p>
-                </div>
-            </footer>
+    <footer class="mt-auto base">
+        <div class="container text-center">
+            <p>Feito por Artur Negru, João Bastos e João Ramos.</p>
+            <p>A cringy Cinema.</p>
+        </div>
+    </footer>
 
 
 
@@ -423,8 +424,38 @@ function createLinesAndDots(x, y) {
         setTimeout(() => {
             dot.remove();
         }, 1000);
-    }
+        }
 }
+document.addEventListener('DOMContentLoaded', (event) => {
+    const toggleButton = document.getElementById('toggle-dark-mode');
+    const body = document.body;
+    const footer = document.querySelector('footer');
+    const table = document.querySelector('table');
+    const darkMode = sessionStorage.getItem('darkMode');
+
+    if (darkMode === 'enabled') {
+        body.classList.add('dark-mode');
+        footer.classList.add('dark-mode');
+        table.classList.add('dark-mode');
+        toggleButton.textContent = 'Modo Claro';
+    }
+
+    toggleButton.addEventListener('click', function () {
+        body.classList.toggle('dark-mode');
+        footer.classList.toggle('dark-mode');
+        table.classList.toggle('dark-mode');
+
+        if (body.classList.contains('dark-mode')) {
+            sessionStorage.setItem('darkMode', 'enabled');
+            this.textContent = 'Modo Claro';
+        } else {
+            sessionStorage.setItem('darkMode', 'disabled');
+            this.textContent = 'Modo Noturno';
+        }
+    });
+});
+
+
 
 
 

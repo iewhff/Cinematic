@@ -24,7 +24,16 @@
                 </form>
             </div>
             <div class="col-md-6 text-end">
-                <a class="botao" href="/filmes">Todos os Filmes</a>
+                <form class="form-inline my-2 my-lg-0" action="{{ route('filmes') }}" method="GET">
+                    @csrf
+                    <button class="btn my-2 my-sm-0" type="submit">
+                        Todos os Filmes
+                    </button>
+                </form>
+
+
+
+
             </div>
         </div>
     </div>
@@ -34,7 +43,7 @@
 
     <div class="container">
     {{-- Tabela de filmes --}}
-    <table>
+    <table id="table">
         <tr>
             <th>Titulo</th>
             <th>Género</th>
@@ -66,8 +75,8 @@
 
                     <form class="form-inline my-2 my-lg-0" action="{{ route('detalhes') }}" method="GET">
                         @csrf
-                        <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" name="id"
-                            value={{ $um_filme->id }}>Detalhes
+                        <button class="btn my-2 my-sm-0" type="submit" name="id" value={{ $um_filme->id }}>
+                            Detalhes
                         </button>
                     </form>
 

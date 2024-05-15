@@ -2,10 +2,10 @@
 @section('title', $title)
 @section('content')
     {{-- Centraliza os links de paginação --}}
-    <div class="container mt-5 text-center">
+<div class="container mt-5 text-center">
     {{-- Tabela de filmes --}}
     <h2>Com base nas suas preferencias</h2>
-    <table>
+    <table class="table-filmes">
         <tr>
             <th>Titulo</th>
             <th>Género</th>
@@ -49,7 +49,7 @@
                     <form class="form-inline my-2 my-lg-0" action="{{ route('carrinhoCompras') }}" method="GET">
                         @csrf
                         <input type="hidden" name="id" value="{{ $um_filme->id }}">
-                        <button class="botao btn btn-outline-dark my-2 my-sm-0" type="submit">Comprar Bilhete</button>
+                        <button class="botao btn btn-outline-dark my-2 my-sm-0" type="submit">Comprar</button>
                     </form>
 
                 </td>
@@ -64,7 +64,7 @@
 <div class="container mt-5 text-center">
     {{-- Tabela de filmes --}}
     <h2>Top filmes do Cinematic</h2>
-    <table>
+    <table class="table-filmes">
         <tr>
             <th>Titulo</th>
             <th>Género</th>
@@ -108,7 +108,7 @@
                     <form class="form-inline my-2 my-lg-0" action="{{ route('carrinhoCompras') }}" method="GET">
                         @csrf
                         <input type="hidden" name="id" value="{{ $um_filme->id }}">
-                        <button class="botao btn btn-outline-dark my-2 my-sm-0" type="submit">Comprar Bilhete</button>
+                        <button class="botao btn btn-outline-dark my-2 my-sm-0" type="submit">Comprar</button>
                     </form>
 
                 </td>
