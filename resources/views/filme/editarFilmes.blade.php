@@ -9,12 +9,24 @@
                 <a href="/filmes" class="btn btn-primary">Voltar</a>
             </div>
             <div class="col-auto">
-                <a href="/filmes" class="btn btn-primary">Adicionar</a>
+                <a href="/adicionarFilme" class="btn btn-primary">Adicionar</a>
             </div>
         </div>
     </div>
 
     {{ $filmes->links() }}
+
+    @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
     <table>
         <tr>
             <th>Titulo</th>
@@ -56,7 +68,7 @@
                 </td>
                 <td>
 
-                    <form class="form-inline my-2 my-lg-0" action="{{ route('detalhes') }}" method="GET">
+                    <form class="form-inline my-2 my-lg-0" action="{{ route('eliminarFilme') }}" method="GET">
                         @csrf
                         <button class="btn btn-danger my-2 my-sm-0" type="submit" name="id"
                             value={{ $um_filme->id }}>Eliminar

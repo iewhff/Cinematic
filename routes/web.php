@@ -37,6 +37,11 @@ Route::get('/detalhes', [FilmeController::class, 'detalhes'])->name('detalhes');
 
 Route::middleware(['auth', 'admin'])->get('/editarFilmes', [EditarFilmesController::class, 'index'])->name('editarFilmes');
 Route::middleware(['auth', 'admin'])->get('/editar', [EditarFilmesController::class, 'editar'])->name('editar');
+Route::middleware(['auth', 'admin'])->get('/gravarEditar', [EditarFilmesController::class, 'gravarEditar'])->name('gravarEditar');
+Route::middleware(['auth', 'admin'])->post('/adicionar', [EditarFilmesController::class, 'adicionar'])->name('adicionar');
+Route::middleware(['auth', 'admin'])->get('/adicionarFilme', [EditarFilmesController::class, 'adicionarFilme'])->name('adicionarFilme');
+Route::middleware(['auth', 'admin'])->post('/eliminar', [EditarFilmesController::class, 'eliminar'])->name('eliminar');
+Route::middleware(['auth', 'admin'])->get('/eliminarFilme', [EditarFilmesController::class, 'eliminarFilme'])->name('eliminarFilme');
 
 Route::get('/pesquisa', [PesquisaController::class, 'pesquisa'])->name('pesquisa');
 Route::post('/pesquisa', [PesquisaController::class, 'pesquisa'])->name('pesquisa');

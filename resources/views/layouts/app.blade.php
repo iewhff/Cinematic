@@ -72,9 +72,16 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="flex-fill py-4">
             @yield('content')
         </main>
+
+        <!-- Rodapé -->
+        <footer class="mt-auto">
+            <div class="container">
+                <p>Feito por Artur Negru, João Bastos e João Ramos.</p>
+            </div>
+        </footer>
     </div>
 </body>
 </html>

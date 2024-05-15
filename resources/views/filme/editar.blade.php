@@ -1,15 +1,14 @@
 @extends('layout.base')
-
 @section('title', $title)
 
 @section('content')
     @php
-        if (!isset($editar)) {
-            $editar = null;
-        }
+    if (!isset($editar)) {
+        $editar = null;
+    }
     @endphp
     <br>
-    <a href="/filmes" class="btn btn-primary">Voltar</a>
+    <a href="/editarFilmes" class="btn btn-primary">Voltar</a>
     <div class="row">
         <div class="col-md-12">
             <div class="row mb-2">
@@ -17,41 +16,36 @@
                     <form class="form-inline my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
                         @csrf
                         <input type="hidden" name="editar" value="titulo">
-                        <input type="hidden" name="id" value="{{ $filme->id ?? '' }}">
-                        <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Editar</button>
+                        <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" name="id" value="{{ $filme->id }}">Editar</button>
                     </form>
                     <p class="mb-0 ml-2"><strong>Título:</strong>
                         @if ($editar != 'titulo')
-                            {{ $filme->titulo ?? 'Título não disponível' }}
+                            {{ $filme->titulo }}
                         @else
+                    </p>
                             <form class="form-inline my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
                                 @csrf
-                                <input type="hidden" name="id" value="{{ $filme->id ?? '' }}">
-                                <input type="hidden" name="editando" value="titulo">
-                                <input type="text" class="form-control mr-2" placeholder="Digite algo aqui" name="inputText" value="{{ old('inputText', $filme->titulo ?? '') }}">
-                                <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Gravar</button>
+                                <input type="text" class="form-control mr-2" placeholder="Digite algo aqui" name="inputText">
+                                <input type="hidden"  name="editando" value="titulo">
+                                <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" name="id" value="{{ $filme->id }}">Gravar</button>
                             </form>
                         @endif
-                    </p>
                 </div>
             </div>
-
             <div class="row mb-2">
                 <div class="col-auto d-flex ">
                     <form class="form-inline my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
                         @csrf
                         <input type="hidden" name="editar" value="genero">
-                        <input type="hidden" name="id" value="{{ $filme->id ?? '' }}">
-                        <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Editar</button>
+                        <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" name="id" value="{{ $filme->id }}">Editar</button>
                     </form>
                     <p class="mb-0 ml-2"><strong>Gênero:</strong>
                         @if ($editar != 'genero')
-                            {{ $filme->genero_code ?? 'Gênero não disponível' }}
-                        @else
+                        {{ $filme->genero_code }}</p>
+                        @endif
+                        @if ($editar == 'genero')
                             <form class="form-inline my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
                                 @csrf
-                                <input type="hidden" name="id" value="{{ $filme->id ?? '' }}">
-                                <input type="hidden" name="editando" value="genero">
                                 <select class="form-control mr-2" name="inputText">
                                     <option value="ACTION">Ação</option>
                                     <option value="ADVENTURE">Aventura</option>
@@ -68,96 +62,112 @@
                                     <option value="HISTORY">Histórico</option>
                                     <option value="HORROR">Terror</option>
                                     <option value="MISTERY">Mistério</option>
-                                    <option value="MUSICAL">Musical</option>
-                                    <option value="ROMANCE">Romance</option>
+                                    <option value="MUSICAL">ROMANCE</option>
                                     <option value="SCI-FI">Ficção científica</option>
                                     <option value="SILENT">Filme silencioso</option>
-                                    <option value="SUPERHERO">Super heróis</option>
+                                    <option value="SUPERHERO">Super herois</option>
                                     <option value="THRILLER">Suspense</option>
-                                    <option value="WAR">Guerra</option>
+                                    <option value="WAR">Super Guerra</option>
                                     <option value="WESTERN">Western</option>
                                 </select>
-                                <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Gravar</button>
+                                <input type="hidden"  name="editando" value="genero">
+                                <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" name="id" value="{{ $filme->id }}">Gravar</button>
                             </form>
+
                         @endif
-                    </p>
                 </div>
             </div>
-
             <div class="row mb-2">
                 <div class="col-auto d-flex">
                     <form class="form-inline my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
                         @csrf
                         <input type="hidden" name="editar" value="ano">
-                        <input type="hidden" name="id" value="{{ $filme->id ?? '' }}">
-                        <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Editar</button>
+                        <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" name="id" value="{{ $filme->id }}">Editar</button>
                     </form>
                     <p class="mb-0 ml-2"><strong>Ano:</strong>
                         @if ($editar != 'ano')
-                            {{ $filme->ano ?? 'Ano não disponível' }}
-                        @else
+                        {{ $filme->ano }}</p>
+                        @endif
+                        @if ($editar == 'ano')
                             <form class="form-inline my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
                                 @csrf
-                                <input type="hidden" name="id" value="{{ $filme->id ?? '' }}">
-                                <input type="hidden" name="editando" value="ano">
-                                <input type="text" class="form-control mr-2" placeholder="Digite algo aqui" name="inputText" value="{{ old('inputText', $filme->ano ?? '') }}">
-                                <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Gravar</button>
+                                <input type="hidden"  name="editando" value="ano">
+                                <input type="text" class="form-control mr-2" placeholder="Digite algo aqui" name="inputText">
+                                <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" name="id" value="{{ $filme->id }}">Gravar</button>
                             </form>
                         @endif
-                    </p>
                 </div>
             </div>
-
             <div class="row mb-2">
                 <div class="col-auto d-flex ">
                     <form class="form-inline my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
                         @csrf
                         <input type="hidden" name="editar" value="sumario">
-                        <input type="hidden" name="id" value="{{ $filme->id ?? '' }}">
-                        <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Editar</button>
+                        <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" name="id" value="{{ $filme->id }}">Editar</button>
                     </form>
                     <p class="mb-0 ml-2"><strong>Sumário:</strong>
                         @if ($editar != 'sumario')
-                            {{ $filme->sumario ?? 'Sumário não disponível' }}
-                        @else
+                        {{ $filme->sumario }}</p>
+                        @endif
+                        @if ($editar == 'sumario')
                             <form class="form-inline my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
                                 @csrf
-                                <input type="hidden" name="id" value="{{ $filme->id ?? '' }}">
-                                <input type="hidden" name="editando" value="sumario">
-                                <input type="text" class="form-control mr-2" placeholder="{{ $filme->sumario ?? 'Insira o sumário' }}" name="inputText">
-                                <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Gravar</button>
+                                <input type="hidden"  name="editando" value="sumario">
+                                <input type="text" class="form-control mr-2" placeholder="{{ $filme->sumario }}" name="inputText">
+                                <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" name="id" value="{{ $filme->id }}">Gravar</button>
                             </form>
                         @endif
-                    </p>
                 </div>
             </div>
-
             <div class="row mb-2">
                 <div class="col-auto d-flex ">
                     <form class="form-inline my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
                         @csrf
                         <input type="hidden" name="editar" value="trailer_url">
-                        <input type="hidden" name="id" value="{{ $filme->id ?? '' }}">
-                        <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Editar</button>
+                        <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" name="id" value="{{ $filme->id }}">Editar</button>
                     </form>
                     <p class="mb-0 ml-2"><strong>Trailer:</strong>
                         @if ($editar != 'trailer_url')
-                            <a href="{{ $filme->trailer_url ?? '#' }}" target="_blank">Assistir ao Trailer</a>
-                        @else
+                        <a href="{{ $filme->trailer_url }}" target="_blank">Assistir ao Trailer</a></p>
+                        @endif
+                        @if ($editar == 'trailer_url')
+                    </a></p>
                             <form class="form-inline my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
                                 @csrf
-                                <input type="hidden" name="id" value="{{ $filme->id ?? '' }}">
-                                <input type="hidden" name="editando" value="url">
-                                <input type="text" class="form-control mr-2" placeholder="Insira o URL" name="inputText" value="{{ old('inputText', $filme->trailer_url ?? '') }}">
-                                <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Gravar</button>
+                                <input type="hidden"  name="editando" value="url">
+                                <input type="text" class="form-control mr-2" placeholder="Insira o url" name="inputText">
+                                <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" name="id" value="{{ $filme->id }}">Gravar</button>
                             </form>
                         @endif
-                    </p>
                 </div>
             </div>
-
-            <p><strong>Criado em:</strong> {{ $filme->created_at ?? 'Data não disponível' }}</p>
-            <p><strong>Atualizado em:</strong> {{ $filme->updated_at ?? 'Data não disponível' }}</p>
+            <div class="row mb-2">
+                <div class="col-auto d-flex ">
+                    <form class="form-inline my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
+                        @csrf
+                        <input type="hidden" name="editar" value="cartaz_url">
+                        <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" name="id" value="{{ $filme->id }}">Editar</button>
+                    </form>
+                    <p> <img src="{{ asset('caminho/para/cartazes/' . $filme->cartaz_url) }}" alt="{{ $filme->titulo }}"
+                        width="200"></p>
+                        @if ($editar == 'cartaz_url')
+                    </a></p>
+                            <form class="form-inline my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
+                                @csrf
+                                <input type="hidden"  name="editando" value="cartaz_url">
+                                <input type="text" class="form-control mr-2" placeholder="Insira o url" name="inputText">
+                                <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" name="id" value="{{ $filme->id }}">Gravar</button>
+                            </form>
+                        @endif
+                </div>
+            </div>
+            <p><strong>Criado em:</strong> {{ $filme->created_at }}</p>
+            <p><strong>Atualizado em:</strong> {{ $filme->updated_at }}</p>
         </div>
     </div>
+
+
+
+
+
 @endsection

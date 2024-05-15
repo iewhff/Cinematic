@@ -67,11 +67,12 @@ class FilmeController extends Controller
         // Obtém o valor do parâmetro 'id' da requisição
         $id = $request->input('id');
 
+
         // Verifica se o parâmetro 'id' foi fornecido
         if ($id) {
             // Consulta o filme com base no 'id'
             $filme = Filme::find($id);
-
+            $title = $filme->titulo;
             // Verifica se o filme foi encontrado
             if ($filme) {
 
@@ -85,7 +86,11 @@ class FilmeController extends Controller
 
 
                 // Se o filme foi encontrado, retorna a view com os detalhes do filme
-                return view('filme.detalhes', ['existeSessao' => $existeSessao, 'filme' => $filme]);
+                return view('filme.detalhes', [
+                    'title' => $title,
+                    'existeSessao' => $existeSessao,
+                    'filme' => $filme
+                ]);
             } else {
                 // Se o filme não foi encontrado, redireciona de volta com uma mensagem de erro
                 return redirect()->back()->with('error', 'Nenhum filme encontrado com esse ID.');

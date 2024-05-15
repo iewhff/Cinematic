@@ -10,6 +10,10 @@ h1 {
     margin-left: 100px;
 }
 
+.footer {
+    flex-shrink: 0; /* Impede que o rodapé encolha */
+}
+
 ul.pagination li {
     margin-top: 50px;
     /* margin-bottom: 50px; */
