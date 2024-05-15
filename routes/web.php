@@ -27,10 +27,7 @@ use App\Http\Controllers\HistoricoController;
 */
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::get('/', [FilmeController::class, 'welcome'])->name('welcome');
 
 Route::get('/filmes', [FilmeController::class, 'index'])->name('filmes');
 Route::get('/detalhes', [FilmeController::class, 'detalhes'])->name('detalhes');

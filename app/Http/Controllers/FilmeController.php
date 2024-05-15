@@ -12,7 +12,8 @@ use App\Models\Genero;
 use Illuminate\Pagination\Paginator;
 use Carbon\Carbon;
 use App\Models\Sessao;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class FilmeController extends Controller
 {
@@ -104,4 +105,61 @@ class FilmeController extends Controller
     public function filtro(Request $request)
     {
     }
-}
+
+    public function welcome(Request $request)
+    {
+        // Obter a data e hora atual
+        $dataAtual = Carbon::now()->toDateString();
+        $horaAtual = Carbon::now()->toTimeString();
+        // Obter os sessao_id baseado no cliente_id
+        $sessaoIds = DB::table('bilhetes')
+            ->where('cliente_id', Auth::user()->id)
+            ->pluck('sessao_id');
+
+        // Verificar se encontrou algum resultado
+        if ($sessaoIds->isEmpty()) {
+            $filmes=[];
+        } else {
+            // Obter os gêneros mais frequentes para as sessões do cliente
+            $topGeneros = DB::table('sessoes')
+                ->join('filmes', 'sessoes.filme_id', '=', 'filmes.id')
+                ->select('filmes.genero_code', DB::raw('count(*) as total'))
+                ->whereIn('sessoes.id', $sessaoIds)
+                ->groupBy('filmes.genero_code')
+                ->orderByDesc('total')
+                ->limit(5)
+                ->get()
+                ->pluck('genero_code') // Pluck to get an array of genero_code
+                ->toArray();
+
+
+            // Obter os filmes que atendem aos critérios
+            $filmes = DB::table('filmes')
+                ->join('sessoes', 'filmes.id', '=', 'sessoes.filme_id')
+                ->select('filmes.*') // Seleciona todas as colunas da tabela filmes
+                ->whereIn('filmes.genero_code', $topGeneros)
+                ->whereDate('sessoes.data', '>=', $dataAtual)
+                ->whereTime('sessoes.horario_inicio', '>', $horaAtual)
+                ->distinct()
+                ->get();
+
+
+        }
+
+         // Consulta para obter os top 5 filmes com base no número de bilhetes vendidos, com sessões a partir de hoje
+         $topFilmes = DB::table('filmes')
+         ->join('sessoes', 'filmes.id', '=', 'sessoes.filme_id')
+         ->join('bilhetes', 'sessoes.id', '=', 'bilhetes.sessao_id')
+         ->select('filmes.*', DB::raw('COUNT(bilhetes.id) as total_bilhetes'))
+         ->whereDate('sessoes.data', '>=', $dataAtual)
+         ->whereTime('sessoes.horario_inicio', '>=', $horaAtual)
+         ->groupBy('filmes.id')
+         ->orderByDesc('total_bilhetes')
+         ->limit(5)
+         ->get();
+
+        // O título da página
+        $title = 'Filmes';
+        return view('welcome', compact('filmes','topFilmes', 'title'));
+    }
+    }

@@ -95,7 +95,7 @@
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-custom-orange">
-        <a class="navbar-brand" href="#">Cinematic</a>
+        <a class="navbar-brand" href="/">Cinematic</a>
         <div class="navbar-collapse" id="navbarSupportedContent">
             <form class="form-inline my-2 my-lg-0" action="{{ route('pesquisa') }}" method="POST">
                 @csrf
@@ -255,6 +255,15 @@ $currentUrl = url()->current(); @endphp
     <div class="container base">
         @yield('content')
     </div>
+            <!-- Rodapé -->
+            <footer class="mt-auto base">
+                <div class="container text-center">
+                    <p>Feito por Artur Negru, João Bastos e João Ramos.</p>
+                    <p>A cringy Cinema.</p>
+                </div>
+            </footer>
+
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
