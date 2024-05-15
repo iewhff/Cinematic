@@ -7,6 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title')</title>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.14/lottie.min.js" integrity="sha384-H4W8nPR+5KOB07ztIflXJUMkq5Qk5wOIFCxYO/u53y8BOn/Eu3HHbTZFlGLNz59M" crossorigin="anonymous">
+
+let img1 = '/imgs/night/icons8-sun-50.png';
+let img2 = '/imgs/night/icons8-moon-symbol-50.png';
+    </script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
@@ -83,6 +89,21 @@
                 width: 100%;
             }
         }
+
+        #icon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+}
+
 
     </style>
 
@@ -253,7 +274,13 @@ $currentUrl = url()->current(); @endphp
             </ul>
         </div>
     </nav><br>
-    <button id="toggle-dark-mode" class="btn btn-primary" style="margin-left: 15px;">Modo Noturno</button>
+
+    <button id="toggle-dark-mode" class="btn btn-primary" style="margin-left: 15px;">
+        <img id="icon" alt="Toggle Dark Mode" style="width: 24px; height: 24px; margin-right: 8px;">
+        <span id="toggle-text">Modo Noturno</span>
+    </button>
+
+
     <div class="container base">
         @yield('content')
     </div>
@@ -269,12 +296,12 @@ $currentUrl = url()->current(); @endphp
 
 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
 
     <script>
-        // ao mudar de foco as animacoes param, para consumir menos recursos e para nao aparecerem demasiadas pipocas quando voltar ao foco
+'use strict';
+// ao mudar de foco as animacoes param, para consumir menos recursos e para nao aparecerem demasiadas pipocas quando voltar ao foco
         let animationsActive = true;
         let animationFrameId;
         let intervalId;
@@ -367,7 +394,7 @@ $currentUrl = url()->current(); @endphp
             addImagesContinuously();
         });
 
-        //Ponteiro rato///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Ponteiro rato///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         document.addEventListener('click', (event) => {
     createLinesAndDots(event.clientX, event.clientY);
@@ -429,58 +456,66 @@ function createLinesAndDots(x, y) {
         }, 1000);
         }
 }
+
+// Dark Mode///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+const img1 = '/imgs/night/icons8-sun-50.png';
+const img2 = '/imgs/night/icons8-moon-symbol-50.png';
+
+
 document.addEventListener('DOMContentLoaded', (event) => {
-    const toggleButton = document.getElementById('toggle-dark-mode');
-    const body = document.body;
-    const footer = document.querySelector('footer');
-    const table = document.querySelector('table');
+        const toggleButton = document.getElementById('toggle-dark-mode');
+        const body = document.body;
+        const footer = document.querySelector('footer');
+        const table = document.querySelector('table');
+        const icon = document.getElementById('icon');
+        const toggleText = document.getElementById('toggle-text');
 
-    // Função para aplicar ou remover a classe dark-mode
-    function applyDarkMode(enabled) {
-        if (enabled) {
-            body.classList.add('dark-mode');
-            footer.classList.add('dark-mode');
-            table.classList.add('dark-mode');
-            toggleButton.textContent = 'Modo Claro';
-        } else {
-            body.classList.remove('dark-mode');
-            footer.classList.remove('dark-mode');
-            table.classList.remove('dark-mode');
-            toggleButton.textContent = 'Modo Noturno';
+        // Função para aplicar ou remover a classe dark-mode
+        function applyDarkMode(enabled) {
+            if (enabled) {
+                body.classList.add('dark-mode');
+                footer.classList.add('dark-mode');
+                table.classList.add('dark-mode');
+                icon.src =img1;// Caminho para o ícone do sol
+                toggleText.textContent = 'Modo Claro';
+            } else {
+                body.classList.remove('dark-mode');
+                footer.classList.remove('dark-mode');
+                table.classList.remove('dark-mode');
+                icon.src =img2;// Caminho para o ícone da lua
+                toggleText.textContent = 'Modo Noturno';
+            }
         }
-    }
 
-    // Detecta se o browser está em modo noturno
-    const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        // Detecta se o browser está em modo noturno
+        const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-    // Verifica o estado do modo noturno na sessionStorage
-    const darkMode = sessionStorage.getItem('darkMode');
+        // Verifica o estado do modo noturno na sessionStorage
+        const darkMode = sessionStorage.getItem('darkMode');
 
-    if (darkMode === 'enabled' || (darkMode !== 'disabled' && prefersDarkScheme)) {
-        applyDarkMode(true);
-    } else {
-        applyDarkMode(false);
-    }
-
-    toggleButton.addEventListener('click', function () {
-        body.classList.toggle('dark-mode');
-        footer.classList.toggle('dark-mode');
-        table.classList.toggle('dark-mode');
-
-        if (body.classList.contains('dark-mode')) {
-            sessionStorage.setItem('darkMode', 'enabled');
-            this.textContent = 'Modo Claro';
+        if (darkMode === 'enabled' || (darkMode !== 'disabled' && prefersDarkScheme)) {
+            applyDarkMode(true);
         } else {
-            sessionStorage.setItem('darkMode', 'disabled');
-            this.textContent = 'Modo Noturno';
+            applyDarkMode(false);
         }
+
+        toggleButton.addEventListener('click', function () {
+            const isDarkMode = body.classList.toggle('dark-mode');
+            footer.classList.toggle('dark-mode');
+            table.classList.toggle('dark-mode');
+
+            if (isDarkMode) {
+                sessionStorage.setItem('darkMode', 'enabled');
+                icon.src = '/path/to/icons8-sun-50.png'; // Caminho para o ícone do sol
+                toggleText.textContent = 'Modo Claro';
+            } else {
+                sessionStorage.setItem('darkMode', 'disabled');
+                icon.src = '/path/to/icons8-moon-symbol-50.png'; // Caminho para o ícone da lua
+                toggleText.textContent = 'Modo Noturno';
+            }
+        });
     });
-});
-
-
-
-
-
 
 
         // Inicializar as funções
@@ -491,6 +526,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
         addImagesContinuously();
         addImagesContinuously();
     </script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>
