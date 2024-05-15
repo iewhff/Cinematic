@@ -12,6 +12,9 @@
                     width="200"></p>
             <p><strong>Sumário:</strong> {{ $filme->sumario }}</p>
             <p><strong>Trailer:</strong> <a href="{{ $filme->trailer_url }}" target="_blank">Assistir ao Trailer</a></p>
+            <div class="video-container">
+                <iframe src="{{ $filme->trailer_url }}" frameborder="0" allowfullscreen></iframe>
+            </div>
             <p><strong>Criado em:</strong> {{ $filme->created_at }}</p>
             <p><strong>Atualizado em:</strong> {{ $filme->updated_at }}</p>
         </div>

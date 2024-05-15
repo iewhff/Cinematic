@@ -97,14 +97,9 @@ tr:nth-child(odd) td {
 
 /* Estilos para as células dos dados nas linhas pares */
 tr:nth-child(even) td {
-    background-color: #fff;
+    background-color: #ffffff92;
 }
 
-/* Estilos para realçar a linha ao passar o cursor */
-tr:hover {
-    background-color: #ffcc00eb !important;
-    /* Cor de fundo ao passar o cursor */
-}
 .base {
     background-color: rgba(128, 128, 128, 0.5);
     margin: 0 20%;
@@ -701,4 +696,22 @@ ul.pagination li a {
     background-color: #ffcc0000 !important;
     /* Cor de fundo */
     border: 1px solid #000000 !important;
+}
+
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    height: 0;
+    overflow: hidden;
+    max-width: 100%;
+    background: #000;
+    border-radius: 15px; /* Cantos arredondados */
+}
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 15px; /* Cantos arredondados no iframe também */
 }

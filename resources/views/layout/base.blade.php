@@ -259,8 +259,11 @@ $currentUrl = url()->current(); @endphp
     </div>
     <footer class="mt-auto base">
         <div class="container text-center">
+
+            <hr>
             <p>Feito por Artur Negru, João Bastos e João Ramos.</p>
-            <p>A cringy Cinema.</p>
+            <p>A ideia do design é ser algo infantil e divertido e que crie uma memoria de utilização.</p>
+            <hr>
         </div>
     </footer>
 
@@ -431,13 +434,32 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const body = document.body;
     const footer = document.querySelector('footer');
     const table = document.querySelector('table');
+
+    // Função para aplicar ou remover a classe dark-mode
+    function applyDarkMode(enabled) {
+        if (enabled) {
+            body.classList.add('dark-mode');
+            footer.classList.add('dark-mode');
+            table.classList.add('dark-mode');
+            toggleButton.textContent = 'Modo Claro';
+        } else {
+            body.classList.remove('dark-mode');
+            footer.classList.remove('dark-mode');
+            table.classList.remove('dark-mode');
+            toggleButton.textContent = 'Modo Noturno';
+        }
+    }
+
+    // Detecta se o browser está em modo noturno
+    const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    // Verifica o estado do modo noturno na sessionStorage
     const darkMode = sessionStorage.getItem('darkMode');
 
-    if (darkMode === 'enabled') {
-        body.classList.add('dark-mode');
-        footer.classList.add('dark-mode');
-        table.classList.add('dark-mode');
-        toggleButton.textContent = 'Modo Claro';
+    if (darkMode === 'enabled' || (darkMode !== 'disabled' && prefersDarkScheme)) {
+        applyDarkMode(true);
+    } else {
+        applyDarkMode(false);
     }
 
     toggleButton.addEventListener('click', function () {
@@ -454,6 +476,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
     });
 });
+
 
 
 
