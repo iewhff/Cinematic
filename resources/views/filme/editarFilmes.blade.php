@@ -2,6 +2,26 @@
 @section('title', $title)
 
 @section('content')
+
+@php
+
+// Função para remover espaços
+function processString($string) {
+    return str_replace(' ', '', $string);
+}
+
+// Função para substituir espaços por underscores
+function replaceSpacesWithUnderscore($string) {
+    return str_replace(' ', '_', $string);
+}
+
+// Função para remover o primeiro espaço e substituir os seguintes por underscores
+function removeFirstSpaceAndReplaceOthers($string) {
+    $string = preg_replace('/\s/', '_', $string, 1); // Remove o primeiro espaço
+    return str_replace(' ', '_', $string); // Substitui os espaços restantes por underscores
+}
+
+@endphp
     <br>
     <div class="container">
         <div class="row justify-content-between">
@@ -43,8 +63,33 @@
                 <td>{{ $um_filme->ano }}</td>
                 <td class="cartaz-cell">
                     {{-- Verifica se existe um cartaz_url --}}
-                    @if ($um_filme->cartaz_url)
-                        <img src="{{ asset('public/cartazes/' . $um_filme->cartaz_url) }}" height="30px" width="30px" />
+                    @php
+
+
+                    $originalString = $um_filme->titulo.'.jpg';
+                    $processedString = processString($originalString);
+                    $underscoredString = replaceSpacesWithUnderscore($originalString);
+                    $modifiedString = removeFirstSpaceAndReplaceOthers($originalString);
+
+                    // Caminhos de imagem para verificar
+                    $imagePath = public_path('imgs/cartazes/' . $processedString);
+                    $imagePathUnderscore = public_path('imgs/cartazes/' . $underscoredString);
+                    $imagePathModified = public_path('imgs/cartazes/' . $modifiedString);
+
+                    // Verifica se o arquivo existe e é legível
+                    if (file_exists($imagePath) && is_readable($imagePath)) {
+                        $finalImagePath = 'imgs/cartazes/' . $processedString;
+                    } elseif (file_exists($imagePathUnderscore) && is_readable($imagePathUnderscore)) {
+                        $finalImagePath = 'imgs/cartazes/' . $underscoredString;
+                    } elseif (file_exists($imagePathModified) && is_readable($imagePathModified)) {
+                        $finalImagePath = 'imgs/cartazes/' . $modifiedString;
+                    } else {
+                        $finalImagePath = null;
+                    }
+                    @endphp
+
+                    @if ($finalImagePath)
+                        <img src="{{ asset($finalImagePath) }}" width="200px" />
                     @endif
 
                     {{-- Verifica se há uma imagem correspondente

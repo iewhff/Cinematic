@@ -34,6 +34,7 @@ Route::get('/detalhes', [FilmeController::class, 'detalhes'])->name('detalhes');
 
 Route::middleware(['auth', 'admin'])->get('/editarFilmes', [EditarFilmesController::class, 'index'])->name('editarFilmes');
 Route::middleware(['auth', 'admin'])->get('/editar', [EditarFilmesController::class, 'editar'])->name('editar');
+Route::middleware(['auth', 'admin'])->post('/editar', [EditarFilmesController::class, 'editar'])->name('editar');
 Route::middleware(['auth', 'admin'])->get('/gravarEditar', [EditarFilmesController::class, 'gravarEditar'])->name('gravarEditar');
 Route::middleware(['auth', 'admin'])->post('/adicionar', [EditarFilmesController::class, 'adicionar'])->name('adicionar');
 Route::middleware(['auth', 'admin'])->get('/adicionarFilme', [EditarFilmesController::class, 'adicionarFilme'])->name('adicionarFilme');

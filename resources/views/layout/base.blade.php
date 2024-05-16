@@ -245,7 +245,7 @@
         <div class=" text-center">
             <hr>
             <p>Feito por Artur Negru, João Bastos e João Ramos.</p>
-            <p>A ideia do design é ser algo infantil e divertido e que crie uma memória de utilização.</p>
+            <p>A ideia do design é ser divertido e que crie uma memória de utilização.</p>
             <hr>
         </div>
     </footer>
@@ -467,6 +467,10 @@
         // Inicializar as funções
         createAndPositionImages();
         animateImages();
+        addImagesContinuously();
+        addImagesContinuously();
+        addImagesContinuously();
+        addImagesContinuously();
         addImagesContinuously();
     </script>
 

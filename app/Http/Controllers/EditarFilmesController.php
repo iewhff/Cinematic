@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
 class EditarFilmesController extends Controller
 {
@@ -202,12 +203,14 @@ class EditarFilmesController extends Controller
         }
 
 
-        if ($editando == 'cartaz_url') {
+        if ($request->input('editando') == 'cartaz_url') {
             $request->validate([
                 'id' => 'required|exists:filmes,id', // Verifica se o ID existe na tabela 'filmes'
-                'inputText' => 'required|string|max:255|min:10',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             ], [
-                'inputText.required' => 'Sumario é obrigatório.',
+                'image.required' => 'Imagem é obrigatória.',
+                'id.required' => 'ID é obrigatório.',
+                'id.exists' => 'O ID informado não existe.',
             ]);
 
             DB::beginTransaction();
@@ -216,20 +219,30 @@ class EditarFilmesController extends Controller
                 // Encontre o filme pelo ID
                 $filme = Filme::findOrFail($request->input('id'));
 
-                // Atualize o título do filme
-                // $filme->update([
-                //     'sumario' => $request->input('inputText'),
-                // ]);
+                // Gere o nome da imagem com underscores no lugar dos espaços
+                $imageName = str_replace(' ', '_', $filme->titulo) . '.jpg';
 
-                DB::table('filmes')->where('id', $id)
-                ->update(['cartaz_url' => $inputText]);
+                // Mova a imagem para o local especificado
+                $request->file('image')->move(public_path('imgs/cartazes'), $imageName);
+
+                // Atualize o campo 'cartaz_url' do filme
+                $filme->update(['cartaz_url' => $imageName]);
 
                 DB::commit();
 
+                // Redirecione para uma página de sucesso ou faça outra ação desejada
+                return redirect()->route('filmes.index')->with('success', 'Cartaz atualizado com sucesso!');
             } catch (\Exception $e) {
-                return view('filme.editar', compact('title','filme','editar'));
+                DB::rollBack();
+
+                // Log de erro para depuração
+                Log::error('Erro ao atualizar cartaz do filme: ' . $e->getMessage());
+
+                // Redirecione de volta com uma mensagem de erro
+                return redirect()->back()->with('error', 'Erro ao atualizar o cartaz. Por favor, tente novamente.');
             }
         }
+
 
 
         return view('filme.editar', compact('title','filme','editar'));
