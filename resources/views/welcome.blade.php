@@ -62,7 +62,7 @@
         }
         @endphp
 
-        <tr style="background-image: url('{{ asset($finalImagePath) }}'); background-size: cover;">
+<tr style="{{ $finalImagePath ? 'background-image: url(' . asset($finalImagePath) . '); background-size: cover; background-position: center center;' : '' }}">
                 <td>{{ $um_filme->titulo }}</td>
                 <td>{{ $um_filme->genero_code }}</td>
                 <td>{{ $um_filme->ano }}</td>
@@ -70,9 +70,9 @@
                     {{-- Verifica se existe um cartaz_url --}}
 
 
-                    @if ($finalImagePath)
+                    {{-- @if ($finalImagePath)
                         <img src="{{ asset($finalImagePath) }}" width="200px" />
-                    @endif
+                    @endif --}}
 
                     {{-- Verifica se há uma imagem correspondente
                     @foreach ($imagens as $uma_imagem)
@@ -148,17 +148,17 @@
         }
         @endphp
 
-        <tr style="background-image: url('{{ asset($finalImagePath) }}'); background-size: cover;">
+<tr style="{{ $finalImagePath ? 'background-image: url(' . asset($finalImagePath) . '); background-size: cover; background-position: center center;' : '' }}">
                 <td>{{ $um_filme->titulo }}</td>
                 <td>{{ $um_filme->genero_code }}</td>
                 <td>{{ $um_filme->ano }}</td>
                 <td class="cartaz-cell">
                     {{-- Verifica se existe um cartaz_url --}}
 
-
+{{--
                     @if ($finalImagePath)
                         <img src="{{ asset($finalImagePath) }}" width="200px" />
-                    @endif
+                    @endif --}}
 
                     {{-- Verifica se há uma imagem correspondente
                     @foreach ($imagens as $uma_imagem)
