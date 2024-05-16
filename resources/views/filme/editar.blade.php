@@ -13,7 +13,7 @@
         <div class="col-md-12">
             <div class="row mb-2">
                 <div class="col-auto d-flex ">
-                    <form class="form-inline my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
+                    <form class="my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
                         @csrf
                         <input type="hidden" name="editar" value="titulo">
                         <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" name="id" value="{{ $filme->id }}">Editar</button>
@@ -23,7 +23,7 @@
                             {{ $filme->titulo }}
                         @else
                     </p>
-                            <form class="form-inline my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
+                            <form class="my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
                                 @csrf
                                 <input type="text" class="form-control mr-2" placeholder="Digite algo aqui" name="inputText">
                                 <input type="hidden"  name="editando" value="titulo">
@@ -34,7 +34,7 @@
             </div>
             <div class="row mb-2">
                 <div class="col-auto d-flex ">
-                    <form class="form-inline my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
+                    <form class=" my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
                         @csrf
                         <input type="hidden" name="editar" value="genero">
                         <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" name="id" value="{{ $filme->id }}">Editar</button>
@@ -44,7 +44,7 @@
                         {{ $filme->genero_code }}</p>
                         @endif
                         @if ($editar == 'genero')
-                            <form class="form-inline my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
+                            <form class=" my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
                                 @csrf
                                 <select class="form-control mr-2" name="inputText">
                                     <option value="ACTION">Ação</option>
@@ -79,7 +79,7 @@
             </div>
             <div class="row mb-2">
                 <div class="col-auto d-flex">
-                    <form class="form-inline my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
+                    <form class=" my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
                         @csrf
                         <input type="hidden" name="editar" value="ano">
                         <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" name="id" value="{{ $filme->id }}">Editar</button>
@@ -89,7 +89,7 @@
                         {{ $filme->ano }}</p>
                         @endif
                         @if ($editar == 'ano')
-                            <form class="form-inline my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
+                            <form class=" my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
                                 @csrf
                                 <input type="hidden"  name="editando" value="ano">
                                 <input type="text" class="form-control mr-2" placeholder="Digite algo aqui" name="inputText">
@@ -100,7 +100,7 @@
             </div>
             <div class="row mb-2">
                 <div class="col-auto d-flex ">
-                    <form class="form-inline my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
+                    <form class=" my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
                         @csrf
                         <input type="hidden" name="editar" value="sumario">
                         <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" name="id" value="{{ $filme->id }}">Editar</button>
@@ -110,7 +110,7 @@
                         {{ $filme->sumario }}</p>
                         @endif
                         @if ($editar == 'sumario')
-                            <form class="form-inline my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
+                            <form class=" my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
                                 @csrf
                                 <input type="hidden"  name="editando" value="sumario">
                                 <input type="text" class="form-control mr-2" placeholder="{{ $filme->sumario }}" name="inputText">
@@ -121,7 +121,7 @@
             </div>
             <div class="row mb-2">
                 <div class="col-auto d-flex ">
-                    <form class="form-inline my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
+                    <form class=" my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
                         @csrf
                         <input type="hidden" name="editar" value="trailer_url">
                         <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" name="id" value="{{ $filme->id }}">Editar</button>
@@ -132,7 +132,7 @@
                         @endif
                         @if ($editar == 'trailer_url')
                     </a></p>
-                            <form class="form-inline my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
+                            <form class=" my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
                                 @csrf
                                 <input type="hidden"  name="editando" value="url">
                                 <input type="text" class="form-control mr-2" placeholder="Insira o url" name="inputText">
@@ -143,7 +143,7 @@
             </div>
             <div class="row mb-2">
                 <div class="col-auto d-flex ">
-                    <form class="form-inline my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
+                    <form class=" my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
                         @csrf
                         <input type="hidden" name="editar" value="cartaz_url">
                         <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" name="id" value="{{ $filme->id }}">Editar</button>
@@ -152,7 +152,7 @@
                         width="200"></p>
                         @if ($editar == 'cartaz_url')
                     </a></p>
-                            <form class="form-inline my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
+                            <form class=" my-2 my-lg-0" action="{{ route('editar') }}" method="GET">
                                 @csrf
                                 <input type="hidden"  name="editando" value="cartaz_url">
                                 <input type="text" class="form-control mr-2" placeholder="Insira o url" name="inputText">
