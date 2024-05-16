@@ -212,7 +212,7 @@
                             @enderror
                         </div>
                         <input type="hidden" name="id" value="{{ $filme->id }}">
-                        <button type="submit" class="btn btn-primary mt-3">Upload</button>
+                        <button type="submit" class="btn btn-primary mt-3">Gravar</button>
                     </form>
 
                         @endif
