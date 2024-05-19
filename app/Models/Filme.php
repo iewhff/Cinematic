@@ -17,4 +17,9 @@ class Filme extends Model
         'sumario',
         'trailer_url',
     ];
+
+    public function sessoes()
+    {
+        return $this->hasMany(Sessao::class);
+    }
 }

@@ -28,9 +28,9 @@ use App\Http\Controllers\HistoricoController;
 
 
 Route::get('/', [FilmeController::class, 'welcome'])->name('welcome');
-
 Route::get('/filmes', [FilmeController::class, 'index'])->name('filmes');
 Route::get('/detalhes', [FilmeController::class, 'detalhes'])->name('detalhes');
+Route::get('/sessoes', [FilmeController::class, 'show'])->name('sessoes');
 
 Route::middleware(['auth', 'admin'])->get('/editarFilmes', [EditarFilmesController::class, 'index'])->name('editarFilmes');
 Route::middleware(['auth', 'admin'])->get('/editar', [EditarFilmesController::class, 'editar'])->name('editar');
@@ -55,6 +55,7 @@ Route::post('/carrinhoCompras', [CarrinhoComprasController::class, 'adicionarCar
 Route::get('/carrinhoCompras/{id}', [CarrinhoComprasController::class, 'carrinhoCompras']);
 
 Route::get('/historico', [HistoricoController::class, 'historico'])->name('historico');
+
 Route::get('/downloadBilhetePdf/{id}', [BilheteController::class, 'downloadBilhetePdf'])->name('downloadBilhetePdf');
 Route::get('/downloadReciboPdf/{id}', [BilheteController::class, 'downloadReciboPdf'])->name('downloadReciboPdf');
 

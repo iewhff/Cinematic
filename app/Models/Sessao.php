@@ -9,6 +9,8 @@ class Sessao extends Model
 {
     use HasFactory;
     protected $table = 'sessoes';
+    protected $dates = ['data']; // Atributo de data para a sessão
+
     public function bilhetes()
     {
         //para usar na estatistica

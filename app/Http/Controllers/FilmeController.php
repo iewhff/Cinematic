@@ -11,6 +11,7 @@ use App\Models\Filme;
 use App\Models\Genero;
 use Illuminate\Pagination\Paginator;
 use Carbon\Carbon;
+use App\Models\Sessoes;
 use App\Models\Sessao;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -160,6 +161,42 @@ class FilmeController extends Controller
 
         // O título da página
         $title = 'Filmes';
-        return view('welcome', compact('filmes','topFilmes', 'title'));
+        return view('filme.sessoes', compact('filmes','topFilmes', 'title'));
     }
+
+    
+    public function show(Request $request)
+    {
+        $dataHoje = Carbon::now();
+        $dataAmanha = Carbon::tomorrow();
+        $title = 'Sessoes abertas';
+        $opcoes = Genero::all();
+
+        $directory = storage_path('app/public/imagens');
+        $files = Storage::files($directory);
+
+        $imagens = new Collection();
+
+        foreach ($files as $file) {
+            $path = storage_path('app/public/cartazes' . $file);
+            $imagem = file_get_contents($path);
+            $nomeFicheiro = basename($file);
+
+            $imagens[] = [
+                'nomeFicheiro' => $nomeFicheiro,
+                'imagem' => $imagem
+            ];
+        }
+
+        $sessoes = Sessao::whereDate('data', '>=', $dataHoje)
+            ->whereDate('data', '<=', $dataAmanha)
+            ->get();
+
+        $emExibicao = Filme::whereIn('id', $sessoes->pluck('filme_id'))
+            ->paginate(4);
+
+
+
+        return view('filme.sessoes')->with('filmes', $emExibicao)->with('title', $title)->with('opcao', $opcoes)->with('imagens');
     }
+}
