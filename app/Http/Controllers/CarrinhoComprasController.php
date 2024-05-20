@@ -8,6 +8,7 @@ use App\Models\Filme;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Models\Lugar;
+use Illuminate\Support\Facades\Session;
 
 class CarrinhoComprasController extends Controller
 {
@@ -64,43 +65,25 @@ class CarrinhoComprasController extends Controller
 
     public function adicionarCarrinho(Request $request)
     {
-        $id = $request->input('id');  // Suponho que $id seja o filme_id ou algum identificador do item a ser adicionado
-        $nmrLugares = $request->input('quantity', 1);  // Número de lugares selecionados pelo usuário, com valor padrão de 1
 
-        // Obter todas as sessões do filme especificado
-        $sessoes = Sessao::where('filme_id', $id)->get();
-
-        // Obter todos os sala_id das sessões
-        $salaIds = $sessoes->pluck('sala_id');
-
-        // Obter todos os lugares que têm um sala_id correspondente
-        $lugares = Lugar::whereIn('sala_id', $salaIds)
-                        ->select('fila', 'posicao')
-                        ->get();
-
+        $id = $request->input('id');
         // Inicializar o carrinho como um array se ainda não estiver definido
         $carrinho = session()->get('carrinho', []);
 
-        for ($i = 0; $i < $nmrLugares; $i++) {
-            if (isset($lugares[$i])) {
-                $lugar = $lugares[$i];
-                $naoExisteNoCarrinho = true;
+        $naoExisteNoCarrinho = true;
 
-                // Verificar se o item já existe no carrinho pelo ID e lugar
-                foreach ($carrinho as $item) {
-                    if (isset($item['lugar']) && $item['id'] == $id && $item['lugar']['fila'] == $lugar->fila && $item['lugar']['posicao'] == $lugar->posicao) {
-                        $naoExisteNoCarrinho = false;
-                        break;
-                    }
-                }
-
-                // Se o item não existe no carrinho, adiciona o novo item
-                if ($naoExisteNoCarrinho) {
-                    // Adiciona o novo item ao carrinho
-                    $novoBilhete = ['id' => $id, 'lugar' => ['fila' => $lugar->fila, 'posicao' => $lugar->posicao]];
-                    $carrinho[] = $novoBilhete;  // Usar a sintaxe de array para adicionar ao carrinho
-                }
+        foreach ($carrinho as $item) {
+            if ($item['id'] == $id) {
+                $naoExisteNoCarrinho = false;
+                break;
             }
+        }
+
+            // Se o item não existe no carrinho, adiciona o novo item
+            if ($naoExisteNoCarrinho) {
+            // Adiciona o novo item ao carrinho
+            $novoBilhete = ['id' => $id];
+            $carrinho[] = $novoBilhete;  // Usar a sintaxe de array para adicionar ao carrinho
         }
 
         // Atualizar o carrinho na sessão
@@ -140,5 +123,11 @@ class CarrinhoComprasController extends Controller
 
         return redirect()->route('carrinhoCompras');
         // antes : return $this->carrinhoCompras(); isto NAO evitava o reenvio do formulario
+    }
+
+    public function limparCarrinho()
+    {
+        Session::forget('carrinho');
+        return response()->json(['message' => 'Carrinho limpo com sucesso']);
     }
 }

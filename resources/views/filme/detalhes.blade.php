@@ -81,14 +81,6 @@
                         @csrf
                         <input type="hidden" name="id" value="{{ $filme->id }}">
                         <button type="submit" class="botao btn btn-outline-dark my-2 my-sm-0">Adicionar ao Carrinho de Compras</button>
-                        <div class="form-group">
-                            <label for="quantity">Quantidade:</label>
-                            <select name="quantity" id="quantity" class="form-control">
-                                @for ($i = 1; $i <= 12; $i++)
-                                    <option value="{{ $i }}">{{ $i }}</option>
-                                @endfor
-                            </select>
-                        </div>
                     </form>
 
                 </div>

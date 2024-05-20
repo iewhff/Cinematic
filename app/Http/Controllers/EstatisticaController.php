@@ -22,11 +22,16 @@ class EstatisticaController extends Controller
             ->orderByDesc('total')
             ->first();
 
-        // O mês com o maior número de registros
-        $mesMaisRegistros = $mesesComRegistros->mes;
-        $mesMaisRegistrosString =  ucfirst(Carbon::create()->locale('pt_BR')->month($mesMaisRegistros)->monthName);
-        $totalRegistrosMesMaisRegistros = $mesesComRegistros->total;
-        // O número total de registros para o mês com o maior número
+            if($mesesComRegistros == null){
+                $mesMaisRegistrosString = 'Nenhum mês';
+                $totalRegistrosMesMaisRegistros = 0;
+            }else{
+                // O mês com o maior número de registros
+                $mesMaisRegistros = $mesesComRegistros->mes;
+                $mesMaisRegistrosString =  ucfirst(Carbon::create()->locale('pt_BR')->month($mesMaisRegistros)->monthName);
+                $totalRegistrosMesMaisRegistros = $mesesComRegistros->total;
+                // O número total de registros para o mês com o maior número
+            }
 
         $clienteComMaisRecibos = Recibo::whereNotNull('cliente_id')
             ->select(DB::raw('COUNT(*) as total'), 'nome_cliente')
@@ -34,8 +39,13 @@ class EstatisticaController extends Controller
             ->orderByDesc('total')
             ->first();
 
-        $nomeClienteComMaisRecibos = $clienteComMaisRecibos->nome_cliente;
-        $comprasClienteComMaisRecibos = $clienteComMaisRecibos->total;
+        if($clienteComMaisRecibos == null){
+            $nomeClienteComMaisRecibos = 'Nenhum cliente';
+            $comprasClienteComMaisRecibos = 0;
+        }else{
+            $nomeClienteComMaisRecibos = $clienteComMaisRecibos->nome_cliente;
+            $comprasClienteComMaisRecibos = $clienteComMaisRecibos->total;
+        }
 
         $filmeComMaisBilhetes = Bilhete::join('sessoes', 'bilhetes.sessao_id', '=', 'sessoes.id')
             ->join('filmes', 'sessoes.filme_id', '=', 'filmes.id')
@@ -44,9 +54,13 @@ class EstatisticaController extends Controller
             ->orderByDesc('total_bilhetes')
             ->first();
 
-        $tituloFilmeComMaisBilhetes = $filmeComMaisBilhetes->titulo;
-        $totalBilhetesFilmeComMaisBilhetes = number_format($filmeComMaisBilhetes->total_bilhetes, 0, ',', '.');
-
+        if($filmeComMaisBilhetes == null){
+            $tituloFilmeComMaisBilhetes = 'Nenhum filme';
+            $totalBilhetesFilmeComMaisBilhetes = 0;
+        }else{
+            $tituloFilmeComMaisBilhetes = $filmeComMaisBilhetes->titulo;
+            $totalBilhetesFilmeComMaisBilhetes = number_format($filmeComMaisBilhetes->total_bilhetes, 0, ',', '.');
+        }
 
 
         $generoComMaisBilhetes = Bilhete::join('sessoes', 'bilhetes.sessao_id', '=', 'sessoes.id')
@@ -57,8 +71,13 @@ class EstatisticaController extends Controller
             ->first();
 
 
-        $generoCodeComMaisBilhetes = $generoComMaisBilhetes->genero_code;
-        $totalBilhetesGeneroComMaisBilhetes = number_format($generoComMaisBilhetes->total_bilhetes, 0, ',', '.');
+        if($generoComMaisBilhetes == null){
+            $generoCodeComMaisBilhetes = 'Nenhum género';
+            $totalBilhetesGeneroComMaisBilhetes = 0;
+        }else{
+            $generoCodeComMaisBilhetes = $generoComMaisBilhetes->genero_code;
+            $totalBilhetesGeneroComMaisBilhetes = number_format($generoComMaisBilhetes->total_bilhetes, 0, ',', '.');
+        }
 
 
         $top10Lugares = Bilhete::join('lugares', 'bilhetes.lugar_id', '=', 'lugares.id')
@@ -70,14 +89,27 @@ class EstatisticaController extends Controller
             ->get();
 
 
+            if($top10Lugares->isEmpty()){
+                $top10Lugares = 'Nenhum lugar';
+            }
         $salasIds = Lugar::select('sala_id')->distinct()->pluck('sala_id');
 
-        $nrTotalLugares = 0;
-        foreach ($salasIds as $salaId) {
-            $nrTotalLugares += Sessao::where('sala_id', $salaId)->count() * Lugar::where('sala_id', $salaId)->count();
+        if($salasIds->isEmpty()){
+            $nrTotalLugares = 0;
+        }else{
+            $nrTotalLugares = 0;
+            foreach ($salasIds as $salaId) {
+                $nrTotalLugares += Sessao::where('sala_id', $salaId)->count() * Lugar::where('sala_id', $salaId)->count();
+            }
         }
+
+
         $totalBilhetes = Bilhete::count();
-        $percentagemOcupacaoGlobal = number_format(($totalBilhetes / $nrTotalLugares) * 100, 2);
+        if($totalBilhetes == 0){
+            $percentagemOcupacaoGlobal = 0;
+        }else{
+            $percentagemOcupacaoGlobal = number_format(($totalBilhetes / $nrTotalLugares) * 100, 2);
+        }
 
         // Data do primeiro dia do último mês
         $primeiroDiaUltimoMes = Carbon::now()->subMonth()->startOfMonth()->toDateString();
@@ -87,17 +119,21 @@ class EstatisticaController extends Controller
 
 
         $nrTotalLugaresUltimoMes = 0;
-        foreach ($salasIds as $salaId) {
-            $nrTotalLugaresUltimoMes += Sessao::where('sala_id', $salaId)->count() * Lugar::where('sala_id', $salaId)->count() * Sessao::whereBetween('data', [$primeiroDiaUltimoMes, $ultimoDiaUltimoMes])->count();
+        if(!$salasIds->isEmpty()){
+            foreach ($salasIds as $salaId) {
+                $nrTotalLugaresUltimoMes += Sessao::where('sala_id', $salaId)->count() * Lugar::where('sala_id', $salaId)->count() * Sessao::whereBetween('data', [$primeiroDiaUltimoMes, $ultimoDiaUltimoMes])->count();
+            }
         }
-
         // Obtém o número de bilhetes vendidos dentro do último mês
         $totalBilhetesUltimoMes = Bilhete::whereIn('sessao_id', function ($query) use ($primeiroDiaUltimoMes, $ultimoDiaUltimoMes) {
             $query->select('id')->from('sessoes')->whereBetween('data', [$primeiroDiaUltimoMes, $ultimoDiaUltimoMes]);
         })->count();
 
-        $percentagemOcupacaoUltimoMes = ($totalBilhetesUltimoMes / $nrTotalLugaresUltimoMes) * 100;
-
+        if($totalBilhetesUltimoMes == 0){
+            $percentagemOcupacaoUltimoMes = 0;
+        }else{
+            $percentagemOcupacaoUltimoMes = ($totalBilhetesUltimoMes / $nrTotalLugaresUltimoMes) * 100;
+        }
 
 
 

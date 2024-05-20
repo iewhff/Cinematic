@@ -29,14 +29,19 @@
 
 
         @foreach ($filmes as $item)
-        @php
-        $lugaresId='';
-        @endphp
+
             <div class="row mb-3">
                 <div class="col-md-6">
                     <p class="title">{{ $item['filme']->titulo }}</p>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-3">
+                    <form action="{{ route('escolherSessao') }}" method="GET" class="d-inline">
+                        @csrf
+                        <input type="hidden" name="filme_id" value="{{ $item['filme']->id }}">
+                        <button type="submit" class="btn">Escolher Sessao</button>
+                    </form>
+                </div>
+                <div class="col-md-3">
                     <form action="{{ route('removerCarrinho') }}" method="POST" class="d-inline">
                         @csrf
                         <input type="hidden" name="idRemover" value="{{ $item['filme']->id }}">
@@ -47,18 +52,6 @@
             <hr>
         @endforeach
     </div>
-    @if (count($filmes) > 0)
-        <p><strong>Preço:</strong> {{ $precoTotal }} €</p>
 
-        <form class="mt-4" action="comprarBilhete" method="GET">
-            @csrf
-            <input type="hidden" name="filmesID" value="@php
-            foreach ($filmes as $key => $value) {
-                echo $value['filme']->id . ',';
-            }
-        @endphp">
-            <button type="submit" class="btn btn-primary">Finalizar Compra</button>
-        </form>
-    @endif
 
 @endsection

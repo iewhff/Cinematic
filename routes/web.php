@@ -13,6 +13,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CarrinhoComprasController;
 use App\Http\Controllers\EditarFilmesController;
 use App\Http\Controllers\HistoricoController;
+use App\Http\Controllers\SessaoController;
+use Illuminate\Support\Facades\Session;
 
 
 /*
@@ -25,6 +27,11 @@ use App\Http\Controllers\HistoricoController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/limpar-carrinho', function () {
+    Session::forget('carrinho');
+    return response()->json(['message' => 'Carrinho limpo com sucesso']);
+})->name('limpar-carrinho');
 
 
 Route::get('/', [FilmeController::class, 'welcome'])->name('welcome');
@@ -44,6 +51,8 @@ Route::middleware(['auth', 'admin'])->get('/eliminarFilme', [EditarFilmesControl
 Route::get('/pesquisa', [PesquisaController::class, 'pesquisa'])->name('pesquisa');
 Route::post('/pesquisa', [PesquisaController::class, 'pesquisa'])->name('pesquisa');
 
+
+Route::get('/escolherSessao', [SessaoController::class, 'escolherSessao'])->name('escolherSessao');
 Route::get('/comprarBilhete', [ComprarBilheteController::class, 'comprarBilhete'])->name('comprarBilhete');
 Route::post('/comprarBilhete', [ComprarBilheteController::class, 'criarReciboBilhete']);
 Route::post('/criarRecibosBilhetes', [ComprarBilheteController::class, 'criarRecibosBilhetes']);
