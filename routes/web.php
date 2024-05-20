@@ -53,6 +53,7 @@ Route::post('/pesquisa', [PesquisaController::class, 'pesquisa'])->name('pesquis
 
 
 Route::get('/escolherSessao', [SessaoController::class, 'escolherSessao'])->name('escolherSessao');
+Route::get('/escolherLugar', [SessaoController::class, 'escolherLugar'])->name('escolherLugar');
 Route::get('/comprarBilhete', [ComprarBilheteController::class, 'comprarBilhete'])->name('comprarBilhete');
 Route::post('/comprarBilhete', [ComprarBilheteController::class, 'criarReciboBilhete']);
 Route::post('/criarRecibosBilhetes', [ComprarBilheteController::class, 'criarRecibosBilhetes']);

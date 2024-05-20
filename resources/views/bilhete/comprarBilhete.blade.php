@@ -6,6 +6,7 @@
 <a href="/carrinhoCompras" class="btn btn-primary">Voltar</a>
 <p>Se escolher outros lugares, tenha em atenção em não ter os mesmos lugares repetidos. Os lugares repetidos não serão comprados, o que resultara numa compra com menos bilhetes do que os selecionados.</p>
 <form class="mt-4" action="/comprarBilhete" method="POST">
+    @csrf
     @php
         $nrLugar = -1;
     @endphp
@@ -30,21 +31,8 @@
         </div>
 
 
-        <select name="lugar{{ $nrLugar}}">
-            @for ($i = $nrLugar; $i < $resultado['lugaresDisponiveisTotal']->count(); $i++)
-                <option value="{{ $resultado['lugaresDisponiveisTotal'][$i]->sessao_id }}-{{ $resultado['lugaresDisponiveisTotal'][$i]->lugar_id }}">
-                    {{ $resultado['lugaresDisponiveisTotal'][$i]->data }} - {{ $resultado['lugaresDisponiveisTotal'][$i]->horario_inicio }} - Sala {{ $resultado['lugaresDisponiveisTotal'][$i]->sala_id }} - Fila {{ $resultado['lugaresDisponiveisTotal'][$i]->fila }} - Posição {{ $resultado['lugaresDisponiveisTotal'][$i]->posicao }}
-                </option>
 
-            @endfor
-            {{-- @foreach ($resultado['lugaresDisponiveisTotal'] as $lugar)
-                <option value="{{ $lugar->sessao_id }}-{{ $lugar->lugar_id }}">
-                    {{ $lugar->data }} - {{ $lugar->horario_inicio }} - Sala {{ $lugar->sala_id }} - Fila {{ $lugar->fila }} - Posição {{ $lugar->posicao }}
-                </option>
-            @endforeach --}}
-        </select>
         @endforeach
-        @csrf
 
 
         <div class="form-group">
@@ -87,7 +75,7 @@
             <span class="text-danger">{{ $message }}</span>
         @enderror
 
-        <p><strong>Preço:</strong> {{ $preco_bilhete }}</p>
+        <p><strong>Preço:</strong> {{ $precoTotal }}</p>
 
         <div id="visaInputs" style="display: none;">
             <label for="visa_numero">Número do cartão VISA (16 dígitos):</label>
@@ -119,6 +107,16 @@
         </div>
 
         <input type="hidden" name="nrBilhetes" value="{{ count($resultados) }}">
+
+        @php
+            $i = 0;
+        @endphp
+
+        @foreach ($resultados as $resultado)
+        <input type="hidden" name="filmeId" value="{{ $resultado['filme']->id }}">
+        <input type="hidden" name="lugar{{ $i++ }}" value="{{ $resultado['sessaoId'] }}-{{ $resultado['lugaresDisponiveisTotal']->id }}">
+    @endforeach
+
 
 
         <script>
