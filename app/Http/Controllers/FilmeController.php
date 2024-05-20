@@ -161,7 +161,7 @@ class FilmeController extends Controller
 
         // O título da página
         $title = 'Filmes';
-        return view('filme.sessoes', compact('filmes','topFilmes', 'title'));
+        return view('welcome', compact('filmes','topFilmes', 'title'));
     }
 
 
@@ -183,7 +183,7 @@ class FilmeController extends Controller
             $path = storage_path('app/public/cartazes' . $file);
             $imagem = file_get_contents($path);
             $nomeFicheiro = basename($file);
-            
+
 
             $imagens[] = [
                 'nomeFicheiro' => $nomeFicheiro,
@@ -192,7 +192,7 @@ class FilmeController extends Controller
         }
 
         $sessoes = Sessao::whereDate('data', '>=', $dataHoje)
-        
+
             ->get();
 
         $emExibicao = Filme::whereIn('id', $sessoes->pluck('filme_id'))
