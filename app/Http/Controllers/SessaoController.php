@@ -7,14 +7,17 @@ use Illuminate\Http\Request;
 
 class SessaoController extends Controller
 {
-    public function index(Request $request)
+    public function escolherSessao(Request $request)
     {
+        $title = 'Escolher Sessão';
 
         $sessoes = Sessao::where('filme_id', $request->input('filme_id'))
                 ->select('id', 'filme_id', 'sala_id', 'data', 'horario_inicio')
                 ->get();
 
+                dd($sessoes);
 
-        return view('sessao.index');
+
+        return view('lugar.escolherSessao', ['sessoes' => $sessoes], ['title' => $title]);
     }
 }

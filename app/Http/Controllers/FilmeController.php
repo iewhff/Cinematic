@@ -23,7 +23,6 @@ class FilmeController extends Controller
     {
         if (isset($request) && $request->input('code') != null) {
             $opcoes = Genero::all(); // Recupera todas as opções do banco de dados
-            Paginator::useBootstrap();
 
             $query = $request->input('code');  
             $title = 'Filmes';
