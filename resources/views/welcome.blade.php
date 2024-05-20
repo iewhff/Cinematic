@@ -17,9 +17,10 @@
 
     // Função para remover o primeiro espaço e substituir os seguintes por underscores
     function removeFirstSpaceAndReplaceOthers($string) {
-        $string = preg_replace('/\s/', '_', $string, 1); // Remove o primeiro espaço
+        $string = preg_replace('/\s/', '', $string, 1); // Remove o primeiro espaço
         return str_replace(' ', '_', $string); // Substitui os espaços restantes por underscores
     }
+    
 
 @endphp
     {{-- Centraliza os links de paginação --}}
@@ -49,6 +50,7 @@
         $imagePath = public_path('imgs/cartazes/' . $processedString);
         $imagePathUnderscore = public_path('imgs/cartazes/' . $underscoredString);
         $imagePathModified = public_path('imgs/cartazes/' . $modifiedString);
+        $imagePathWithYear =  public_path('imgs/cartazes/' . $um_filme->titulo.'_'.$um_filme->ano.'.jpg');
 
         // Verifica se o arquivo existe e é legível
         if (file_exists($imagePath) && is_readable($imagePath)) {
@@ -57,7 +59,9 @@
             $finalImagePath = 'imgs/cartazes/' . $underscoredString;
         } elseif (file_exists($imagePathModified) && is_readable($imagePathModified)) {
             $finalImagePath = 'imgs/cartazes/' . $modifiedString;
-        } else {
+        }elseif(file_exists($imagePathWithYear) && is_readable($imagePathModified)){
+            $finalImagePath = 'imgs/cartazes/' . $um_filme->titulo.'_'.$um_filme->ano.'.jpg';
+        }else {
             $finalImagePath = null;
         }
         @endphp
