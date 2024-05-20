@@ -29,14 +29,14 @@
     <h2>Com base nas suas preferencias</h2>
     @isset($filmes)
     @if(count($filmes) > 0)
-    <table class="table-filmes">
+    <table class="table-filmes ">
         <tr>
             <th>Titulo</th>
             <th>Género</th>
             <th>Ano</th>
             <th>Cartaz</th>
             <th>Detalhes</th>
-            <th></th>
+            <th>Comprar Bilhete</th>
         </tr>
 
         @foreach ($filmes as $um_filme)
@@ -135,7 +135,7 @@
             <th>Ano</th>
             <th>Cartaz</th>
             <th>Detalhes</th>
-            <th></th>
+            <th>Comprar Bilhete</th>
         </tr>
         @foreach ($topFilmes as $um_filme)
         @php
