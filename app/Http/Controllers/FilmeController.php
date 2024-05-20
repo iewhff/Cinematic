@@ -172,7 +172,8 @@ class FilmeController extends Controller
         $dataAmanha = Carbon::tomorrow();
         $title = 'Sessoes abertas';
         $opcoes = Genero::all();
-
+        Paginator::useBootstrap();
+        $filmes = Filme::paginate(20);
         $directory = storage_path('app/public/imagens');
         $files = Storage::files($directory);
 
@@ -182,6 +183,7 @@ class FilmeController extends Controller
             $path = storage_path('app/public/cartazes' . $file);
             $imagem = file_get_contents($path);
             $nomeFicheiro = basename($file);
+            
 
             $imagens[] = [
                 'nomeFicheiro' => $nomeFicheiro,
@@ -190,7 +192,7 @@ class FilmeController extends Controller
         }
 
         $sessoes = Sessao::whereDate('data', '>=', $dataHoje)
-            ->whereDate('data', '<=', $dataAmanha)
+        
             ->get();
 
         $emExibicao = Filme::whereIn('id', $sessoes->pluck('filme_id'))
