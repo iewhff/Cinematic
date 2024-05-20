@@ -174,7 +174,7 @@
                         <a class="nav-link" href="/estatistica" style="{{ url()->current() == url('/estatistica') ? 'color: orange;' : '' }}">Estatística</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" style="{{ url()->current() == url('#') ? 'color: orange;' : '' }}">Gerir utilizadores</a>
+                        <a class="nav-link" href="/users" style="{{ url()->current() == url('/users') ? 'color: orange;' : '' }}">Gerir utilizadores</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/editarFilmes" style="{{ url()->current() == url('/editarFilmes') ? 'color: orange;' : '' }}">Editar Filmes</a>

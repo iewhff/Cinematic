@@ -13,9 +13,9 @@ class UserController extends Controller
 {
     public function index(): View
     {
-        $users = User::all();
+        $users = User::paginate(15);
 
-        return view('user.index', compact('users'));
+        return view('users.index', compact('users'));
     }
 
     public function show(User $user): View
@@ -75,7 +75,7 @@ class UserController extends Controller
         } else {
             return redirect()->route("user.index");
         }
-    
+
         return view('user.index')
                 ->with('users', $filmeSearched);
     }
@@ -87,7 +87,7 @@ class UserController extends Controller
 
         $lili = request('alterType');
 
-        $user->tipo = $lili; 
+        $user->tipo = $lili;
         $user->update($request->all());
 
 
