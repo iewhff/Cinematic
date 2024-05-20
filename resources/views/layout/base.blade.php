@@ -242,7 +242,7 @@
 
     <div class=" base">
         @yield('content')
-    </div>
+    </div><br><br>
 
     <footer class="mt-auto base">
         <div class=" text-center">

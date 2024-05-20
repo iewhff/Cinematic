@@ -11,7 +11,7 @@ use App\Models\Filme;
 use App\Models\Genero;
 use Illuminate\Pagination\Paginator;
 use Carbon\Carbon;
-use App\Models\Sessoes;
+use App\Models\Sala;
 use App\Models\Sessao;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -25,7 +25,7 @@ class FilmeController extends Controller
             $opcoes = Genero::all(); // Recupera todas as opções do banco de dados
             Paginator::useBootstrap();
 
-            $query = $request->input('code');
+            $query = $request->input('code');  
             $title = 'Filmes';
             // Consulta os filmes com base no 'genero_id'
             $filmes = Filme::where('genero_code', $query)->paginate(15);
@@ -66,6 +66,12 @@ class FilmeController extends Controller
 
     public function detalhes(Request $request)
     {
+
+        $sessoes = Sessao::get();
+        $salas = Sala::get();
+        $emExibicao = Filme::whereIn('id', $sessoes->pluck('filme_id'))
+                ->paginate(4);
+
         // Obtém o valor do parâmetro 'id' da requisição
         $id = $request->input('id');
 
@@ -172,40 +178,66 @@ class FilmeController extends Controller
 
 
     public function show(Request $request)
-    {
+    { 
         Paginator::useBootstrap();
         $dataHoje = Carbon::now();
         $dataAmanha = Carbon::tomorrow();
         $title = 'Sessoes abertas';
         $opcoes = Genero::all();
         Paginator::useBootstrap();
-        $filmes = Filme::paginate(20);
         $directory = storage_path('app/public/imagens');
         $files = Storage::files($directory);
 
         $imagens = new Collection();
+        if (isset($request) && $request->input('code') != null) {
+            
+            $query = $request->input('code');  
 
-        foreach ($files as $file) {
-            $path = storage_path('app/public/cartazes' . $file);
-            $imagem = file_get_contents($path);
-            $nomeFicheiro = basename($file);
+            foreach ($files as $file) {
+                $path = storage_path('app/public/cartazes' . $file);
+                $imagem = file_get_contents($path);
+                $nomeFicheiro = basename($file);
+    
+    
+                $imagens[] = [
+                    'nomeFicheiro' => $nomeFicheiro,
+                    'imagem' => $imagem
+                ];
+            }
+    
+            $sessoes = Sessao::whereDate('data', '>=', $dataHoje)
+    
+                ->get();
+    
+            $emExibicao = Filme::whereIn('id', $sessoes->pluck('filme_id'))->where('genero_code', $query)
+                ->paginate(4);
 
+            return view('filme.sessoes')->with('filmes', $emExibicao)->with('title', $title)->with('opcoes', $opcoes)->with('imagens');
 
-            $imagens[] = [
-                'nomeFicheiro' => $nomeFicheiro,
-                'imagem' => $imagem
-            ];
+        }else{
+            foreach ($files as $file) {
+                $path = storage_path('app/public/cartazes' . $file);
+                $imagem = file_get_contents($path);
+                $nomeFicheiro = basename($file);
+    
+    
+                $imagens[] = [
+                    'nomeFicheiro' => $nomeFicheiro,
+                    'imagem' => $imagem
+                ];
+            }
+    
+            $sessoes = Sessao::whereDate('data', '>=', $dataHoje)
+    
+                ->get();
+    
+            $emExibicao = Filme::whereIn('id', $sessoes->pluck('filme_id'))
+                ->paginate(4);
+    
         }
-
-        $sessoes = Sessao::whereDate('data', '>=', $dataHoje)
-
-            ->get();
-
-        $emExibicao = Filme::whereIn('id', $sessoes->pluck('filme_id'))
-            ->paginate(4);
+        
 
 
-
-        return view('filme.sessoes')->with('filmes', $emExibicao)->with('title', $title)->with('opcao', $opcoes)->with('imagens');
+        return view('filme.sessoes')->with('filmes', $emExibicao)->with('title', $title)->with('opcoes', $opcoes)->with('imagens');
     }
 }

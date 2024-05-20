@@ -66,6 +66,34 @@
             </div>
             <p><strong>Criado em:</strong> {{ $filme->created_at }}</p>
             <p><strong>Atualizado em:</strong> {{ $filme->updated_at }}</p>
+
+            <br>
+
+            @isset($filmes)
+                @if($filmes->count()>0)
+
+                <table id="table">
+                <tr>
+                    <th>Sala</th>
+                    <th>disponibilidade</th>
+                    <th>data</th>
+                    <th>hora</th>
+                </tr>
+                    @foreach ($filmes as $filme)
+                           <td>{{ $filme->titulo }}</td>
+                            <td>{{ $filme->genero_code }}</td>
+                            <td>{{ $filme->ano }}</td>
+
+                        </tr>
+                    @endforeach
+                </table>
+
+        {{ $filmes->links() }}
+    @else
+        <p>Não foram encontrados filmes com sessões abertas.</p>
+    @endif
+    @endisset
+
         </div>
         <div class="col-md-4 text-end mt-2"> <!-- Adicione a classe mt-2 aqui -->
             @if ($existeSessao)
