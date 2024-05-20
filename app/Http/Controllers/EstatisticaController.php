@@ -89,11 +89,15 @@ class EstatisticaController extends Controller
             ->get();
 
 
-            if($top10Lugares->isEmpty()){
-                $top10Lugares->lugar->sala = 'Nenhuma sala';
-                $top10Lugares->lugar->fila = 'Nenhuma fila';
-                $top10Lugares->lugar->posicao = 'Nenhuma posicao';
-                $top10Lugares->lugar->total_bilhetes = 'Nenhuma bilhete';
+            if ($top10Lugares->isEmpty()) {
+                $top10Lugares = collect([
+                    (object)[
+                        'sala' => 'Nenhuma sala',
+                        'fila' => 'Nenhuma fila',
+                        'posicao' => 'Nenhuma posicao',
+                        'total_bilhetes' => 'Nenhum bilhete',
+                    ],
+                ]);
             }
         $salasIds = Lugar::select('sala_id')->distinct()->pluck('sala_id');
 
