@@ -164,9 +164,10 @@ class FilmeController extends Controller
         return view('filme.sessoes', compact('filmes','topFilmes', 'title'));
     }
 
-    
+
     public function show(Request $request)
     {
+        Paginator::useBootstrap();
         $dataHoje = Carbon::now();
         $dataAmanha = Carbon::tomorrow();
         $title = 'Sessoes abertas';

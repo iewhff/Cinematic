@@ -20,13 +20,15 @@
         $string = preg_replace('/\s/', '', $string, 1); // Remove o primeiro espaço
         return str_replace(' ', '_', $string); // Substitui os espaços restantes por underscores
     }
-    
+
 
 @endphp
     {{-- Centraliza os links de paginação --}}
 <div class="container mt-5 text-center">
     {{-- Tabela de filmes --}}
     <h2>Com base nas suas preferencias</h2>
+    @isset($filmes)
+    @if(count($filmes) > 0)
     <table class="table-filmes">
         <tr>
             <th>Titulo</th>
@@ -36,6 +38,7 @@
             <th>Detalhes</th>
             <th></th>
         </tr>
+
         @foreach ($filmes as $um_filme)
 
         @php
@@ -109,6 +112,12 @@
             </tr>
         @endforeach
     </table>
+    @else
+    <p>Nenhum filme disponível.</p>
+@endif
+@else
+<p>Variável de filmes não está definida.</p>
+@endisset
 
 
 </div>
@@ -117,6 +126,8 @@
 <div class="container mt-5 text-center">
     {{-- Tabela de filmes --}}
     <h2>Top filmes do Cinematic</h2>
+    @isset($topFilmes)
+    @if(count($topFilmes) > 0)
     <table class="table-filmes">
         <tr>
             <th>Titulo</th>
@@ -195,6 +206,12 @@
             </tr>
         @endforeach
     </table>
+        @else
+    <p>Nenhum filme disponível.</p>
+@endif
+@else
+<p>Variável de filmes não está definida.</p>
+@endisset
 
 
 </div>

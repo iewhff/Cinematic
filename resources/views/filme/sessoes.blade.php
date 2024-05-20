@@ -3,7 +3,8 @@
 @section('content')
 
 
-    @if($filmes->count())
+@isset($filmes)
+    @if($filmes->count()>0)
 
         <table id="table">
         <tr>
@@ -14,8 +15,8 @@
             <th>Detalhes</th>
         </tr>
         @foreach ($filmes as $filme)
-        
-               
+
+
                 <td>{{ $filme->titulo }}</td>
                 <td>{{ $filme->genero_code }}</td>
                 <td>{{ $filme->ano }}</td>
@@ -41,4 +42,5 @@
     @else
         <p>Não foram encontrados filmes com sessões abertas.</p>
     @endif
+    @endisset
 @endsection
