@@ -157,6 +157,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/filmes" style="{{ url()->current() == url('/filmes') ? 'color: orange;' : '' }}">Filmes</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/sessoes" style="{{ url()->current() == url('/sessoes') ? 'color: orange;' : '' }}">Próximas sessoes</a>
+                </li>
                 @if (Auth::check())
                     @if (Auth::user()->tipo != 'F')
                         <li class="nav-item">
