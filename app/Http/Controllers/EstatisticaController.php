@@ -90,7 +90,7 @@ class EstatisticaController extends Controller
 
 
             if($top10Lugares->isEmpty()){
-                $top10Lugares = 'Nenhum lugar';
+                $top10Lugares = ['Nenhum lugar'];
             }
         $salasIds = Lugar::select('sala_id')->distinct()->pluck('sala_id');
 
@@ -121,13 +121,16 @@ class EstatisticaController extends Controller
         $nrTotalLugaresUltimoMes = 0;
         if(!$salasIds->isEmpty()){
             foreach ($salasIds as $salaId) {
-                $nrTotalLugaresUltimoMes += Sessao::where('sala_id', $salaId)->count() * Lugar::where('sala_id', $salaId)->count() * Sessao::whereBetween('data', [$primeiroDiaUltimoMes, $ultimoDiaUltimoMes])->count();
+                $nrTotalLugaresUltimoMes += Lugar::where('sala_id', $salaId)->count() * Sessao::whereBetween('data', [$primeiroDiaUltimoMes, $ultimoDiaUltimoMes])->where('sala_id', $salaId)->count();
             }
         }
         // Obtém o número de bilhetes vendidos dentro do último mês
         $totalBilhetesUltimoMes = Bilhete::whereIn('sessao_id', function ($query) use ($primeiroDiaUltimoMes, $ultimoDiaUltimoMes) {
-            $query->select('id')->from('sessoes')->whereBetween('data', [$primeiroDiaUltimoMes, $ultimoDiaUltimoMes]);
-        })->count();
+            $query->select('id')
+                  ->from('sessoes')
+                  ->whereBetween('data', [$primeiroDiaUltimoMes, $ultimoDiaUltimoMes]);
+        })->whereNotNull('created_at')->count();
+
 
         if($totalBilhetesUltimoMes == 0){
             $percentagemOcupacaoUltimoMes = 0;
