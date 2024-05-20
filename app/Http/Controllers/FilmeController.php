@@ -113,6 +113,7 @@ class FilmeController extends Controller
         $dataAtual = Carbon::now()->toDateString();
         $horaAtual = Carbon::now()->toTimeString();
         // Obter os sessao_id baseado no cliente_id
+
         if (Auth::check()) {
             $sessaoIds = DB::table('bilhetes')
                 ->where('cliente_id', Auth::user()->id)

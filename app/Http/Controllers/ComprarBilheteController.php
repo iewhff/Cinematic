@@ -22,6 +22,19 @@ class ComprarBilheteController extends Controller
 {
         public function comprarBilhete(Request $request)
         {
+            if (!Auth::check()) {
+                // Acesso negado para clientes não autorizados
+                $h1 = 'Pedimos Desculpa';
+                $title = 'Acesso Negado';
+                $msgErro = 'Apenas Clientes podem comprar bilhetes.';
+                return view('acessoNegado.acessoNegado', compact('h1', 'title', 'msgErro'));
+            }elseif (Auth::user()->tipo != 'C') {
+                // Acesso negado para clientes não autorizados
+                $h1 = 'Pedimos Desculpa';
+                $title = 'Acesso Negado';
+                $msgErro = 'Apenas Clientes podem comprar bilhetes.';
+                return view('acessoNegado.acessoNegado', compact('h1', 'title', 'msgErro'));
+            }
             if (Auth::user()->tipo == 'C') {
 
                 $strFilmesID = $request->input('filmesID');
@@ -93,7 +106,14 @@ class ComprarBilheteController extends Controller
 
         public function criarReciboBilhete(Request $request)
         {
-            if (Auth::user()->tipo != 'C') {
+
+            if (Auth::check()) {
+                // Acesso negado para clientes não autorizados
+                $h1 = 'Pedimos Desculpa';
+                $title = 'Acesso Negado';
+                $msgErro = 'Apenas Clientes podem comprar bilhetes.';
+                return view('acessoNegado.acessoNegado', compact('h1', 'title', 'msgErro'));
+            }elseif (Auth::user()->tipo != 'C') {
                 // Acesso negado para clientes não autorizados
                 $h1 = 'Pedimos Desculpa';
                 $title = 'Acesso Negado';
