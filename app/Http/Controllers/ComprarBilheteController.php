@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bilhete;
 use App\Models\Cliente;
 use App\Models\Recibo;
+use App\Models\Lugar;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Models\Filme;
@@ -22,11 +23,11 @@ class ComprarBilheteController extends Controller
 {
         public function comprarBilhete(Request $request)
         {
-            if (!Auth::check()) {
+            if (!(Auth::check())) {
                 // Acesso negado para clientes não autorizados
                 $h1 = 'Pedimos Desculpa';
                 $title = 'Acesso Negado';
-                $msgErro = 'Apenas Clientes podem comprar bilhetes.';
+                $msgErro = 'Apenas Clientes logados podem comprar bilhetes.';
                 return view('acessoNegado.acessoNegado', compact('h1', 'title', 'msgErro'));
             }elseif (Auth::user()->tipo != 'C') {
                 // Acesso negado para clientes não autorizados
@@ -37,8 +38,20 @@ class ComprarBilheteController extends Controller
             }
             if (Auth::user()->tipo == 'C') {
 
-                $strFilmesID = $request->input('filmesID');
-                $precoTotal = $request->input('precoTotal');
+                $strFilmesID = $request->input('filmeId');
+                $sessaoId = $request->input('sessaoId');
+                $filme = Filme::find($strFilmesID);
+
+                $lugaresSelecionados = $request->input('lugares', []);
+
+                if (empty($lugaresSelecionados)) {
+                    return redirect()->back()->with('error', 'Nenhum lugar selecionado.');
+                }
+
+                $resultados = DB::select('SELECT * FROM configuracao');
+                $configuracao = $resultados[0];
+                $preco_bilheteComIva = $configuracao->preco_bilhete_sem_iva * (1 + $configuracao->percentagem_iva / 100);
+                $precoTotal = number_format(count($lugaresSelecionados) * $preco_bilheteComIva, 2, '.', '');
 
                 // Explode the string into an array using ',' as the delimiter
                 $arrFilmesID = explode(',', $strFilmesID);
@@ -58,31 +71,59 @@ class ComprarBilheteController extends Controller
                 $preco_bilhete=0;
                 $resultados = [];
 
-                foreach ($arrFilmesID as $filmeID) {
-                    $filme = Filme::find($filmeID);
+                foreach ($lugaresSelecionados as $lugarId) {
+                    $lugar = Lugar::find($lugarId);
 
-                    if ($filme) {
-                        $dataAtual = Carbon::now()->toDateString(); // Obtém a data atual
+                    if ($lugar) {
+                        $sessaoId = $request->input('sessaoId');
 
-                        $lugaresDisponiveisTotal = DB::table('sessoes')
-                        ->join('lugares', 'sessoes.sala_id', '=', 'lugares.sala_id')
-                        ->leftJoin('bilhetes', function ($join) {
-                            $join->on('sessoes.id', '=', 'bilhetes.sessao_id')
-                            ->on('lugares.id', '=', 'bilhetes.lugar_id');
-                        })
-                        ->select('sessoes.id as sessao_id', 'sessoes.data', 'sessoes.horario_inicio', 'sessoes.sala_id', 'lugares.id as lugar_id', 'lugares.fila', 'lugares.posicao')
-                        ->where('sessoes.filme_id', $filmeID)
-                        ->whereDate('sessoes.data', '>=', $dataAtual)
-                        ->whereNull('bilhetes.lugar_id')
-                        ->get();
+                        // Verifica se o lugar já está ocupado para esta sessão
+                        $bilheteExistente = Bilhete::where('lugar_id', $lugarId)
+                                                    ->where('sessao_id', $sessaoId)
+                                                    ->exists();
 
-                        $resultados[] = [
-                            'filme' => $filme,
-                            'lugaresDisponiveisTotal' => $lugaresDisponiveisTotal
-                        ];
+                        if (!$bilheteExistente) {
+                            // Adiciona ao preço total
+                            $precoTotal += $preco_bilheteComIva;
+
+                            $resultados[] = [
+                                            'filme' => $filme,
+                                            'sessaoId' => $sessaoId,
+                                            'lugaresDisponiveisTotal' => $lugar
+                                         ];
+                        } else {
+                            // Redireciona de volta com uma mensagem de erro se o lugar já estiver ocupado
+                            return redirect()->back()->with('error', 'Um dos lugares selecionados já está ocupado.');
+                        }
                     }
-                    $preco_bilhete +=$preco_bilhete_unitario;
                 }
+                // dd($resultados);
+
+                // foreach ($arrFilmesID as $filmeID) {
+                //     $filme = Filme::find($filmeID);
+
+                //     if ($filme) {
+                //         $dataAtual = Carbon::now()->toDateString(); // Obtém a data atual
+
+                //         $lugaresDisponiveisTotal = DB::table('sessoes')
+                //         ->join('lugares', 'sessoes.sala_id', '=', 'lugares.sala_id')
+                //         ->leftJoin('bilhetes', function ($join) {
+                //             $join->on('sessoes.id', '=', 'bilhetes.sessao_id')
+                //             ->on('lugares.id', '=', 'bilhetes.lugar_id');
+                //         })
+                //         ->select('sessoes.id as sessao_id', 'sessoes.data', 'sessoes.horario_inicio', 'sessoes.sala_id', 'lugares.id as lugar_id', 'lugares.fila', 'lugares.posicao')
+                //         ->where('sessoes.filme_id', $filmeID)
+                //         ->whereDate('sessoes.data', '>=', $dataAtual)
+                //         ->whereNull('bilhetes.lugar_id')
+                //         ->get();
+
+                //         $resultados[] = [
+                //             'filme' => $filme,
+                //             'lugaresDisponiveisTotal' => $lugaresDisponiveisTotal
+                //         ];
+                //     }
+                //     $preco_bilhete +=$preco_bilhete_unitario;
+                // }
 
                 $preco_bilhete = number_format($preco_bilhete, 2, '.', '');
 
@@ -91,10 +132,11 @@ class ComprarBilheteController extends Controller
                     ->whereNull('nif')
                     ->first();
 
-
+                    // dd($resultados);
+                $precoTotal = number_format(round($precoTotal, 2), 2, '.', '');
 
                 $title = 'Comprar Bilhete';
-                return view('bilhete.comprarBilhete', compact('resultados', 'title', 'preco_bilhete'));
+                return view('bilhete.comprarBilhete', compact('resultados', 'title', 'preco_bilhete','sessaoId','precoTotal'));
             } else {
                 // Acesso negado para clientes não autorizados
                 $h1 = 'Pedimos Desculpa';
@@ -107,7 +149,7 @@ class ComprarBilheteController extends Controller
         public function criarReciboBilhete(Request $request)
         {
 
-            if (Auth::check()) {
+            if (!Auth::check()) {
                 // Acesso negado para clientes não autorizados
                 $h1 = 'Pedimos Desculpa';
                 $title = 'Acesso Negado';
@@ -184,6 +226,8 @@ class ComprarBilheteController extends Controller
                 }
             }
 
+            // dd($request->input('lugar0').' '.$request->input('lugar1'));
+
             $resultados = DB::select('SELECT * FROM configuracao');
             $configuracao = $resultados[0];
             $preco_bilheteComIva = $configuracao->preco_bilhete_sem_iva * (1 + $configuracao->percentagem_iva / 100);
@@ -238,8 +282,18 @@ class ComprarBilheteController extends Controller
 
 
                     DB::commit();
-                    // remover tudo do carrinho
-                    session()->forget('carrinho');
+
+                    $sessaoId=substr($request->input('lugar' . 0), 0, strpos($request->input('lugar' . 0), '-'));
+
+                    $filmeId = Sessao::where('id', $sessaoId)->value('filme_id');
+
+                    $carrinho = session()->get('carrinho', []);
+
+                    $carrinhoAtualizado = array_filter($carrinho, function ($item) use ($filmeId) {
+                        return $item['id'] != $filmeId;
+                    });
+
+                    session()->put('carrinho', $carrinhoAtualizado);
 
                     $h1 = 'Bilhete Comprado com Sucesso';
                     $title = 'Bilhete Comprado com Sucesso';
@@ -250,7 +304,7 @@ class ComprarBilheteController extends Controller
                     DB::rollBack();
                     $h1 = 'Pedimos Desculpa';
                     $title = 'Erro na Compra';
-                    $msgErro = 'Ocorreu um erro durante a compra. Por favor, tente novamente.';
+                    $msgErro = 'Ocorreu um erro durante a compra. Por favor, tente novamente.' . $e->getMessage();
                     return view('acessoNegado.acessoNegado', compact('h1', 'title', 'msgErro'));
                 }
             } else {

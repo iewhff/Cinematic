@@ -37,7 +37,7 @@
                 <div class="col-md-3">
                     <form action="{{ route('escolherSessao') }}" method="GET" class="d-inline">
                         @csrf
-                        <input type="hidden" name="filme_id" value="{{ $item['filme']->id }}">
+                        <input type="hidden" name="filmeId" value="{{ $item['filme']->id }}">
                         <button type="submit" class="btn">Escolher Sessao</button>
                     </form>
                 </div>

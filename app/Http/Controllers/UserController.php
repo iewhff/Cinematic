@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Pagination\Paginator;
 use Illuminate\View\View;
 use App\Http\Requests\UserRequest;
 
@@ -13,6 +14,7 @@ class UserController extends Controller
 {
     public function index(): View
     {
+        Paginator::useBootstrap();
         $users = User::paginate(15);
 
         return view('users.index', compact('users'));
