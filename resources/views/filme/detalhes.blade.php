@@ -56,9 +56,9 @@
 
 
 
-                        @if ($finalImagePath)
-                            <img src="{{ asset($finalImagePath) }}" width="200px" />
-                        @endif
+            @if ($finalImagePath)
+              <img src="{{ asset($finalImagePath) }}" width="200px" />
+            @endif
             <p><strong>Sumário:</strong> {{ $filme->sumario }}</p>
             <p><strong>Trailer:</strong> <a href="{{ $filme->trailer_url }}" target="_blank">Assistir ao Trailer</a></p>
             <div class="video-container">
@@ -69,34 +69,10 @@
 
             <br>
 
-            @isset($filmes)
-                @if($filmes->count()>0)
-
-                <table id="table">
-                <tr>
-                    <th>Sala</th>
-                    <th>disponibilidade</th>
-                    <th>data</th>
-                    <th>hora</th>
-                </tr>
-                    @foreach ($filmes as $filme)
-                           <td>{{ $filme->titulo }}</td>
-                            <td>{{ $filme->genero_code }}</td>
-                            <td>{{ $filme->ano }}</td>
-
-                        </tr>
-                    @endforeach
-                </table>
-
-        {{ $filmes->links() }}
-    @else
-        <p>Não foram encontrados filmes com sessões abertas.</p>
-    @endif
-    @endisset
-
         </div>
         <div class="col-md-4 text-end mt-2"> <!-- Adicione a classe mt-2 aqui -->
             @if ($existeSessao)
+              
                 <div class="col-md-12 text-center">
                     <form class="form-inline my-2 my-lg-0" action="{{ route('carrinhoCompras') }}" method="GET">
                         @csrf
@@ -113,6 +89,26 @@
 
                 </div>
             @endif
-        </div>
+        </div> 
+
+        @if ($existeSessao)
+        <div class=" text-end mt-2"> <!-- Detalhe das sessões -->
+           
+            <table id="table">
+        <tr>
+            <th>Sala</th>
+            <th>Horario</th>
+            <th>preenchimento da sessão</th>
+        </tr>
+                @foreach($SalaExibicao as $salas)
+                    <td>Numero: {{$salas->id}} Nome: {{$salas->nome}}</td>
+                    <td>{{$sessao->id}} </td>
+                @endforeach
+                
+            </table>
+               
+           
+        </div> 
+        @endif
     </div>
 @endsection

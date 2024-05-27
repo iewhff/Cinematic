@@ -66,13 +66,14 @@ class FilmeController extends Controller
     public function detalhes(Request $request)
     {
 
-        $sessoes = Sessao::get();
-        $salas = Sala::get();
-        $emExibicao = Filme::whereIn('id', $sessoes->pluck('filme_id'))
-                ->paginate(4);
-
+        
+    
         // Obtém o valor do parâmetro 'id' da requisição
         $id = $request->input('id');
+
+     
+        
+
 
 
         // Verifica se o parâmetro 'id' foi fornecido
@@ -80,24 +81,36 @@ class FilmeController extends Controller
             // Consulta o filme com base no 'id'
             $filme = Filme::find($id);
             $title = $filme->titulo;
+            
             // Verifica se o filme foi encontrado
             if ($filme) {
-
+               
+                
                 // Obter a data atual
                 $dataAtual = Carbon::now()->toDateString();
-
+                $sessoes = Sessao::where('filme_id', $id)
+                ->whereDate('data', '>=', $dataAtual)
+                ->get();
+                    
                 // Verificar se existem registros na tabela sessoes com data igual a hoje ou posterior e com o filme_id especificado
                 $existeSessao = Sessao::where('filme_id', $id)
                     ->whereDate('data', '>=', $dataAtual)
                     ->exists();
+
+     
+
+                $SalaExibicao = Sala::whereIn('id', $sessoes->pluck('sala_id'))
+                ->get();
+                
 
 
                 // Se o filme foi encontrado, retorna a view com os detalhes do filme
                 return view('filme.detalhes', [
                     'title' => $title,
                     'existeSessao' => $existeSessao,
-                    'filme' => $filme
-                ]);
+                    'filme' => $filme,
+                ], compact('SalaExibicao', 'sessoes'));
+                
             } else {
                 // Se o filme não foi encontrado, redireciona de volta com uma mensagem de erro
                 return redirect()->back()->with('error', 'Nenhum filme encontrado com esse ID.');
@@ -227,7 +240,6 @@ class FilmeController extends Controller
             }
     
             $sessoes = Sessao::whereDate('data', '>=', $dataHoje)
-    
                 ->get();
     
             $emExibicao = Filme::whereIn('id', $sessoes->pluck('filme_id'))
@@ -235,7 +247,6 @@ class FilmeController extends Controller
     
         }
         
-
 
         return view('filme.sessoes')->with('filmes', $emExibicao)->with('title', $title)->with('opcoes', $opcoes)->with('imagens');
     }
