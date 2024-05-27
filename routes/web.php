@@ -81,6 +81,7 @@ Route::get('/perfil', function () {
 
 Route::middleware(['auth', 'admin'])->get('/users', [UserController::class, 'index'])->name('users');
 
+Route::get('user/{user}', [UserController::class, 'index']);
 Route::get('user/{user}/edit', [UserController::class, 'edit']);
 Route::put('user/{user}', [UserController::class, 'update']);
 Route::delete('user/{id}', [UserController::class, 'softDelete'])->name('user.softDelete');

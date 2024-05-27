@@ -186,7 +186,7 @@
             </ul>
 
             <ul class="navbar-nav ms-auto">
-                @if (Auth::check())
+                @if (Auth::check() && Auth::user()->tipo == 'C')
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('carrinhoCompras') }}" style="{{ url()->current() == url('/carrinhoCompras') ? 'color: orange;' : '' }}">
                             <span>Carrinho de compras</span>
@@ -214,12 +214,13 @@
                 @else
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            <img src="{{ Auth::user()->fullPhotoUrl }}" alt="Avatar" class="bg-dark rounded-circle" width="45" height="45">
                             {{ Auth::user()->name }}
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            @if (Auth::check() && Auth::user()->tipo != 'F')
-                                <a class="dropdown-item" href="#" onclick="event.preventDefault();">{{ __('Perfil de Utilizador') }}</a>
+                            @if (Auth::check())
+                                <a class="dropdown-item" href="{{ route('perfil')}}">{{ __('Perfil de Utilizador') }}</a>
                             @endif
                             <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
 
