@@ -88,9 +88,14 @@ class FilmeController extends Controller
                 
                 // Obter a data atual
                 $dataAtual = Carbon::now()->toDateString();
-                $sessoes = Sessao::where('filme_id', $id)
-                ->whereDate('data', '>=', $dataAtual)
+            
+                
+                $sessoes = Sessao::join('salas', 'sessoes.sala_id', '=', 'salas.id')
+                ->where('sessoes.filme_id', $id)
+                ->where('sessoes.data', '>=', $dataAtual)
+                ->select('sessoes.id', 'sessoes.filme_id', 'sessoes.sala_id', 'sessoes.data', 'sessoes.horario_inicio', 'salas.nome as sala_nome')
                 ->get();
+
                     
                 // Verificar se existem registros na tabela sessoes com data igual a hoje ou posterior e com o filme_id especificado
                 $existeSessao = Sessao::where('filme_id', $id)
@@ -109,7 +114,8 @@ class FilmeController extends Controller
                     'title' => $title,
                     'existeSessao' => $existeSessao,
                     'filme' => $filme,
-                ], compact('SalaExibicao', 'sessoes'));
+                    'sessoes' => $sessoes,
+                ], compact('SalaExibicao',));
                 
             } else {
                 // Se o filme não foi encontrado, redireciona de volta com uma mensagem de erro

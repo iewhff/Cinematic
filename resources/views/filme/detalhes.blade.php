@@ -64,51 +64,66 @@
             <div class="video-container">
                 <iframe src="{{ $filme->trailer_url }}" frameborder="0" allowfullscreen></iframe>
             </div>
-            <p><strong>Criado em:</strong> {{ $filme->created_at }}</p>
-            <p><strong>Atualizado em:</strong> {{ $filme->updated_at }}</p>
 
             <br>
 
         </div>
         <div class="col-md-4 text-end mt-2"> <!-- Adicione a classe mt-2 aqui -->
             @if ($existeSessao)
-              
+
+    
                 <div class="col-md-12 text-center">
-                    <form class="form-inline my-2 my-lg-0" action="{{ route('carrinhoCompras') }}" method="GET">
-                        @csrf
-                        <input type="hidden" name="id" value="{{ $filme->id }}">
-                        <button class="botao btn btn-outline-dark my-2 my-sm-0" type="submit">Comprar Bilhete</button>
-                    </form>
-                </div>
-                <div class="col-md-12 text-center">
-                    <form action="{{ route('carrinhoCompras') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="id" value="{{ $filme->id }}">
-                        <button type="submit" class="botao btn btn-outline-dark my-2 my-sm-0">Adicionar ao Carrinho de Compras</button>
-                    </form>
+                    
+                    <br>
+                    <h3>Sessões Dísponiveis</h3>
+
+                        <table id="table">  
+                            
+                            <tr>
+                                <th>Numero da sala</th>
+                                <th>Nome da sala</th>
+                                <th>Inicio</th>
+                                <th>Data</th>
+                            </tr>
+                    
+                            @foreach($sessoes as $sessao) 
+                            @foreach($SalaExibicao as $salas)
+                                <tr>
+                                    <td>{{$salas->id}}</td>
+                                    <td>{{$salas->nome}}</td>
+                                    <td>{{$sessao->horario_inicio}}</td>
+                                    <td>{{$sessao->data}}</td>
+                                </tr>
+                                
+                            @endforeach
+                            @endforeach
+                            
+                        </table>
 
                 </div>
+
+                <div class="btn-group btn-group-sm " role="group"> 
+
+                        <div class="text-center mr-1">
+                            <form class="form-inline  " action="{{ route('carrinhoCompras') }}" method="GET">
+                                @csrf
+                                <input class="btn " type="hidden" name="id" value="{{ $filme->id }}">
+                                <button class="botao btn btn-outline-dark " type="submit">Comprar bilhete</button>
+                            </form>
+                        </div>
+                        
+                        <div class=" text-center mr-1">
+                            <form action="{{ route('carrinhoCompras') }}" method="POST">
+                                @csrf
+                                <input class="btn " type="hidden" name="id" value="{{ $filme->id }}">
+                                <button type="submit" class="botao btn btn-outline-dark ">Adicionar ao carrinho</button>
+                            </form>
+                        </div>
+
+                </div>
+
             @endif
         </div> 
 
-        @if ($existeSessao)
-        <div class=" text-end mt-2"> <!-- Detalhe das sessões -->
-           
-            <table id="table">
-        <tr>
-            <th>Sala</th>
-            <th>Horario</th>
-            <th>preenchimento da sessão</th>
-        </tr>
-                @foreach($SalaExibicao as $salas)
-                    <td>Numero: {{$salas->id}} Nome: {{$salas->nome}}</td>
-                    <td>{{$sessao->id}} </td>
-                @endforeach
-                
-            </table>
-               
-           
-        </div> 
-        @endif
     </div>
 @endsection
