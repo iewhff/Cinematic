@@ -139,11 +139,9 @@ class EstatisticaController extends Controller
         })->whereNotNull('created_at')->count();
 
 
-        if($totalBilhetesUltimoMes == 0){
-            $percentagemOcupacaoUltimoMes = 0;
-        }else{
-            $percentagemOcupacaoUltimoMes = ($totalBilhetesUltimoMes / $nrTotalLugaresUltimoMes) * 100;
-        }
+
+        $percentagemOcupacaoUltimoMes = ($totalBilhetesUltimoMes / $nrTotalLugaresUltimoMes) * 100;
+
 
 
 
