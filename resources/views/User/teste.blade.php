@@ -47,5 +47,32 @@
 
     </div>
 
+    <br>
+
+    @if (Auth::user()->tipo == 'C')
+        <h4 class="mb-4 font-semibold text-gray-600 dark:text-gray-300">
+            Dados de pagamento
+        </h4>
+
+        <div class="form-group">
+            <label for="nif">NIF</label>
+            <input type="text" name="nif" id="nif" class="form-control" placeholder="NIF"
+                value="{{ old('nif', Auth::user()->cliente->nif) }}">
+        </div>
+
+        <div class="form-group">
+            <label for="tipo_pagamento">Tipo de Pagamento</label>
+            <select name="tipo_pagamento" id="tipo_pagamento" class="form-control">
+                <option value="" disabled selected>Selecione o tipo de pagamento</option>
+                @foreach ($tipoPagamentos as $tipo)
+                    <option value="{{ $tipo }}" {{ old('tipo_pagamento', Auth::user()->cliente->tipo_pagamento) == $tipo ? 'selected' : '' }}>
+                        {{ $tipo }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+
+    @endif
 
 @endsection

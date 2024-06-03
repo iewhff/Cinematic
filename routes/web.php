@@ -76,13 +76,14 @@ Route::get('/downloadReciboPdf/{id}', [BilheteController::class, 'downloadRecibo
 Route::middleware(['auth', 'admin'])->get('/estatistica', [EstatisticaController::class, 'index'])->name('estatistica');
 
 Route::get('/perfil', function () {
-    return view('User.teste');
+    $tipoPagamentos = \App\Models\Cliente::$tipoPagamentos;
+    return view('User.teste', compact('tipoPagamentos'));
 })->name('perfil');
 
 Route::middleware(['auth', 'admin'])->get('/users', [UserController::class, 'index'])->name('users');
 
-Route::get('user/{user}', [UserController::class, 'index']);
-Route::get('user/{user}/edit', [UserController::class, 'edit']);
+Route::get('user/{user}', [UserController::class, 'show'])->name('user.show');
+Route::get('user/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
 Route::put('user/{user}', [UserController::class, 'update']);
 Route::delete('user/{id}', [UserController::class, 'softDelete'])->name('user.softDelete');
 Route::post('/user/upload-image', [UserController::class, 'uploadImage'])->name('user.uploadImage');
