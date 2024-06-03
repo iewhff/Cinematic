@@ -100,15 +100,18 @@ class FilmeController extends Controller
                     ->whereDate('data', '>=', $dataAtual)
                     ->exists();
 
+                $sessaoIds = $sessoes->pluck('id')->toArray();
 
-
-                    $sessaoIds = $sessoes->pluck('id')->toArray();
-                    $bilheteSessao = DB::table('bilhetes')->whereIn('sessao_id', $sessaoIds)->count();
-                    
-
-
+                $bilheteSessao = DB::table('bilhetes')->whereIn('sessao_id', $sessaoIds)->count();
                 
-                // dd($bilheteSessao);
+                $SalaExibicao = Sala::whereIn('id', $sessoes->pluck('sala_id'))
+                ->get();
+
+                $nLugaresSala = Lugar::Select('id')->whereIn('sala_id', $SalaExibicao->pluck('id'))->count();
+
+                $percentOcup = number_format(($bilheteSessao / $nLugaresSala) * 100);
+                
+                 
 
     
                 // Se o filme foi encontrado, retorna a view com os detalhes do filme
@@ -117,7 +120,7 @@ class FilmeController extends Controller
                     'existeSessao' => $existeSessao,
                     'filme' => $filme,
                     'sessoes' => $sessoes,
-                ])->with('bilheteSessao', $bilheteSessao);
+                ])->with('SalaExibicao', $SalaExibicao)->with('percentOcup', $percentOcup);
                 
             } else {
                 // Se o filme não foi encontrado, redireciona de volta com uma mensagem de erro

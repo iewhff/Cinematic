@@ -15,6 +15,8 @@ use App\Http\Controllers\EditarFilmesController;
 use App\Http\Controllers\HistoricoController;
 use App\Http\Controllers\SessaoController;
 use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\ControloController;
+
 
 
 /*
@@ -70,6 +72,12 @@ Route::get('/downloadBilhetePdf/{id}', [BilheteController::class, 'downloadBilhe
 Route::get('/downloadReciboPdf/{id}', [BilheteController::class, 'downloadReciboPdf'])->name('downloadReciboPdf');
 
 
+Route::get('/form', function () {
+    return view('controloAcesso.form');  // Esta rota exibe o formulário
+});
+
+Route::post('/processar-form', [ControloController::class, 'processarForm'])->name('processar.form');  // Esta rota processa o formulário
+Route::post('/validar/{id}', [ControloController::class, 'showBilhete'])->name('bilhete.show');
 
 
 //foi criado middleware AdminMiddleware para associar o utilizador do tipo A a administrador para a rota estar bloqueada a outros utilizadores
