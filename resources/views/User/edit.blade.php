@@ -1,6 +1,6 @@
 @extends('layout.base')
 
-@section('main')
+@section('content')
 
 <tbody>
     <form novalidate class="needs-validation" method="POST" action="{{ route('user.update', ['user' => $user]) }}">

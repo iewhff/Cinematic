@@ -219,7 +219,7 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            @if (Auth::check())
+                            @if (Auth::check() && Auth::user()->tipo != 'F')
                                 <a class="dropdown-item" href="{{ route('perfil')}}">{{ __('Perfil de Utilizador') }}</a>
                             @endif
                             <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>

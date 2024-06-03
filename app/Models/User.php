@@ -42,4 +42,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public static $tipoUser = ['A', 'F', 'C'];
+
+    public function cliente()
+    {
+        return $this->hasOne(Cliente::class, 'id');
+    }
 }
