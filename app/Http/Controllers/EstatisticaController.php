@@ -104,7 +104,7 @@ class EstatisticaController extends Controller
         if($salasIds->isEmpty()){
             $nrTotalLugares = 0;
         }else{
-            $nrTotalLugares = 0;
+            $nrTotalLugares = 0;  
             foreach ($salasIds as $salaId) {
                 $nrTotalLugares += Sessao::where('sala_id', $salaId)->count() * Lugar::where('sala_id', $salaId)->count();
             }

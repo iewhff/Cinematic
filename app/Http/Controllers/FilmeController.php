@@ -4,11 +4,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bilhete;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
 use App\Models\Filme;
 use App\Models\Genero;
+use App\Models\Lugar;
 use Illuminate\Pagination\Paginator;
 use Carbon\Carbon;
 use App\Models\Sala;
@@ -71,10 +73,6 @@ class FilmeController extends Controller
         // Obtém o valor do parâmetro 'id' da requisição
         $id = $request->input('id');
 
-     
-        
-
-
 
         // Verifica se o parâmetro 'id' foi fornecido
         if ($id) {
@@ -102,20 +100,24 @@ class FilmeController extends Controller
                     ->whereDate('data', '>=', $dataAtual)
                     ->exists();
 
-     
 
-                $SalaExibicao = Sala::whereIn('id', $sessoes->pluck('sala_id'))
-                ->get();
+
+                    $sessaoIds = $sessoes->pluck('id')->toArray();
+                    $bilheteSessao = DB::table('bilhetes')->whereIn('sessao_id', $sessaoIds)->count();
+                    
+
+
                 
+                // dd($bilheteSessao);
 
-
+    
                 // Se o filme foi encontrado, retorna a view com os detalhes do filme
                 return view('filme.detalhes', [
                     'title' => $title,
                     'existeSessao' => $existeSessao,
                     'filme' => $filme,
                     'sessoes' => $sessoes,
-                ], compact('SalaExibicao',));
+                ])->with('bilheteSessao', $bilheteSessao);
                 
             } else {
                 // Se o filme não foi encontrado, redireciona de volta com uma mensagem de erro

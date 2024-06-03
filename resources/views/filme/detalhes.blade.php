@@ -4,7 +4,7 @@
 
 
 @php
-
+ 
     // Função para remover espaços
     function processString($string) {
         return str_replace(' ', '', $string);
@@ -31,7 +31,7 @@
             <p><strong>Ano:</strong> {{ $filme->ano }}</p>
             @php
 
-
+          
             $originalString = $filme->titulo.'.jpg';
             $processedString = processString($originalString);
             $underscoredString = replaceSpacesWithUnderscore($originalString);
@@ -84,15 +84,20 @@
                                 <th>Nome da sala</th>
                                 <th>Inicio</th>
                                 <th>Data</th>
+                                <th>Ocupação</th>
                             </tr>
                     
                             @foreach($sessoes as $sessao) 
                             @foreach($SalaExibicao as $salas)
+                            
                                 <tr>
                                     <td>{{$salas->id}}</td>
                                     <td>{{$salas->nome}}</td>
                                     <td>{{$sessao->horario_inicio}}</td>
                                     <td>{{$sessao->data}}</td>
+
+
+                                    <td>{{$bilheteSessao}}</td>
                                 </tr>
                                 
                             @endforeach
@@ -102,7 +107,7 @@
 
                 </div>
 
-                <div class="btn-group btn-group-sm " role="group"> 
+                <div class="btn-group-vertical btn-group " role="group"> 
 
                         <div class="text-center mr-1">
                             <form class="form-inline  " action="{{ route('carrinhoCompras') }}" method="GET">
