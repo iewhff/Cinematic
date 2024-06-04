@@ -43,7 +43,7 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public static $tipoUser = ['A', 'F', 'C'];
+    public static $tipoUser = ['A'=> 'Administrador', 'F'=> 'Funcionário', 'C'=> 'Cliente'];
 
     public function cliente()
     {

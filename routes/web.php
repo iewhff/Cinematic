@@ -84,11 +84,16 @@ Route::post('/validar/{id}', [ControloController::class, 'showBilhete'])->name('
 Route::middleware(['auth', 'admin'])->get('/estatistica', [EstatisticaController::class, 'index'])->name('estatistica');
 
 Route::get('/perfil', function () {
+    $tipoUser = \App\Models\User::$tipoUser;
     $tipoPagamentos = \App\Models\Cliente::$tipoPagamentos;
-    return view('User.teste', compact('tipoPagamentos'));
+    return view('User.perfil', compact('tipoUser', 'tipoPagamentos'));
 })->name('perfil');
 
+Route::put('/perfil', [UserController::class, 'update'])->name('perfil.update');
+
+
 Route::middleware(['auth', 'admin'])->get('/users', [UserController::class, 'index'])->name('users');
+
 
 Route::get('user/{user}', [UserController::class, 'show'])->name('user.show');
 Route::get('user/{user}/edit', [UserController::class, 'edit'])->name('user.edit');

@@ -32,7 +32,7 @@ class UserController extends Controller
             ->with('user', $user);
     }
 
-    public function update(User $user, UserRequest $request): RedirectResponse
+    public function update345(User $user, UserRequest $request): RedirectResponse
     {
         $user->update($request->all());
         return redirect()->route('user.index')
@@ -97,4 +97,35 @@ class UserController extends Controller
                 ->with('user', $users);
     }
 
+    public function update(Request $request)
+    {
+        $user = Auth::user();
+
+        //dump($user); die();
+
+        // Validação dos dados
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'tipo' => 'required',
+            'nif' => 'nullable|string|max:15',
+            'tipo_pagamento' => 'nullable|string|max:50',
+        ]);
+
+        // Atualização dos dados do usuário
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->tipo = $request->tipo;
+
+        if ($user->tipo == 'C') {
+            $user->cliente->nif = $request->nif;
+            $user->cliente->tipo_pagamento = $request->tipo_pagamento;
+            $user->cliente->save();
+        }
+
+        $user->save();
+
+        return redirect()->route('perfil')->with('success', 'Perfil atualizado com sucesso.');
+    }
+    
 }
