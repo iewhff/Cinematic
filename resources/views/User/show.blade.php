@@ -33,7 +33,7 @@
                 </span></strong>
             </p>
 
-        <a href="/users" class="btn btn-primary">Voltar</a>
+            <a href="/users" class="btn btn-primary">Voltar</a>
+        </div>
     </div>
-</div>
 @endsection

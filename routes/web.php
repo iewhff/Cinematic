@@ -95,12 +95,21 @@ Route::put('/perfil', [UserController::class, 'update'])->name('perfil.update');
 Route::middleware(['auth', 'admin'])->get('/users', [UserController::class, 'index'])->name('users');
 
 
-Route::get('user/{user}', [UserController::class, 'show'])->name('user.show');
-Route::get('user/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
-Route::put('user/{user}', [UserController::class, 'update']);
-Route::delete('user/{id}', [UserController::class, 'softDelete'])->name('user.softDelete');
-Route::post('/user/upload-image', [UserController::class, 'uploadImage'])->name('user.uploadImage');
-Route::post('/searchUser', [UserController::class, 'search'])->name('searchUser');
+Route::middleware(['auth', 'admin'])->get('user/{user}', [UserController::class, 'show'])->name('user.show');
+Route::middleware(['auth', 'admin'])->get('user/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
+
+/*Route::middleware(['auth', 'admin'])->get('user/{user}/edit', function () {
+    $tipoUser = \App\Models\User::$tipoUser;
+    return view('User.edit', compact('tipoUser'));
+})->name('user.edit');*/
+
+Route::middleware(['auth', 'admin'])->put('user/{user}', [UserController::class, 'editUpdate'])->name('user.update');
+
+Route::middleware(['auth', 'admin'])->put('/user/{user}/block', [UserController::class, 'block'])->name('user.block');
+Route::middleware(['auth', 'admin'])->put('/user/{user}/unblock', [UserController::class, 'unblock'])->name('user.unblock');
+Route::middleware(['auth', 'admin'])->delete('user/{id}', [UserController::class, 'softDelete'])->name('user.softDelete');
+Route::middleware(['auth', 'admin'])->post('/user/upload-image', [UserController::class, 'uploadImage'])->name('user.uploadImage');
+Route::middleware(['auth', 'admin'])->post('/searchUser', [UserController::class, 'search'])->name('searchUser');
 Route::resource('user', UserController::class);
 
 Auth::routes();

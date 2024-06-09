@@ -28,15 +28,26 @@ class UserController extends Controller
 
     public function edit(User $user): View
     {
-        return view('user.edit')
-            ->with('user', $user);
+        $tipoUser = User::$tipoUser;
+        return view('user.edit', compact('user', 'tipoUser'));
     }
 
-    public function update345(User $user, UserRequest $request): RedirectResponse
+//dawdawdawdawdadawwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+public function editUpdate($id, UserRequest $request): RedirectResponse
     {
-        $user->update($request->all());
-        return redirect()->route('user.index')
-            ->with('alert-type', 'success');
+        $user = User::findOrFail($id);
+        // Validação dos dados
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => ['required','string','email','max:255', Rule::unique('users')->ignore($user->id),
+            ],
+            'tipo' => 'required',
+        ]);
+
+        // Atualização dos dados do usuário
+        $user->update($request->only(['name','email','tipo']));
+
+        return redirect()->route('user.edit', $user)->with('success', 'Utilizador atualizado com sucesso.');
     }
 
     public function uploadImage(Request $request, User $user)
@@ -127,5 +138,21 @@ class UserController extends Controller
 
         return redirect()->route('perfil')->with('success', 'Perfil atualizado com sucesso.');
     }
-    
+
+    public function block(User $user)
+    {
+        $user->bloqueado = 1;
+        $user->save();
+
+        return redirect()->route('users')->with('success', 'Usuário bloqueado com sucesso.');
+    }
+
+    public function unblock(User $user)
+    {
+        $user->bloqueado = 0;
+        $user->save();
+
+        return redirect()->route('users')->with('success', 'Usuário desbloqueado com sucesso.');
+    }
+
 }

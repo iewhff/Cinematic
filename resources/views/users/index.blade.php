@@ -3,7 +3,10 @@
 
 
 @section('content')
-    <h1>User List</h1>
+    <h1>Lista de Utilizadores</h1>
+
+    <button class="btn btn-secondary"><a href="" ></a>Criar Novo Utilizador</button>
+
     <table class="table table-striped">
         <thead>
             <tr>
@@ -17,7 +20,11 @@
         <tbody>
             @foreach ($users as $user)
                 <tr>
+                    @if ($user->tipo != 'C')
                     <td>{{ $user->name }}</td>
+                    @else
+                    <td>********</td>
+                    @endif
 
                     <td>{{ $user->email }}</td>
 
@@ -30,15 +37,26 @@
                     @endif
 
                     @if ($user->bloqueado == 1)
-                        <td>Sim</td>
+                        <td style="color: red">Sim</td>
                     @else
-                        <td>Não</td>
+                        <td style="color: green">Não</td>
                     @endif
 
                     <td>
                         @if ($user->tipo == 'C')
-                    <td class="button-icon-col"><a href="{{ route('user.show', ['user' => $user]) }}"
-                            class="btn btn-secondary"><i class="fas fa-eye"></i>Visualizar</a></td>
+                            @if ($user->bloqueado == 0)
+                                <form method="POST" action="{{ route('user.block', ['user' => $user->id]) }}">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit" class="btn btn-secondary">Bloquear</button>
+                                </form>
+                            @else
+                                <form method="POST" action="{{ route('user.unblock', ['user' => $user->id]) }}">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit" class="btn btn-secondary">Desbloquear</button>
+                                </form>
+                            @endif
                     <td class="button-icon-col">
                         <form method="POST" action="{{ route('user.softDelete', ['id' => $user->id]) }}">
                             @csrf
@@ -53,6 +71,23 @@
                             class="btn btn-secondary"><i class="fas fa-eye"></i>Visualizar</a></td>
                     <td class="button-icon-col"><a href="{{ route('user.edit', ['user' => $user]) }}"
                             class="btn btn-dark"><i class="fas fa-edit"></i>Editar</a></td>
+                    @if ($user != Auth::user())
+                    <td>
+                        @if ($user->bloqueado == 0)
+                                <form method="POST" action="{{ route('user.block', ['user' => $user->id]) }}">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit" class="btn btn-secondary">Bloquear</button>
+                                </form>
+                        @else
+                                <form method="POST" action="{{ route('user.unblock', ['user' => $user->id]) }}">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit" class="btn btn-secondary">Desbloquear</button>
+                                </form>
+                        @endif
+                    </td>
+                    @endif
                     @if ($user != Auth::user())
                         <td class="button-icon-col">
                             <form method="POST" action="{{ route('user.index', ['user' => $user]) }}">
