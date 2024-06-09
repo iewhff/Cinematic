@@ -90,14 +90,13 @@
                     @endif
                     @if ($user != Auth::user())
                         <td class="button-icon-col">
-                            <form method="POST" action="{{ route('user.index', ['user' => $user]) }}">
+                            <form method="POST" action="{{ route('user.softDelete', ['id' => $user->id]) }}">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" name="delete" class="btn btn-danger">
                                     <i class="fas fa-trash"></i>Apagar
                                 </button>
                             </form>
-                        </td>
                         </td>
                     @endif
             @endif
