@@ -94,6 +94,9 @@ Route::put('/perfil', [UserController::class, 'update'])->name('perfil.update');
 
 Route::middleware(['auth', 'admin'])->get('/users', [UserController::class, 'index'])->name('users');
 
+Route::middleware(['auth', 'admin'])->get('/users.create', [UserController::class, 'create'])->name('users.create');
+Route::middleware(['auth', 'admin'])->post('/users.store', [UserController::class, 'store'])->name('users.store');
+
 
 Route::middleware(['auth', 'admin'])->get('user/{user}', [UserController::class, 'show'])->name('user.show');
 Route::middleware(['auth', 'admin'])->get('user/{user}/edit', [UserController::class, 'edit'])->name('user.edit');

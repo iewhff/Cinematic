@@ -5,7 +5,23 @@
 @section('content')
     <h1>Lista de Utilizadores</h1>
 
-    <button class="btn btn-secondary"><a href="" ></a>Criar Novo Utilizador</button>
+    <a href="{{ route('users.create') }}" class="btn btn-secondary">Criar Novo Utilizador</a>
+
+    <form method="GET" action="{{ route('users') }}">
+        <div class="form-group">
+            <label for="tipo">Filtrar por Tipo de Utilizador</label>
+            <select name="tipo" id="tipo" class="form-control">
+                <option value="">Todos</option>
+                @foreach ($tipoUser as $tipoUtilizador => $label)
+                    <option value="{{ $tipoUtilizador }}" {{ request('tipo') == $tipoUtilizador ? 'selected' : '' }}>
+                        {{ $label }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Filtrar</button>
+    </form>
+
 
     <table class="table table-striped">
         <thead>

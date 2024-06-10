@@ -14,10 +14,38 @@ class UserController extends Controller
 {
     public function index(): View
     {
+
+        
+
         Paginator::useBootstrap();
         $users = User::paginate(15);
 
-        return view('users.index', compact('users'));
+        return view('users.index', compact('users','tipoUser'));
+    }
+
+    public function create()
+    {
+        $tipoUser = User::$tipoUser;
+        return view('users.create', compact('tipoUser'));
+    }
+
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'tipo' => 'required|string|in:A,F',
+        ]);
+
+        $user = User::create([
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'password' => bcrypt($validatedData['password']),
+            'tipo' => $validatedData['tipo'],
+        ]);
+
+        return redirect()->route('users')->with('success', 'Utilizador criado com sucesso.');
     }
 
     public function show(User $user): View
