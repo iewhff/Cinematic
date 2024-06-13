@@ -8,6 +8,12 @@
     @if ($bilhetes->isEmpty())
         <p>Nenhum bilhete encontrado para o ID da sessão fornecido.</p>
     @else
+    @if ($bilhetes->isEmpty())
+        <p>Nenhum bilhete encontrado para o ID da sessão fornecido.</p>
+    @else
+    @if ($bilhetes->isEmpty())
+        <p>Nenhum bilhete encontrado para o ID da sessão fornecido.</p>
+    @else
 
     <div>
     <div class="col-md-4 ">
@@ -20,17 +26,23 @@
         </ul> 
     </div>
 
-        <div class="col-md-8">
+   
+      <div class="col-md-8">
+         @if ($bilhete->estado == "não usado")
             <ul>
                 <li>
                     <form action="{{ route('bilhete.show', ['id' => $bilhete->id]) }}" method="POST">
-                    @csrf
+       
                     
                     <button type="submit">Validar Bilhete</button>
                     </form>
                 </li>
             </ul>
+            @endif
         </div>
+
+    
+
     </div>
     
     
