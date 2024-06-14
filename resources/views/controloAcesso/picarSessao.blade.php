@@ -5,9 +5,9 @@
 @section('content')
 
 
-<h1>Selecione uma sessao</h1>7 
+<h1>Selecione uma sessao </h1>
 
-<form action="{{ route('escolherLugar') }}" method="GET">
+<form action="{{ route('formN') }}" method="POST">
     @csrf
     <div class="row mb-3">
         <div class="col-md-6">
@@ -20,7 +20,7 @@
                 </option>
                 @endforeach
                 <input type="hidden" name="filmeId" value="{{ $filmeId }}">
-                <input type="hidden" name="sessaoId" value="{{ $sessao->id }}">
+                <input type="hidden" name="sessaoId" id="sessaoId" value="{{ $sessao->id }}">
             </select>
         </div>
         <div class="col-md-3">
