@@ -7,8 +7,6 @@ use App\Http\Controllers\ComprarBilheteController;
 use App\Http\Controllers\FilmeController;
 use App\Http\Controllers\PesquisaController;
 use App\Http\Controllers\EstatisticaController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CarrinhoComprasController;
 use App\Http\Controllers\EditarFilmesController;
@@ -71,13 +69,15 @@ Route::get('/historico', [HistoricoController::class, 'historico'])->name('histo
 Route::get('/downloadBilhetePdf/{id}', [BilheteController::class, 'downloadBilhetePdf'])->name('downloadBilhetePdf');
 Route::get('/downloadReciboPdf/{id}', [BilheteController::class, 'downloadReciboPdf'])->name('downloadReciboPdf');
 
+Route::get('/picarSessao', [ControloController::class, 'picarSessao'])->name('picarSessao');
 
+Route::post('/formN', [ControloController::class, 'formN'])->name('formN');
+Route::get('/backForm', [ControloController::class, 'backForm'])->name('backForm');
 Route::get('/form', function () {
     return view('controloAcesso.form');  // Esta rota exibe o formulário
 });
-
 Route::post('/processar-form', [ControloController::class, 'processarForm'])->name('processar.form');  // Esta rota processa o formulário
-Route::post('/validar/{id}', [ControloController::class, 'showBilhete'])->name('bilhete.show');
+Route::post('/validar/{id}/{idSessao}', [ControloController::class, 'showBilhete'])->name('bilhete.show');
 
 
 //foi criado middleware AdminMiddleware para associar o utilizador do tipo A a administrador para a rota estar bloqueada a outros utilizadores

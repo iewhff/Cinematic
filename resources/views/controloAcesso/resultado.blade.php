@@ -2,11 +2,10 @@
 
 @section('content')
 
-
-<h1>Bilhetes Encontrados</h1>
-
     @if ($bilhetes->isEmpty())
         <p>Nenhum bilhete encontrado para o ID da sessão fornecido.</p>
+    @elseif($idSessao != $sessaoBil)   
+    <p>O bilhete não pertence a esta sessão</p>
     @else
 
     <div>
@@ -20,22 +19,24 @@
         </ul> 
     </div>
 
-        <div class="col-md-8">
+   
+      <div class="col-md-8">
+         @if ($bilhete->estado == "não usado")
             <ul>
                 <li>
-                    <form action="{{ route('bilhete.show', ['id' => $bilhete->id]) }}" method="POST">
+                <form action="{{ route('bilhete.show', ['id' => $bilhete->id, 'idSessao' => $bilhete->sessao_id] ) }}" method="POST">
                     @csrf
-                    
+
                     <button type="submit">Validar Bilhete</button>
                     </form>
                 </li>
             </ul>
+            @endif
         </div>
+
+    
+
     </div>
-    
-    
     @endif
 
-    <a href="{{ url('/form') }}">Voltar ao Formulário</a>
-    
 @endsection

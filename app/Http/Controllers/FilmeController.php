@@ -106,12 +106,20 @@ class FilmeController extends Controller
                 
                 $SalaExibicao = Sala::whereIn('id', $sessoes->pluck('sala_id'))
                 ->get();
-
-                $nLugaresSala = Lugar::Select('id')->whereIn('sala_id', $SalaExibicao->pluck('id'))->count();
+  
+               if($existeSessao){
+                 $nLugaresSala = Lugar::Select('id')->whereIn('sala_id', $SalaExibicao->pluck('id'))->count();
 
                 $percentOcup = number_format(($bilheteSessao / $nLugaresSala) * 100);
                 
-                 
+               }else{
+
+                $nLugaresSala = 0;
+
+                $percentOcup = 0;
+
+               }
+               
 
     
                 // Se o filme foi encontrado, retorna a view com os detalhes do filme

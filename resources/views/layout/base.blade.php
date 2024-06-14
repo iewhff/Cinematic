@@ -169,8 +169,9 @@
                 @endif
                 @if (Auth::check() && Auth::user()->tipo == 'F')
                     <li class="nav-item">
-                        <a class="nav-link" href="#" style="{{ url()->current() == url('#') ? 'color: orange;' : '' }}">Controlo de Acesso à Sessão</a>
+                        <a class="nav-link" href="/picarSessao" style="{{ url()->current() == url('/picarSessao') ? 'color: orange;' : '' }}">Controlo de Acesso à Sessão</a>
                     </li>
+                    
                 @endif
                 @if (Auth::check() && Auth::user()->tipo == 'A')
                     <li class="nav-item">
