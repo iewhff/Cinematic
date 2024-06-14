@@ -4,25 +4,28 @@
 
 <div class="row">
     <div class="col-md-8">
-        @dump($errors)
-        <form method="POST" action="{{ route('user.update', ['user' => $user->id])}}">
+    @dump($errors)
+        <form id="updateUser" method="POST" action="{{ route('user.update', ['user'=>$user])}}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
             <img src="{{ asset('storage/fotos/'.$user->foto_url) }}" alt="Profile Picture" class="img-fluid rounded-circle">
+
+            <div class="form-group">
+                <label for="inputNome">Nome</label>
+                <input type="text" name="name" class="form-control" value="{{ $user->id }}">
+
+            </div>
+
             <div class="form-group">
                 <label for="inputNome">Nome</label>
                 <input type="text" name="name" class="form-control" value="{{ $user->name }}">
-                @error('name')
-                    Falta Nome!!
-                @enderror
+
             </div>
             <div class="form-group">
                 <label for="inputNome">Email</label>
                 <input type="text" name="email" class="form-control" value="{{ $user->email }}">
-                @error('email')
-                    Falta Email!!
-                @enderror
+
             </div>
             <div class="form-group">
                 <label for="inputNome">Tipo</label>
@@ -44,7 +47,7 @@
                 </span></strong>
             </p>
 
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="submit" class="btn btn-primary" form="updateUser">Guardar</button>
             <a href="/users" class="btn btn-primary">Voltar</a>
         </form>
     </div>

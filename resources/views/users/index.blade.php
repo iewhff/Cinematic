@@ -7,20 +7,7 @@
 
     <a href="{{ route('users.create') }}" class="btn btn-secondary">Criar Novo Utilizador</a>
 
-    <form method="GET" action="{{ route('users') }}">
-        <div class="form-group">
-            <label for="tipo">Filtrar por Tipo de Utilizador</label>
-            <select name="tipo" id="tipo" class="form-control">
-                <option value="">Todos</option>
-                @foreach ($tipoUser as $tipoUtilizador => $label)
-                    <option value="{{ $tipoUtilizador }}" {{ request('tipo') == $tipoUtilizador ? 'selected' : '' }}>
-                        {{ $label }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Filtrar</button>
-    </form>
+
 
 
     <table class="table table-striped">
@@ -85,7 +72,7 @@
                 @else
                     <td class="button-icon-col"><a href="{{ route('user.show', ['user' => $user]) }}"
                             class="btn btn-secondary"><i class="fas fa-eye"></i>Visualizar</a></td>
-                    <td class="button-icon-col"><a href="{{ route('user.edit', ['user' => $user]) }}"
+                    <td class="button-icon-col"><a href="{{ route('user.edit', $user->id) }}"
                             class="btn btn-dark"><i class="fas fa-edit"></i>Editar</a></td>
                     @if ($user != Auth::user())
                     <td>

@@ -94,6 +94,13 @@ Route::put('/perfil', [UserController::class, 'update'])->name('perfil.update');
 
 Route::middleware(['auth', 'admin'])->get('/users', [UserController::class, 'index'])->name('users');
 
+
+/*Route::get('/users', function () {
+    $tipoUser = \App\Models\User::$tipoUser;
+    return view('users.index', compact('tipoUser','users'));
+})->name('users');
+*/
+
 Route::middleware(['auth', 'admin'])->get('/users.create', [UserController::class, 'create'])->name('users.create');
 Route::middleware(['auth', 'admin'])->post('/users.store', [UserController::class, 'store'])->name('users.store');
 

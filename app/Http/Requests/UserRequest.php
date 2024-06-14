@@ -3,21 +3,15 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use Illuminate\Validation\Rule;
 class UserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): array
+    public function authorize(): bool
     {
-        return [
-            'name' =>        'required',
-            'email' =>   'required',
-            'tipo' =>           'required',
-            'foto_url' =>       'required',
-
-        ];
+        return true;
     }
 
     /**
@@ -29,7 +23,11 @@ class UserRequest extends FormRequest
     {
         return [
             'name.required' => 'O Titulo é obrigatório',
-            'email.required' => 'O genero é obrigatório',
+            'email' => [
+                'nullable',
+                'email',
+                Rule::unique('users', 'email')->ignore($this->email, 'email')
+            ],
             'tipo.required' => 'O ano é obrigatório',
             'foto_url.required' => 'O sumario é obrigatório',
 

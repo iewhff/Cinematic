@@ -9,18 +9,19 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Pagination\Paginator;
 use Illuminate\View\View;
 use App\Http\Requests\UserRequest;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
     public function index(): View
     {
 
-        
+
 
         Paginator::useBootstrap();
         $users = User::paginate(15);
 
-        return view('users.index', compact('users','tipoUser'));
+    return view('users.index', compact('users',/*'tipoUser'*/));
     }
 
     public function create()
@@ -61,21 +62,23 @@ class UserController extends Controller
     }
 
 //dawdawdawdawdadawwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
-public function editUpdate($id, UserRequest $request): RedirectResponse
+public function editUpdate(UserRequest $request, User $user): RedirectResponse
     {
-        $user = User::findOrFail($id);
-        // Validação dos dados
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => ['required','string','email','max:255', Rule::unique('users')->ignore($user->id),
-            ],
-            'tipo' => 'required',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            // Outras regras de validação...
         ]);
+        $formData = $request->validated();
+        $user = DB::transaction(function () use ($formData, $user, $request) {
+            $user->nome = $formData['nome'];
+            $user->email = $formData['email'];
+            $user->tipo = $formData['tipo'];
+            $user->save();
 
-        // Atualização dos dados do usuário
-        $user->update($request->only(['name','email','tipo']));
+            return $user;
+        });
 
-        return redirect()->route('user.edit', $user)->with('success', 'Utilizador atualizado com sucesso.');
+        return redirect()->route('users')->with('success', 'Utilizador atualizado com sucesso.');
     }
 
     public function uploadImage(Request $request, User $user)
